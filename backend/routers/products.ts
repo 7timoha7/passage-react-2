@@ -91,59 +91,56 @@ productRouter.get('/get/favorites', auth, async (req, res, next) => {
   }
 });
 
-// productRouter.patch('/:id', auth, permit('admin', 'director'), imagesUpload.array('images'), async (req, res, next) => {
-//   try {
-//     const product: HydratedDocument<IProduct> | null = await Product.findById(req.params.id);
-//     if (!product) {
-//       return res.status(404).send({ message: 'Not found product!' });
-//     }
-//     product.categoryId = req.body.categoryId;
-//     product.name = req.body.name;
-//     product.desc = req.body.desc;
-//     product.unit = req.body.unit;
-//     product.vendorCode = JSON.parse(req.body.vendorCode);
-//     product.group = req.body.group;
-//     product.cod = req.body.cod;
-//     product.dimensions = req.body.dimensions;
-//     product.weight = req.body.weight;
-//     product.price = JSON.parse(req.body.price);
-//
-//     if (req.files) {
-//       if (product.images) {
-//         const uploadedImages = (req.files as Express.Multer.File[]).map((file) => file.filename);
-//         product.images.push(...uploadedImages);
-//       } else {
-//         product.images = (req.files as Express.Multer.File[]).map((file) => file.filename);
-//       }
-//     }
-//
-//     await Product.findByIdAndUpdate(req.params.id, {
-//       categoryId: product.categoryId,
-//       name: product.name,
-//       desc: product?.desc,
-//       unit: product.unit,
-//       vendorCode: product.vendorCode,
-//       group: product.group,
-//       cod: product.cod,
-//       dimensions: product.dimensions,
-//       weight: product.weight,
-//       images: product.images,
-//       price: product.price,
-//     });
-//
-//     return res.send({
-//       message: {
-//         en: 'Product updated successfully',
-//         ru: 'Продукт успешно изменен',
-//       },
-//     });
-//   } catch (error) {
-//     if (error instanceof mongoose.Error.ValidationError) {
-//       return res.status(400).send(error);
-//     }
-//     return next(error);
-//   }
-// });
+productRouter.patch('/:id', auth, permit('admin', 'director'), imagesUpload.array('images'), async (req, res, next) => {
+  try {
+    const product: HydratedDocument<IProduct> | null = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send({ message: 'Not found product!' });
+    }
+
+    product.name = req.body.name;
+    product.article = req.body.article;
+    product.goodID = req.body.goodID;
+    product.measureCode = req.body.measureCode;
+    product.measureName = req.body.measureName;
+    product.ownerID = req.body.ownerID;
+    product.quantity = JSON.parse(req.body.quantity);
+    product.price = JSON.parse(req.body.price);
+
+    if (req.files) {
+      if (product.images) {
+        const uploadedImages = (req.files as Express.Multer.File[]).map((file) => file.filename);
+        product.images.push(...uploadedImages);
+      } else {
+        product.images = (req.files as Express.Multer.File[]).map((file) => file.filename);
+      }
+    }
+
+    await Product.findByIdAndUpdate(req.params.id, {
+      name: product.name,
+      article: product.article,
+      goodID: product.goodID,
+      measureCode: product.measureCode,
+      measureName: product.measureName,
+      ownerID: product.ownerID,
+      quantity: product.quantity,
+      price: product.price,
+      images: product.images,
+    });
+
+    return res.send({
+      message: {
+        en: 'Product updated successfully',
+        ru: 'Продукт успешно изменен',
+      },
+    });
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(error);
+    }
+    return next(error);
+  }
+});
 
 productRouter.delete('/:id/images/:index', auth, permit('admin', 'director'), async (req, res, next) => {
   try {
@@ -215,7 +212,9 @@ productRouter.get('/search/preview', async (req, res, next) => {
       return res.status(400).send('Search term should be at least 3 characters long');
     }
     const regex = new RegExp(searchTerm, 'i');
-    const products = await Product.find({ name: { $regex: regex } }).limit(20);
+    const products = await Product.find({
+      $or: [{ name: { $regex: regex } }, { article: { $regex: regex } }],
+    }).limit(20);
     const hasMore = products.length === 20;
     res.send({
       results: products,

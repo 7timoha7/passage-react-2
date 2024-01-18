@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Grid, Paper, Tooltip, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import noImage from '../../../assets/images/no_image.jpg';
 import { BasketTypeOnServerMutation, ProductType } from '../../../types';
@@ -13,6 +25,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { changeFavorites, reAuthorization } from '../../users/usersThunks';
 import { getFavoriteProducts } from '../productsThunks';
+import Card from '@mui/material/Card';
 
 interface Props {
   product: ProductType;
@@ -87,14 +100,13 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
     user.favorites.includes(product._id);
 
   return (
-    <Paper elevation={3} sx={{ maxWidth: '600px', margin: 'auto', position: 'relative' }}>
+    <Paper elevation={3} sx={{ maxWidth: '100%', margin: 'auto', position: 'relative', padding: '16px' }}>
       <Box
         sx={{
           position: 'absolute',
-          top: 0,
-          right: 0,
+          top: '16px',
+          right: '16px',
           cursor: 'pointer',
-          padding: '8px',
         }}
         onClick={(e) => {
           e.stopPropagation();
@@ -107,45 +119,48 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
           (favorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />)}
       </Box>
       <Grid container>
-        <Grid item xs={12} md={6}>
-          <img
-            src={product.images.length ? apiURL + '/' + selectedImage : noImage}
-            alt={product.name}
-            style={{ width: '100%', height: 'auto' }}
-          />
-          <Grid container spacing={1} mt={2}>
-            {product.images.length
-              ? product.images.map((image, index) => (
-                  <Grid item key={index}>
-                    <img
-                      src={apiURL + '/' + image}
-                      alt={product.name}
-                      style={{ width: '50px', height: 'auto', cursor: 'pointer', border: '1px solid #ccc' }}
-                      onClick={() => setSelectedImage(image)}
-                    />
-                  </Grid>
-                ))
-              : null}
-          </Grid>
+        <Grid item sx={{ width: '100%', mb: 3, display: 'flex', justifyContent: 'center' }}>
+          <Card sx={{ p: 2, maxWidth: '700px' }}>
+            <Box>
+              <img
+                src={product.images.length ? apiURL + '/' + selectedImage : noImage}
+                alt={product.name}
+                style={{ width: '100%', height: 'auto' }}
+              />
+              <Grid container spacing={1} mt={2}>
+                {product.images.length
+                  ? product.images.map((image, index) => (
+                      <Grid item key={index}>
+                        <img
+                          src={apiURL + '/' + image}
+                          alt={product.name}
+                          style={{ width: '50px', height: 'auto', cursor: 'pointer', border: '1px solid #ccc' }}
+                          onClick={() => setSelectedImage(image)}
+                        />
+                      </Grid>
+                    ))
+                  : null}
+              </Grid>
+            </Box>
+          </Card>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              p: 2,
               height: '100%',
             }}
           >
-            <div>
+            <Box>
               <Typography variant="h5" gutterBottom>
                 {product.name}
               </Typography>
               <Typography variant="subtitle1" gutterBottom>
                 Цена: {product.price} сом
               </Typography>
-            </div>
+            </Box>
             <Grid container spacing={2}>
               <Grid item>
                 <Tooltip title={indicator(product) ? 'Товар уже в корзине' : 'Добавить в корзину'} arrow>
@@ -155,7 +170,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                       disabled={indicator(product)}
                       variant="outlined"
                       endIcon={<AddShoppingCartIcon />}
-                      color={'error'}
+                      color="error"
                     >
                       {indicator(product) ? 'В корзине' : 'Добавить в корзину'}
                     </Button>
@@ -170,10 +185,48 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
             </Grid>
           </Box>
         </Grid>
-        {user?.role === 'admin' || user?.role === 'director' ? (
-          <Button onClick={() => navigate('/edit-product/' + product._id)}>Изменить</Button>
-        ) : null}
       </Grid>
+      <Box mt={4}>
+        <Typography variant="h6" gutterBottom>
+          Информация о товаре
+        </Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Описание:
+                </TableCell>
+                <TableCell>{/*{product.description}*/}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Единицы измерения:
+                </TableCell>
+                <TableCell>{product.measureName}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Склад:
+                </TableCell>
+                <TableCell>{product.ownerID}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Размер:
+                </TableCell>
+                <TableCell>{/*{product.dimensions}*/}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Артикул:
+                </TableCell>
+                <TableCell>{product.article}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Paper>
   );
 };

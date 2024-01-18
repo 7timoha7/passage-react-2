@@ -5,7 +5,7 @@ import { selectFavoriteProducts, selectFetchFavoriteProductsLoading } from '../.
 import { getFavoriteProducts } from '../../Products/productsThunks';
 import { selectBasket } from '../../Basket/basketSlice';
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
+import { Grid, useMediaQuery } from '@mui/material';
 import ProductCard from '../../Products/components/ProductCard';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { fetchBasket } from '../../Basket/basketThunks';
@@ -28,6 +28,9 @@ const Favorites = () => {
     dispatch(getFavoriteProducts());
     dispatch(fetchBasket('1'));
   }, [dispatch]);
+
+  const isSmallScreen = useMediaQuery('(max-width: 600px)');
+
   return (
     <>
       <Typography variant={'h5'} textAlign={'center'}>
@@ -36,7 +39,7 @@ const Favorites = () => {
       {favoriteProductsLoading ? (
         <Spinner />
       ) : (
-        <Grid container spacing={4} mt={1} mb={2}>
+        <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={1} mb={2}>
           {favoriteProducts.map((item) => {
             return (
               <Grid item key={item._id}>

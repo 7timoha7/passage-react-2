@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack, useMediaQuery } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import { BasketTypeOnServerMutation, CategoriesType, ProductType } from '../../../types';
@@ -72,6 +72,8 @@ const Products: React.FC<Props> = ({ categoryName }) => {
     return null;
   };
 
+  const isSmallScreen = useMediaQuery('(max-width: 600px)');
+
   return (
     <Box>
       <Box textAlign="center" mb={2}>
@@ -80,7 +82,7 @@ const Products: React.FC<Props> = ({ categoryName }) => {
 
       {renderPagination()}
 
-      <Grid container spacing={4} mt={2} mb={2}>
+      <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={2} mb={2} justifyContent={'center'}>
         {productsInCategory.map((item) => (
           <Grid item key={item._id}>
             <ProductCard product={item} indicator={indicator(item)} />

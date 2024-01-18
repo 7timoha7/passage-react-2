@@ -6,8 +6,6 @@ import img4 from '../../../assets/images/kerama/4.jpg';
 import img5 from '../../../assets/images/kerama/5.jpg';
 import { MDBCarousel, MDBCarouselItem, MDBCarouselCaption } from 'mdb-react-ui-kit';
 
-const images = [img1, img2, img3, img4, img5];
-
 const PorcelainStoneware = () => {
   return (
     <>

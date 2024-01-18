@@ -48,6 +48,8 @@ const createProducts = async (
   quantities: IProductQuantityFromApi[],
 ): Promise<void> => {
   try {
+    const updatedProducts = []; // Создаем массив для хранения обновленных товаров
+
     for (const productData of products) {
       const quantityData = quantities.find((q) => q.goodID === productData.goodID);
       if (!quantityData || quantityData.quantity <= 0) {
@@ -55,17 +57,14 @@ const createProducts = async (
         continue;
       }
 
-      // Проверяем, есть ли у товара артикул
       if (!productData.article) {
-        // console.log(`Продукт ${productData.name} (goodID: ${productData.goodID}) не имеет артикула, пропускаем.`);
+        // Пропускаем продукты без артикула
         continue;
       }
 
       const priceData = prices.find((p) => p.goodID === productData.goodID);
-
-      // Проверяем наличие цены перед созданием товара
       if (!priceData || !priceData.price) {
-        // console.log(`Для продукта ${productData.name} (goodID: ${productData.goodID}) отсутствует цена, пропускаем.`);
+        // Пропускаем продукты без цены
         continue;
       }
 
@@ -76,8 +75,20 @@ const createProducts = async (
         fs.mkdirSync(imageFolder, { recursive: true });
       }
 
-      const imageName = 'image.jpg';
-      const imagePath = path.join(imageFolder, imageName);
+      const productImages = [];
+
+      // Проверяем, что у продукта есть изображение перед добавлением в массив
+      if (productData.imageBase64) {
+        const images = productData.imageBase64.split(',');
+
+        for (const image of images) {
+          const imageName = 'image' + (images.indexOf(image) + 1) + '.jpg';
+          const imagePath = path.join(imageFolder, imageName);
+
+          fs.writeFileSync(imagePath, image, 'base64');
+          productImages.push(path.join('/images/imagesProduct', productData.goodID, imageName));
+        }
+      }
 
       const product = new Product({
         name: productData.name,
@@ -88,29 +99,28 @@ const createProducts = async (
         ownerID: productData.ownerID,
         quantity: quantityData.quantity,
         price: priceData.price,
+        images: productImages, // Сохраняем массив путей к изображениям
       });
 
       await product.save();
-
-      // Проверяем, что у продукта есть изображение перед добавлением в массив
-      if (productData.imageBase64) {
-        fs.writeFileSync(imagePath, productData.imageBase64, 'base64');
-        // console.log(`Изображение сохранено: ${imagePath}`);
-
-        // Обновляем товар, добавляя относительный путь к изображению в массив images
-        await Product.updateOne(
-          { goodID: productData.goodID },
-          { $push: { images: path.join('/images/imagesProduct', productData.goodID, imageName) } },
-        );
-      }
+      updatedProducts.push(product); // Добавляем обновленный продукт в массив
     }
+
+    // Обновляем все продукты одним запросом к базе данных
+    await Product.bulkWrite(
+      updatedProducts.map((product) => ({
+        updateOne: {
+          filter: { _id: product._id },
+          update: { $set: { images: product.images } },
+        },
+      })),
+    );
 
     console.log('Товары успешно созданы и обновлены в базе данных.');
   } catch (error) {
     console.error('Ошибка при создании товаров:', error);
   }
 };
-
 const createCategories = async (categoriesData: ICategoryFromApi[]): Promise<void> => {
   try {
     // Шаг 1: Создаем категории, в которых есть товары

@@ -27,7 +27,6 @@ export interface ICategoryFromApi {
 }
 
 export interface IProduct {
-  // categoryId: ObjectId;
   name: string;
   article: string;
   goodID: string;

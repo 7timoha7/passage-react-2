@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import { useParams } from 'react-router-dom';
 import { BasketTypeOnServerMutation, ProductType } from '../../../../../types';
@@ -62,6 +62,8 @@ const SearchPage: React.FC = () => {
       </Box>
     ) : null;
 
+  const isSmallScreen = useMediaQuery('(max-width: 600px)');
+
   return (
     <Box>
       <Box textAlign="center" mb={2}>
@@ -73,7 +75,7 @@ const SearchPage: React.FC = () => {
       {loading ? (
         <Spinner />
       ) : searchResults.length > 0 ? (
-        <Grid container spacing={4} mt={2} mb={2}>
+        <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={2} mb={2} justifyContent={'center'}>
           {searchResults.map((item) => (
             <Grid item key={item._id}>
               <ProductCard product={item} indicator={indicator(item)} />
