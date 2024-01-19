@@ -1,6 +1,5 @@
 import mongoose, { Schema, Types } from 'mongoose';
 import { IBasket } from '../types';
-import Product from './Product';
 
 const BasketSchema = new Schema<IBasket>({
   user_id: {

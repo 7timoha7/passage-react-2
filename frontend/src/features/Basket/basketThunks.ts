@@ -31,55 +31,6 @@ export const createBasket = createAsyncThunk<
   }
 });
 
-// export const updateBasket = createAsyncThunk<
-//   GlobalSuccess,
-//   {
-//     basketMass?: { product: string; quantity: number }[];
-//     id?: string;
-//   },
-//   { state: RootState; rejectValue: ValidationError }
-// >('basket/updateBasket', async (updatedBasket, { getState, rejectWithValue }) => {
-//   try {
-//     const user = getState().users.user;
-//     console.log(updatedBasket);
-//     if (user) {
-//       const response = await axiosApi.patch('/basket', updatedBasket.basketMass);
-//       return response.data;
-//     } else {
-//       const response = await axiosApi.patch('/basket/' + updatedBasket.id, updatedBasket.basketMass);
-//       return response.data;
-//     }
-//   } catch (e) {
-//     if (isAxiosError(e) && e.response && e.response.status === 400) {
-//       return rejectWithValue(e.response.data as ValidationError);
-//     }
-//     throw e;
-//   }
-// });
-
-// export const updateBasket = createAsyncThunk<
-//   GlobalSuccess,
-//   BasketUpdateRequest, // Обновленный интерфейс запроса
-//   { state: RootState; rejectValue: ValidationError }
-// >('basket/updateBasket', async (updatedBasket, { getState, rejectWithValue }) => {
-//   try {
-//     const user = getState().users.user;
-//     console.log(updatedBasket);
-//     if (user) {
-//       const response = await axiosApi.patch('/basket', updatedBasket);
-//       return response.data;
-//     } else {
-//       const response = await axiosApi.patch('/basket/' + updatedBasket, updatedBasket);
-//       return response.data;
-//     }
-//   } catch (e) {
-//     if (isAxiosError(e) && e.response && e.response.status === 400) {
-//       return rejectWithValue(e.response.data as ValidationError);
-//     }
-//     throw e;
-//   }
-// });
-
 export const updateBasket = createAsyncThunk<
   GlobalSuccess,
   BasketUpdateRequest,
@@ -87,7 +38,7 @@ export const updateBasket = createAsyncThunk<
     state: RootState;
     rejectValue: ValidationError;
   }
->('basket/updateBasket', async (updatedBasket, { getState, rejectWithValue }) => {
+>('basket/updateBasket', async (updatedBasket, { getState }) => {
   try {
     const user = getState().users.user;
     const { sessionKey, product_id, action } = updatedBasket;
@@ -98,9 +49,6 @@ export const updateBasket = createAsyncThunk<
     });
     return response.data;
   } catch (e) {
-    // if (isAxiosError(e) && e.response && e.response.status === 400) {
-    //   return rejectWithValue(e.response.data as ValidationError);
-    // }
     throw new Error();
   }
 });
