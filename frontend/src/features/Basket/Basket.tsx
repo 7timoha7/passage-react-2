@@ -98,18 +98,18 @@ const Basket = () => {
         }}
       >
         <List sx={{ background: 'linear-gradient(45deg, rgb(172, 172, 172), rgb(252, 140, 140))' }}>
-          {stateBasket?.items.map((item) => (
-            <ListItem key={item._id}>
+          {stateBasket?.items.map((item, index) => (
+            <ListItem key={index}>
               <ListItemText primary={item.product.name + ' x ' + item.quantity + 'шт'} />
-              <IconButton color="primary" onClick={() => handleUpdateBasket(item.product._id, 'increase')}>
+              <IconButton color="primary" onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}>
                 <AddCircleOutlineIcon style={{ color: 'red' }} />
               </IconButton>
               <IconButton
                 color="primary"
                 onClick={() =>
                   item.quantity === 1
-                    ? handleUpdateBasket(item.product._id, 'remove')
-                    : handleUpdateBasket(item.product._id, 'decrease')
+                    ? handleUpdateBasket(item.product.goodID, 'remove')
+                    : handleUpdateBasket(item.product.goodID, 'decrease')
                 }
               >
                 <RemoveCircleOutlineIcon style={{ color: 'black' }} />

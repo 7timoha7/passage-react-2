@@ -79,20 +79,20 @@ const BasketPage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {stateBasket.items.map((item) => (
-                  <TableRow key={item._id}>
+                {stateBasket.items.map((item, index) => (
+                  <TableRow key={index}>
                     <TableCell>{item.product.name}</TableCell>
                     <TableCell align="center">{item.quantity}</TableCell>
                     <TableCell align="center">
-                      <IconButton color="primary" onClick={() => handleUpdateBasket(item.product._id, 'increase')}>
+                      <IconButton color="primary" onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}>
                         <AddCircleOutlineIcon style={{ color: 'red' }} />
                       </IconButton>
                       <IconButton
                         color="primary"
                         onClick={() =>
                           item.quantity === 1
-                            ? handleUpdateBasket(item.product._id, 'remove')
-                            : handleUpdateBasket(item.product._id, 'decrease')
+                            ? handleUpdateBasket(item.product.goodID, 'remove')
+                            : handleUpdateBasket(item.product.goodID, 'decrease')
                         }
                       >
                         <RemoveCircleOutlineIcon style={{ color: 'black' }} />

@@ -34,7 +34,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
       await dispatch(
         updateBasket({
           sessionKey: sessionKey,
-          product_id: product._id,
+          product_id: product.goodID,
           action: 'increase',
         }),
       );
@@ -55,7 +55,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
 
   const favorite =
     (user?.role === 'user' || user?.role === 'director' || user?.role === 'admin') &&
-    user.favorites.includes(product._id);
+    user.favorites.includes(product.goodID);
 
   let imgProduct = noImage;
   if (product.images.length) {
@@ -101,7 +101,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           }}
           onClick={(e) => {
             e.stopPropagation();
-            onClickFavorite(product._id);
+            onClickFavorite(product.goodID);
           }}
         >
           {user &&

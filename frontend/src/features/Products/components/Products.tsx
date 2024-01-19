@@ -40,7 +40,7 @@ const Products: React.FC<Props> = ({ categoryName }) => {
 
   const indicator = (item: ProductType) => {
     if (stateBasket && item) {
-      return stateBasket.items.some((itemBasket) => itemBasket.product._id === item._id);
+      return stateBasket.items.some((itemBasket) => itemBasket.product.goodID === item.goodID);
     } else {
       return false;
     }

@@ -26,12 +26,8 @@ const BasketSchema = new Schema<IBasket>({
     type: [
       {
         product: {
-          type: Schema.Types.ObjectId,
-          ref: 'Product',
-          validate: {
-            validator: async (value: Types.ObjectId) => Product.findById(value),
-            message: 'Product does not exist',
-          },
+          type: String,
+          required: true,
         },
         quantity: {
           type: Number,

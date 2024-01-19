@@ -81,7 +81,7 @@ productRouter.get('/get/favorites', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
     const favoriteProductsId = user.favorites;
-    const products = await Product.find({ _id: { $in: favoriteProductsId } });
+    const products = await Product.find({ goodID: { $in: favoriteProductsId } });
     if (!products) {
       return res.send({ message: 'You do not have favorites Products' });
     }

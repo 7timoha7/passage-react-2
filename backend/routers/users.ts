@@ -141,7 +141,7 @@ usersRouter.patch('/toggleAddProductToFavorites', auth, permit('user', 'admin', 
 
   try {
     if (addProductId) {
-      const foundProduct = await Product.findById(addProductId);
+      const foundProduct = await Product.findOne({ goodID: addProductId });
       if (!foundProduct) {
         return res.send({ error: 'Product is not found' });
       }
@@ -160,7 +160,7 @@ usersRouter.patch('/toggleAddProductToFavorites', auth, permit('user', 'admin', 
       }
     }
     if (deleteProductId) {
-      const foundProduct = await Product.findById(deleteProductId);
+      const foundProduct = await Product.findOne({ goodID: deleteProductId });
       if (!foundProduct) {
         return res.send({ error: 'Product is not found' });
       }

@@ -65,10 +65,32 @@ basketRouter.get('/', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
     if (user) {
-      const basket = await Basket.findOne({ user_id: user._id }).populate('items.product');
-      return res.send(basket);
+      const basket = await Basket.findOne({ user_id: user._id });
+
+      if (basket) {
+        const products = await Product.find({ goodID: { $in: basket.items.map((item) => item.product) } });
+
+        const basketToFront = {
+          user_id: basket.user_id,
+          // session_key: basket.session_key,
+          created_at: basket.created_at,
+          updated_at: basket.updated_at,
+          items: basket.items.map((item) => {
+            const productInfo = products.find((product) => product.goodID === item.product);
+            return {
+              product: productInfo, // Здесь будет полная информация о товаре
+              quantity: item.quantity,
+            };
+          }),
+          totalPrice: basket.totalPrice,
+        };
+
+        return res.send(basketToFront);
+      } else {
+        return res.send({ message: 'User basket not found' });
+      }
     } else {
-      res.send({ message: 'User not found' });
+      return res.send({ message: 'User not found' });
     }
   } catch (e) {
     return next(e);
@@ -78,12 +100,32 @@ basketRouter.get('/', auth, async (req, res, next) => {
 basketRouter.get('/:sessionKey', async (req, res, next) => {
   try {
     const sessionKeyBasket = req.params.sessionKey;
+
     if (sessionKeyBasket) {
-      const basket = await Basket.findOne({ session_key: sessionKeyBasket }).populate('items.product');
+      const basket = await Basket.findOne({ session_key: sessionKeyBasket });
+
       if (basket) {
-        return res.send(basket);
+        const products = await Product.find({ goodID: { $in: basket.items.map((item) => item.product) } });
+
+        const basketToFront = {
+          _id: basket._id,
+          // user_id: basket.user_id,
+          session_key: basket.session_key,
+          created_at: basket.created_at,
+          updated_at: basket.updated_at,
+          items: basket.items.map((item) => {
+            const productInfo = products.find((product) => product.goodID === item.product);
+            return {
+              product: productInfo, // Здесь будет полная информация о товаре
+              quantity: item.quantity,
+            };
+          }),
+          totalPrice: basket.totalPrice,
+        };
+
+        return res.send(basketToFront);
       } else {
-        res.send({ message: 'Session Key not found' });
+        return res.send({ message: 'Session Key not found' });
       }
     }
   } catch (e) {
@@ -275,10 +317,10 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
   }
 });
 
-export const calculateTotalPrice = async (items: { product: mongoose.Schema.Types.ObjectId; quantity: number }[]) => {
+export const calculateTotalPrice = async (items: { product: string; quantity: number }[]) => {
   let total = 0;
   for (const item of items) {
-    const product = await Product.findById(item.product);
+    const product = await Product.findOne({ goodID: item.product });
     if (product) {
       total += product.price * item.quantity;
     }

@@ -56,7 +56,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
 
   const indicator = (item: ProductType) => {
     if (stateBasket && item) {
-      return stateBasket.items.some((itemBasket) => itemBasket.product._id === item._id);
+      return stateBasket.items.some((itemBasket) => itemBasket.product.goodID === item.goodID);
     } else {
       return false;
     }
@@ -67,7 +67,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
       await dispatch(
         updateBasket({
           sessionKey: basket.session_key,
-          product_id: product._id,
+          product_id: product.goodID,
           action: 'increase',
         }),
       );
@@ -76,7 +76,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
       await dispatch(
         updateBasket({
           sessionKey: '1',
-          product_id: product._id,
+          product_id: product.goodID,
           action: 'increase',
         }),
       );
@@ -97,7 +97,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
 
   const favorite =
     (user?.role === 'user' || user?.role === 'director' || user?.role === 'admin') &&
-    user.favorites.includes(product._id);
+    user.favorites.includes(product.goodID);
 
   return (
     <Paper elevation={3} sx={{ maxWidth: '100%', margin: 'auto', position: 'relative', padding: '16px' }}>
@@ -110,7 +110,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
         }}
         onClick={(e) => {
           e.stopPropagation();
-          onClickFavorite(product._id);
+          onClickFavorite(product.goodID);
         }}
       >
         {user &&

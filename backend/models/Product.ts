@@ -4,14 +4,6 @@ import { IProduct } from '../types';
 const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema<IProduct>({
-  // categoryId: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Category',
-  //   // required: true,
-  //   validate: {
-  //     validator: async (value: Types.ObjectId) => Category.findById(value),
-  //     message: 'Category does not exist',
-  //   },
   name: {
     type: String,
     // required: true,
@@ -24,7 +16,6 @@ const ProductSchema = new Schema<IProduct>({
   price: {
     type: Number,
     required: true,
-    // default: 0,
   },
   quantity: {
     type: Number,
@@ -37,6 +28,7 @@ const ProductSchema = new Schema<IProduct>({
   goodID: {
     type: String,
     required: true,
+    unique: true,
   },
   measureCode: {
     type: String,

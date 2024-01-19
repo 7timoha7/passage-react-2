@@ -8,7 +8,7 @@ export interface IUser {
   role: string;
   phoneNumber: string;
   token: string;
-  favorites: ObjectId[];
+  favorites: string[];
   googleId?: string;
   isVerified: boolean;
   verificationToken: string | null;
@@ -76,7 +76,7 @@ export interface IBasket {
   created_at: Date;
   updated_at: Date;
   items: {
-    product: ObjectId;
+    product: string;
     quantity: number;
   }[];
   totalPrice: number;
@@ -88,7 +88,7 @@ export interface IOrder {
   createdAt: string;
   status: string;
   items: {
-    product: ObjectId;
+    product: string;
     quantity: number;
   }[];
   totalPrice: number;
