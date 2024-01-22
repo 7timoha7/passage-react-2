@@ -5,6 +5,10 @@ import path from 'path';
 import * as fs from 'fs';
 import Product from '../models/Product';
 import Category from '../models/Category';
+import mongoose from 'mongoose';
+import config from '../config';
+import auth from '../middleware/auth';
+import permit from '../middleware/permit';
 
 const productFromApiRouter = express.Router();
 
@@ -157,9 +161,47 @@ const createCategories = async (categoriesData: ICategoryFromApi[]): Promise<voi
   }
 };
 
-productFromApiRouter.get('/', async (req, res) => {
+const deleteFolderImagerProduct = async () => {
+  const imageFolder = path.join(process.cwd(), 'public/images/imagesProduct');
+
+  // Удаление папки и её содержимого
+  if (fs.existsSync(imageFolder)) {
+    deleteFolderRecursive(imageFolder);
+    console.log('Папка успешно удалена');
+  } else {
+    console.log('Папка не существует');
+  }
+
+  function deleteFolderRecursive(folderPath: string) {
+    if (fs.existsSync(folderPath)) {
+      fs.readdirSync(folderPath).forEach((file) => {
+        const curPath = path.join(folderPath, file);
+        if (fs.lstatSync(curPath).isDirectory()) {
+          // Рекурсивно удалить подпапки
+          deleteFolderRecursive(curPath);
+        } else {
+          // Удалить файл
+          fs.unlinkSync(curPath);
+        }
+      });
+      // Удалить саму папку
+      fs.rmdirSync(folderPath);
+    }
+  }
+};
+
+productFromApiRouter.get('/', auth, permit('director'), async (req, res, next) => {
+  mongoose.set('strictQuery', false);
+  await mongoose.connect(config.db);
+  const db = mongoose.connection;
+
   try {
     console.log('loading...');
+    await deleteFolderImagerProduct();
+    await db.dropCollection('categories');
+    await db.dropCollection('products');
+    console.log('Delete collection');
+
     const responseProducts = await fetchData('goods-get');
     const responseQuantity = await fetchData('goods-quantity-get');
     const responsePrice = await fetchData('goods-price-get');
@@ -173,9 +215,15 @@ productFromApiRouter.get('/', async (req, res) => {
     await createCategories(categories);
 
     console.log('loadingTRUE ! ! ! ');
-  } catch (error) {
-    console.error('Ошибка:', error);
-    return res.sendStatus(500);
+
+    return res.send({
+      message: {
+        en: 'Updating the database from "1C" was successful!',
+        ru: 'Обновление базы данных с "1С" - прошло успешно !',
+      },
+    });
+  } catch (e) {
+    return next(e);
   }
 });
 

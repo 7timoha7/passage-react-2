@@ -6,6 +6,7 @@ import { Box, Card, CardContent, Grid, List, Typography } from '@mui/material';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import PersonIcon from '@mui/icons-material/Person';
 import GroupIcon from '@mui/icons-material/Group';
 import { CabinetState } from '../../types';
@@ -15,12 +16,14 @@ import MyInformation from './components/MyInformation';
 import { someStyle } from '../../styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorites from './components/Favorites';
+import UpdateBase from './components/UpdateBase';
 
 const initialState: CabinetState = {
   myInfo: true,
   simpleUsers: false,
   admins: false,
   favorites: false,
+  update: false,
 };
 
 interface Props {
@@ -45,6 +48,7 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
 
   const options = [
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
+    { option: 'update', icon: <AutorenewIcon color={'success'} />, text: 'Обновление базы с 1С' },
     { option: 'simpleUsers', icon: <GroupIcon />, text: 'Пользователи' },
     { option: 'admins', icon: <WcIcon />, text: 'Админы' },
     { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
@@ -87,6 +91,7 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
             </Grid>
             <Grid item xs>
               {state.myInfo && <MyInformation />}
+              {state.update && <UpdateBase />}
               {state.simpleUsers && <UserItems prop={gotUsers} role="user" />}
               {state.admins && <UserItems prop={gotUsers} role="admin" />}
               {state.favorites && <Favorites />}

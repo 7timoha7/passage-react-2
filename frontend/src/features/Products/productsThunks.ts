@@ -25,7 +25,7 @@ export const productFetch = createAsyncThunk<ProductType, string>('products/fetc
   return products.data;
 });
 
-export const productsFromApi = createAsyncThunk('products/fetchFromApi', async () => {
+export const productsFromApi = createAsyncThunk<GlobalSuccess>('products/fetchFromApi', async () => {
   const products = await axiosApi.get('/productsFromApi/');
   return products.data;
 });

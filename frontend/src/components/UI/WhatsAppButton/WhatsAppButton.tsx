@@ -28,7 +28,7 @@ const WhatsAppButton = () => {
     '&:hover': {
       backgroundColor: 'rgba(26,210,96,0.94)',
     },
-    zIndex: 9999,
+    zIndex: 99,
   });
 
   const theme = createTheme({

@@ -14,7 +14,7 @@ import VerifyPage from './components/UI/VerifyPage/VerifyPage';
 import ConfirmPage from './components/UI/VerifyPage/ConfirmPage';
 import GoogleProtectedRoute from './components/UI/ProtectedRoute/GoogleProtectedRoute';
 import GooglePhoneNumber from './components/UI/VerifyPage/GooglePhoneNumber';
-import Cabinet from './features/cabinets/Cabinet';
+import Cabinet from './features/Сabinets/Cabinet';
 import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute';
 import NoFoundPage from './components/UI/NoFoundPage/NoFoundPage';
 import ProductsPage from './features/Products/ProductsPage';
@@ -24,7 +24,12 @@ import Order from './features/Order/Order';
 import AboutPage from './components/UI/AboutPage/AboutPage';
 import ContactsPage from './components/UI/СontactsPage/СontactsPage';
 import ProductEdit from './features/Products/components/ProductEdit';
-import { selectProductSuccess, setProductSuccessNull } from './features/Products/productsSlise';
+import {
+  selectProductsFromApiSuccess,
+  selectProductSuccess,
+  setProductFromApiSuccessNull,
+  setProductSuccessNull,
+} from './features/Products/productsSlise';
 import { selectBasketSuccess, setBasketSuccessNull } from './features/Basket/basketSlice';
 import SearchPage from './components/UI/AppToolbar/NavigateTop/Components/SearchPage';
 
@@ -33,6 +38,7 @@ function App() {
   const userSuccess = useAppSelector(selectUserSuccess);
   const productSuccess = useAppSelector(selectProductSuccess);
   const basketSuccess = useAppSelector(selectBasketSuccess);
+  const productFromApiSuccess = useAppSelector(selectProductsFromApiSuccess);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { i18n } = useTranslation();
@@ -77,6 +83,23 @@ function App() {
     }
     dispatch(setProductSuccessNull());
   }, [productSuccess, i18n.language, dispatch, enqueueSnackbar]);
+
+  useEffect(() => {
+    if (productFromApiSuccess) {
+      if (i18n.language === 'en') {
+        enqueueSnackbar(productFromApiSuccess.message.en, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      } else {
+        enqueueSnackbar(productFromApiSuccess.message.ru, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      }
+    }
+    dispatch(setProductFromApiSuccessNull());
+  }, [productFromApiSuccess, i18n.language, dispatch, enqueueSnackbar]);
 
   return (
     <Routes>

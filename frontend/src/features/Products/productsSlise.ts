@@ -14,7 +14,8 @@ import {
 interface ProductsState {
   products: ProductType[];
   product: ProductType | null;
-  productsFromApi: ProductType[];
+  productsFromApiSuccess: GlobalSuccess | null;
+  productsFromApiLoading: boolean;
   productsLoading: boolean;
   productLoading: boolean;
   error: boolean;
@@ -34,7 +35,8 @@ interface ProductsState {
 const initialState: ProductsState = {
   products: [],
   product: null,
-  productsFromApi: [],
+  productsFromApiSuccess: null,
+  productsFromApiLoading: false,
   productsLoading: false,
   productLoading: false,
   error: false,
@@ -57,6 +59,9 @@ export const productsSLice = createSlice({
   reducers: {
     setProductSuccessNull: (state) => {
       state.productSuccess = null;
+    },
+    setProductFromApiSuccessNull: (state) => {
+      state.productsFromApiSuccess = null;
     },
     clearSearchResults: (state) => {
       state.searchResults = [];
@@ -92,14 +97,14 @@ export const productsSLice = createSlice({
     });
 
     builder.addCase(productsFromApi.pending, (state) => {
-      state.productsLoading = true;
+      state.productsFromApiLoading = true;
     });
-    builder.addCase(productsFromApi.fulfilled, (state, action) => {
-      state.productsFromApi = action.payload;
-      state.productsLoading = false;
+    builder.addCase(productsFromApi.fulfilled, (state, { payload: success }) => {
+      state.productsFromApiSuccess = success;
+      state.productsFromApiLoading = false;
     });
     builder.addCase(productsFromApi.rejected, (state) => {
-      state.productsLoading = false;
+      state.productsFromApiLoading = false;
       state.error = true;
     });
     builder.addCase(getFavoriteProducts.pending, (state) => {
@@ -156,13 +161,15 @@ export const productsSLice = createSlice({
 
 export const productsReducer = productsSLice.reducer;
 
-export const { setProductSuccessNull, clearSearchResults, clearSearchResultsPreview } = productsSLice.actions;
+export const { setProductFromApiSuccessNull, setProductSuccessNull, clearSearchResults, clearSearchResultsPreview } =
+  productsSLice.actions;
 
 export const selectProductsState = (state: RootState) => state.products.products;
 export const selectProductOne = (state: RootState) => state.products.product;
 export const selectFavoriteProducts = (state: RootState) => state.products.favoriteProducts;
 export const selectFetchFavoriteProductsLoading = (state: RootState) => state.products.fetchFavoriteProductsLoading;
-export const selectProductsFromApi = (state: RootState) => state.products.productsFromApi;
+export const selectProductsFromApiSuccess = (state: RootState) => state.products.productsFromApiSuccess;
+export const selectProductsFromApiLoading = (state: RootState) => state.products.productsFromApiLoading;
 export const selectProductLoading = (state: RootState) => state.products.productLoading;
 export const selectProductsLoading = (state: RootState) => state.products.productsLoading;
 export const selectLoadingEditProduct = (state: RootState) => state.products.loadingProductEdit;
