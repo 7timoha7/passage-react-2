@@ -9,6 +9,7 @@ import { selectCategories } from './menuCategoriesSlice';
 import { fetchCategories } from './menuCategoriesThunks';
 import AccordionCategories from './AccordionCategories';
 import { Typography } from '@mui/material';
+import Categories from './Categories';
 
 const drawerWidth = 240;
 
@@ -30,7 +31,8 @@ const MenuCategories = () => {
 
   const drawer = (
     <>
-      <AccordionCategories categories={categories} close={closeMenu} />
+      {/*<AccordionCategories categories={categories} close={closeMenu} />*/}
+      <Categories categories={categories} close={closeMenu} />
     </>
   );
 
