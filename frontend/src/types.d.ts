@@ -116,20 +116,35 @@ export interface BasketTypeOnServerMutation {
   totalPrice: number;
 }
 
-interface BasketUpdateRequest {
+export interface BasketUpdateRequest {
   sessionKey?: string;
   product_id?: string;
   action: 'increase' | 'decrease' | 'remove' | 'clear';
 }
 
-interface PageInfo {
+export interface PageInfo {
   currentPage: number;
   totalPages: number;
   pageSize: number;
   totalItems: number;
 }
 
-interface ProductsSearchPreview {
+export interface ProductsSearchPreview {
   results: ProductType[];
   hasMore: boolean;
+}
+
+export interface OrderSendType {
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  paymentMethod: string;
+  deliveryMethod: string;
+  orderComment: string;
+  products: {
+    product: string;
+    quantity: number;
+  }[];
 }

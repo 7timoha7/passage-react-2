@@ -1,111 +1,84 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { RequestWithUser } from '../middleware/auth';
+import auth, { RequestWithUser } from '../middleware/auth';
 import Order from '../models/Order';
-import User from '../models/User';
-import nodemailer from 'nodemailer';
-import config from '../config';
 import { calculateTotalPrice } from './baskets';
+import axios from 'axios';
 
 const ordersRouter = express.Router();
 
 ordersRouter.post('/', async (req, res, next) => {
-  const user = (req as RequestWithUser).user;
   try {
     const order = new Order({
-      user_id: user._id,
+      // admin_id: ObjectId | undefined;
       createdAt: new Date().toISOString(),
-      items: req.body.items,
+      // status: string;
+      // totalPrice: number;
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       phoneNumber: req.body.phoneNumber,
       address: req.body.address,
       email: req.body.email,
       paymentMethod: req.body.paymentMethod,
-      orderComment: req.body.orderComment,
+      deliveryMethod: req.body.deliveryMethod,
+      orderComments: req.body.orderComments,
+      products: req.body.products,
     });
 
-    order.totalPrice = await calculateTotalPrice(order.items);
-
-    const admin = await User.find({ role: 'admin' });
-    // const apartmentUser = await Apartment.findById<IApartmentMutation>(order.apartmentId)
-    //   .populate('hotelId')
-    //   .populate('roomTypeId');
-    // const hotelName = apartmentUser?.hotelId.name;
-    // const roomTypeName = apartmentUser?.roomTypeId.name.ru;
-    // const orderDate = new Date(order.createdAt).toLocaleString('ru-RU', {
-    //   day: '2-digit',
-    //   month: '2-digit',
-    //   year: 'numeric',
-    //   hour: '2-digit',
-    //   minute: '2-digit',
-    // });
-    //
-    // const additionalServices: string[] = [];
-    // if (order.personalTranslator) {
-    //   additionalServices.push('Персональный переводчик');
-    // }
-    // if (order.meetingAirport) {
-    //   additionalServices.push('Встреча в аэропорту');
-    // }
-    // if (order.tourManagement) {
-    //   additionalServices.push('Организация тура');
-    // }
-    // if (order.eventManagement) {
-    //   additionalServices.push('Организация мероприятия');
-    // }
-
-    if (admin) {
-      admin.forEach((adminUser) => {
-        const transporter = nodemailer.createTransport({
-          host: 'smtp.gmail.com',
-          port: 587,
-          secure: false,
-          auth: {
-            user: config.mail,
-            pass: 'jczr vpof kqyp qrtj',
-          },
-        });
-
-        const emailContent = `
-Данные пользователя:
-Имя: ${user.firstName + ' ' + user.lastName}
-Почта: ${user.email}
-Телефон: ${user.phoneNumber}
-Комментарий: ${order.orderComment}
-Товары: 
-${order.items.map((item) => {
-  return item + '';
-})}
-`;
-
-        const mailOptions = {
-          from: config.mail,
-          to: adminUser.email,
-          subject: 'New order',
-          text: emailContent,
-        };
-
-        transporter.sendMail(mailOptions);
-      });
-    }
-
+    order.totalPrice = await calculateTotalPrice(order.products);
     await order.save();
+
+    const message = `Новый заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
+    await sendMessageToTelegram(message);
+
     return res.send({
       message: {
         en: 'Order created successfully',
         ru: 'Заказ успешно создан',
       },
     });
-    // if (user.isVerified) {
-    // } else {
-    //   res.status(401).send({
-    //     message: {
-    //       en: 'For order, you must verify your account',
-    //       ru: 'Для создания заказа вы должны подтвердить свой аккаунт',
-    //     },
-    //   });
-    // }
+  } catch (e) {
+    if (e instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(e);
+    }
+    return next(e);
+  }
+});
+
+ordersRouter.post('/user', auth, async (req, res, next) => {
+  const user = (req as RequestWithUser).user;
+
+  try {
+    if (user) {
+      const order = new Order({
+        user_id: user._id,
+        createdAt: new Date().toISOString(),
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phoneNumber: req.body.phoneNumber,
+        address: req.body.address,
+        email: req.body.email,
+        paymentMethod: req.body.paymentMethod,
+        deliveryMethod: req.body.deliveryMethod,
+        orderComments: req.body.orderComments,
+        products: req.body.products,
+      });
+
+      order.totalPrice = await calculateTotalPrice(order.products);
+      await order.save();
+
+      const message = `Новый заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
+      await sendMessageToTelegram(message);
+
+      return res.send({
+        message: {
+          en: 'Order created successfully',
+          ru: 'Заказ успешно создан',
+        },
+      });
+    } else {
+      return res.send({ message: 'User & sessionKey not found' });
+    }
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(e);
@@ -317,3 +290,31 @@ ${order.items.map((item) => {
 //   }
 // });
 export default ordersRouter;
+
+const botToken = '6719177853:AAG43TUbzPaH5MtbciFBPse-jhKcvyYw1IQ';
+const chatId = '640421282';
+let lastRequestTime = 0;
+const minInterval = 50000; // 1 минута в миллисекундах
+
+// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const sendMessageToTelegram = async (message: string) => {
+  const currentTime = Date.now();
+
+  if (currentTime - lastRequestTime < minInterval) {
+    console.log('Слишком частые запросы. Подождите.');
+    return;
+  }
+
+  try {
+    await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      chat_id: chatId,
+      text: message,
+    });
+    console.log('Message sent to Telegram:');
+  } catch (error) {
+    console.error('Error sending message to Telegram:', error);
+  } finally {
+    lastRequestTime = currentTime;
+  }
+};

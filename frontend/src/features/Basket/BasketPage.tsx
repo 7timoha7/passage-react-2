@@ -39,6 +39,10 @@ const BasketPage = () => {
     if (user) {
       dispatch(fetchBasket('1'));
     }
+    const storedBasketId = localStorage.getItem('sessionKey');
+    if (storedBasketId) {
+      dispatch(fetchBasket(storedBasketId));
+    }
   }, [dispatch, user]);
 
   const handleUpdateBasket = async (product_id: string, action: 'increase' | 'decrease' | 'remove') => {
@@ -62,7 +66,7 @@ const BasketPage = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ m: 2, p: 2, height: '100vh' }}>
+    <Paper elevation={3} sx={{ m: 2, p: 2 }}>
       <Typography variant="h4" gutterBottom textAlign={'center'}>
         Корзина
       </Typography>

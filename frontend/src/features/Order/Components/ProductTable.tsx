@@ -1,11 +1,12 @@
 import React from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { selectBasket } from '../../Basket/basketSlice';
+import { BasketTypeOnServerMutation } from '../../../types';
 
-const ProductTable = () => {
-  const basket = useSelector(selectBasket);
+interface Props {
+  basket: BasketTypeOnServerMutation;
+}
 
+const ProductTable: React.FC<Props> = ({ basket }) => {
   return (
     <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
       <Typography variant="h6" textAlign={'center'}>
@@ -20,8 +21,8 @@ const ProductTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {basket?.items.map((product) => (
-            <TableRow key={product._id}>
+          {basket.items.map((product, index) => (
+            <TableRow key={`${product._id}-${index}`}>
               <TableCell>{product.product.name}</TableCell>
               <TableCell align="center">{product.quantity}</TableCell>
               <TableCell align="right">{product.product.price * product.quantity} сом</TableCell>

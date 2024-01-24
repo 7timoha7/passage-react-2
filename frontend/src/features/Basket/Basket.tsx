@@ -48,6 +48,10 @@ const Basket = () => {
     if (user) {
       dispatch(fetchBasket('1'));
     }
+    const storedBasketId = localStorage.getItem('sessionKey');
+    if (storedBasketId) {
+      dispatch(fetchBasket(storedBasketId));
+    }
   }, [dispatch, user]);
 
   const handleUpdateBasket = async (product_id: string, action: 'increase' | 'decrease' | 'remove') => {

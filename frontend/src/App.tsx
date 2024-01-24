@@ -32,6 +32,7 @@ import {
 } from './features/Products/productsSlise';
 import { selectBasketSuccess, setBasketSuccessNull } from './features/Basket/basketSlice';
 import SearchPage from './components/UI/AppToolbar/NavigateTop/Components/SearchPage';
+import { selectOrderSuccess, setOrderSuccessNull } from './features/Order/orderSlice';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -39,6 +40,7 @@ function App() {
   const productSuccess = useAppSelector(selectProductSuccess);
   const basketSuccess = useAppSelector(selectBasketSuccess);
   const productFromApiSuccess = useAppSelector(selectProductsFromApiSuccess);
+  const orderSuccess = useAppSelector(selectOrderSuccess);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { i18n } = useTranslation();
@@ -100,6 +102,23 @@ function App() {
     }
     dispatch(setProductFromApiSuccessNull());
   }, [productFromApiSuccess, i18n.language, dispatch, enqueueSnackbar]);
+
+  useEffect(() => {
+    if (orderSuccess) {
+      if (i18n.language === 'en') {
+        enqueueSnackbar(orderSuccess.message.en, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      } else {
+        enqueueSnackbar(orderSuccess.message.ru, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      }
+    }
+    dispatch(setOrderSuccessNull());
+  }, [orderSuccess, i18n.language, dispatch, enqueueSnackbar]);
 
   return (
     <Routes>

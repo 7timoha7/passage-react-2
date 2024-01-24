@@ -83,14 +83,11 @@ export interface IBasket {
 }
 
 export interface IOrder {
-  user_id: ObjectId;
+  orderArt: string;
+  user_id: ObjectId | undefined;
   admin_id: ObjectId | undefined;
   createdAt: string;
   status: string;
-  items: {
-    product: string;
-    quantity: number;
-  }[];
   totalPrice: number;
   firstName: string;
   lastName: string;
@@ -98,5 +95,25 @@ export interface IOrder {
   address: string;
   email: string;
   paymentMethod: string;
+  deliveryMethod: string;
   orderComment: string;
+  products: {
+    product: string;
+    quantity: number;
+  }[];
 }
+
+// export interface OrderSendType {
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   address: string;
+//   email: string;
+//   paymentMethod: string;
+//   deliveryMethod: string;
+//   orderComments: string;
+//   product: {
+//     productId: string;
+//     quantity: number;
+//   }[];
+// }

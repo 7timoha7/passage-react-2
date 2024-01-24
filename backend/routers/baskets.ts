@@ -319,6 +319,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
 
 export const calculateTotalPrice = async (items: { product: string; quantity: number }[]) => {
   let total = 0;
+  // console.log(items);
   for (const item of items) {
     const product = await Product.findOne({ goodID: item.product });
     if (product) {

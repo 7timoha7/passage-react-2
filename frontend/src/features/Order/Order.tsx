@@ -1,33 +1,30 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
+  Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   SelectChangeEvent,
   TextField,
-  Paper,
   Typography,
-  Grid,
 } from '@mui/material';
 import { MuiTelInput } from 'mui-tel-input';
 import ProductTable from './Components/ProductTable';
 import { useNavigate } from 'react-router-dom';
-
-interface FormData {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  address: string;
-  email: string;
-  paymentMethod: string;
-  deliveryMethod: string;
-  orderComments: string;
-}
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { sendOrder } from './orderThunks';
+import { OrderSendType } from '../../types';
+import { useSelector } from 'react-redux';
+import { selectBasket } from '../Basket/basketSlice';
+import { selectUser } from '../users/usersSlice';
+import { fetchBasket } from '../Basket/basketThunks';
 
 const Order = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<OrderSendType>({
     firstName: '',
     lastName: '',
     phoneNumber: '',
@@ -35,13 +32,32 @@ const Order = () => {
     email: '',
     paymentMethod: '',
     deliveryMethod: '',
-    orderComments: '',
+    orderComment: '',
+    products: [],
   });
 
   const [deliveryMethod, setDeliveryMethod] = useState<string>('');
-
+  const basket = useSelector(selectBasket);
   const deliveryMethods = ['самовывоз', 'доставка'];
   const navigate = useNavigate();
+  const user = useAppSelector(selectUser);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchBasket('1'));
+    }
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    // Копирование продуктов из корзины в стейт
+    if (basket && basket.items) {
+      setFormData((prevData) => ({
+        ...prevData,
+        products: basket.items.map((item) => ({ product: item.product.goodID, quantity: item.quantity })),
+      }));
+    }
+  }, [basket]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -69,9 +85,10 @@ const Order = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Отправка данных', formData);
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log('123');
+    dispatch(sendOrder(formData));
   };
 
   const phoneChangeHandler = (newPhone: string) => {
@@ -90,11 +107,12 @@ const Order = () => {
         boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <ProductTable />
+      {basket ? <ProductTable basket={basket} /> : null}
+
       <Typography variant="h6" gutterBottom>
         Заполните данные
       </Typography>
-      <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit}>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }} component="form" onSubmit={(event) => handleSubmit(event)}>
         <TextField
           label="Имя"
           name="firstName"
@@ -170,8 +188,8 @@ const Order = () => {
         />
         <TextField
           label="Комментарии к заказу"
-          name="orderComments"
-          value={formData.orderComments}
+          name="orderComment"
+          value={formData.orderComment}
           onChange={handleChange}
           multiline
           rows={4}
@@ -179,7 +197,7 @@ const Order = () => {
         />
         <Grid container spacing={2}>
           <Grid item>
-            <Button variant="contained" color="error" type="submit">
+            <Button disabled={formData.products.length <= 0} variant="contained" color="error" type="submit">
               Заказать
             </Button>
           </Grid>
@@ -189,7 +207,7 @@ const Order = () => {
             </Button>
           </Grid>
         </Grid>
-      </form>
+      </Box>
     </Paper>
   );
 };

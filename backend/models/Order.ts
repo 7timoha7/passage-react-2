@@ -1,21 +1,34 @@
 import mongoose, { HydratedDocument, Schema, Types } from 'mongoose';
 import User from './User';
 import { IOrder, IUser } from '../types';
-import Product from './Product';
+import { randomUUID } from 'crypto';
+
+const generateUniqueNumber = () => {
+  const uuid = randomUUID();
+  const numericValue = parseInt(uuid.replace(/[^0-9]/g, ''), 10);
+  return numericValue.toString().slice(0, 8).replace(/\./g, '');
+};
 
 const OrderSchema = new Schema<IOrder>({
+  orderArt: {
+    type: String,
+    default: generateUniqueNumber,
+    unique: true,
+    required: true,
+  },
   user_id: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId || undefined,
     ref: 'User',
+    default: undefined,
     validate: {
       validator: async (value: Types.ObjectId) => await User.findById(value),
       message: 'User not found!',
     },
   },
   admin_id: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId || undefined,
     ref: 'User',
-    default: null,
+    default: undefined,
     validate: {
       validator: async (value: Types.ObjectId) => {
         if (value === null) {
@@ -38,16 +51,12 @@ const OrderSchema = new Schema<IOrder>({
     default: 'open',
     enum: ['open', 'in progress', 'closed', 'return'],
   },
-  items: {
+  products: {
     type: [
       {
         product: {
-          type: Schema.Types.ObjectId,
-          ref: 'Product',
-          validate: {
-            validator: async (value: Types.ObjectId) => Product.findById(value),
-            message: 'Product does not exist',
-          },
+          type: String,
+          required: true,
         },
         quantity: {
           type: Number,
@@ -57,10 +66,17 @@ const OrderSchema = new Schema<IOrder>({
       },
     ],
     default: [],
+    required: true,
+  },
+  orderComment: {
+    type: String,
+  },
+  deliveryMethod: {
+    type: String,
+    required: true,
   },
   totalPrice: {
     type: Number,
-    required: true,
   },
   firstName: {
     type: String,
@@ -76,7 +92,6 @@ const OrderSchema = new Schema<IOrder>({
   },
   address: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -86,9 +101,16 @@ const OrderSchema = new Schema<IOrder>({
     type: String,
     required: true,
   },
-  orderComment: {
-    type: String,
-  },
+});
+
+OrderSchema.pre<IOrder>('save', async function (next) {
+  // Проверка на уникальность
+  const existingOrder = await Order.findOne({ orderArt: this.orderArt });
+  if (existingOrder) {
+    // Если номер уже существует, генерируем новый
+    this.orderArt = generateUniqueNumber();
+  }
+  next();
 });
 
 const Order = mongoose.model<IOrder>('Order', OrderSchema);
