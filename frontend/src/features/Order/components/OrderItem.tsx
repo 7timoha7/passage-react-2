@@ -203,7 +203,7 @@ const OrderItem: React.FC<Props> = ({ prop }) => {
           <DialogActions>
             <Button onClick={() => setOpenDelete(false)}>{'Назад'}</Button>
             <LoadingButton
-              onClick={() => handleDeleteOrder(prop._id, prop.admin_id!)}
+              onClick={() => prop.admin_id && handleDeleteOrder(prop._id, prop.admin_id)}
               loading={deleteOrderLoading === prop._id}
             >
               {'Продолжить'}
