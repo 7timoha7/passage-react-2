@@ -14,10 +14,16 @@ import UserItems from '../users/components/UserItems';
 import { someStyle } from '../../styles';
 import Favorites from './components/Favorites';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { getForAdminHisOrders, getOrders } from '../Order/orderThunks';
+import WorkIcon from '@mui/icons-material/Work';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
+import OrderItems from '../Order/components/OrderItems';
+import { selectAdminMyOrders, selectOrders } from '../Order/orderSlice';
 
 const initialState: CabinetState = {
   myInfo: true,
   myOrders: false,
+  unacceptedOrders: false,
   users: false,
   favorites: false,
 };
@@ -27,19 +33,27 @@ interface Props {
 }
 
 const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
+  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
+  const [state, setState] = React.useState<CabinetState>(exist);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const gotUsers = useAppSelector(selectUsersByRole);
-  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
-  const [state, setState] = React.useState<CabinetState>(exist);
+  const unacceptedOrders = useAppSelector(selectOrders);
+  const orders = useAppSelector(selectAdminMyOrders);
 
   useEffect(() => {
     if (user) {
       if (state.users) {
         dispatch(getByRole('user'));
       }
+      if (state.myOrders) {
+        dispatch(getForAdminHisOrders(user._id));
+      }
+      if (state.unacceptedOrders) {
+        dispatch(getOrders());
+      }
     }
-  }, [dispatch, user, state.users]);
+  }, [dispatch, user, state.users, state.myOrders, state.unacceptedOrders]);
 
   const handleClickOption = (option: string, index: number) => {
     setState((prev) => ({ ...Object.fromEntries(Object.keys(prev).map((key) => [key, false])), [option]: true }));
@@ -50,6 +64,8 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
     { option: 'users', icon: <GroupIcon />, text: 'Пользователи' },
     { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
+    { option: 'myOrders', icon: <WorkIcon />, text: 'Мои заказы' },
+    { option: 'unacceptedOrders', icon: <WorkspacesIcon />, text: 'Непринятые заказы' },
   ];
 
   return (
@@ -61,7 +77,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
               <List
                 sx={{
                   width: '100%',
-                  maxWidth: 360,
+                  maxWidth: 400,
                   boxShadow: someStyle.boxShadow,
                 }}
                 component="nav"
@@ -85,6 +101,8 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
               {state.myInfo && <MyInformation />}
               {state.users && <UserItems prop={gotUsers} role="user" />}
               {state.favorites && <Favorites />}
+              {state.myOrders && <OrderItems ordersItems={orders} />}
+              {state.unacceptedOrders && <OrderItems ordersItems={unacceptedOrders} />}
             </Grid>
           </Grid>
         </CardContent>

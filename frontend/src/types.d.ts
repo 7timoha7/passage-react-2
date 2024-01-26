@@ -148,3 +148,25 @@ export interface OrderSendType {
     quantity: number;
   }[];
 }
+
+export interface OrderFromServerType {
+  _id: string;
+  orderArt: string;
+  user_id?: User;
+  admin_id?: User;
+  createdAt: string;
+  status: string;
+  totalPrice: number;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  paymentMethod: string;
+  deliveryMethod: string;
+  orderComment: string;
+  products: {
+    product: ProductType;
+    quantity: number;
+  }[];
+}

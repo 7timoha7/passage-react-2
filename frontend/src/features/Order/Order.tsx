@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { MuiTelInput } from 'mui-tel-input';
-import ProductTable from './Components/ProductTable';
+import ProductTable from './components/ProductTable';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { sendOrder } from './orderThunks';
@@ -21,7 +21,13 @@ import { OrderSendType } from '../../types';
 import { useSelector } from 'react-redux';
 import { selectBasket } from '../Basket/basketSlice';
 import { selectUser } from '../users/usersSlice';
-import { fetchBasket } from '../Basket/basketThunks';
+import { fetchBasket, updateBasket } from '../Basket/basketThunks';
+import { selectSendOrderLoading } from './orderSlice';
+import { LoadingButton } from '@mui/lab';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 const Order = () => {
   const [formData, setFormData] = useState<OrderSendType>({
@@ -35,12 +41,14 @@ const Order = () => {
     orderComment: '',
     products: [],
   });
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const [deliveryMethod, setDeliveryMethod] = useState<string>('');
   const basket = useSelector(selectBasket);
   const deliveryMethods = ['самовывоз', 'доставка'];
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
+  const sendOrderLoading = useAppSelector(selectSendOrderLoading);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -85,10 +93,33 @@ const Order = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const clearBasket = async (action: 'clear') => {
+    if (basket?.session_key) {
+      await dispatch(updateBasket({ action: action, sessionKey: basket.session_key, product_id: action }));
+      await dispatch(fetchBasket(basket.session_key));
+    } else if (user) {
+      await dispatch(updateBasket({ action: action, sessionKey: user._id, product_id: action }));
+      await dispatch(fetchBasket(user._id));
+    }
+  };
+
+  // const handleSubmit = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   await dispatch(sendOrder(formData));
+  //   await clearBasket('clear');
+  //   navigate('/');
+  // };
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('123');
-    dispatch(sendOrder(formData));
+    await dispatch(sendOrder(formData));
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = async () => {
+    await clearBasket('clear');
+    setDialogOpen(false);
+    navigate('/');
   };
 
   const phoneChangeHandler = (newPhone: string) => {
@@ -197,9 +228,15 @@ const Order = () => {
         />
         <Grid container spacing={2}>
           <Grid item>
-            <Button disabled={formData.products.length <= 0} variant="contained" color="error" type="submit">
+            <LoadingButton
+              loading={sendOrderLoading}
+              disabled={formData.products.length <= 0}
+              variant="contained"
+              color="error"
+              type="submit"
+            >
               Заказать
-            </Button>
+            </LoadingButton>
           </Grid>
           <Grid item>
             <Button variant="outlined" color="error" onClick={() => navigate(-1)}>
@@ -208,6 +245,17 @@ const Order = () => {
           </Grid>
         </Grid>
       </Box>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>Ваш заказ принят</DialogTitle>
+        <DialogContent>
+          <Typography>В ближайшее время с вами свяжется администратор для подтверждения заказа.</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button variant={'outlined'} onClick={handleCloseDialog} color="success">
+            Ок
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

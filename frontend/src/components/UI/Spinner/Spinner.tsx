@@ -3,7 +3,7 @@ import React from 'react';
 
 const Spinner = () => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
       <CircularProgress color="error" thickness={6} />
     </Box>
   );

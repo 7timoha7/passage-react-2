@@ -1,19 +1,22 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import Order from '../models/Order';
 import { calculateTotalPrice } from './baskets';
 import axios from 'axios';
+import permit from '../middleware/permit';
+import { IOrder } from '../types';
+import User from '../models/User';
+import Product from '../models/Product';
 
 const ordersRouter = express.Router();
+
+const chatIds = ['640421282']; // Массив с chat_id
 
 ordersRouter.post('/', async (req, res, next) => {
   try {
     const order = new Order({
-      // admin_id: ObjectId | undefined;
       createdAt: new Date().toISOString(),
-      // status: string;
-      // totalPrice: number;
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       phoneNumber: req.body.phoneNumber,
@@ -21,15 +24,15 @@ ordersRouter.post('/', async (req, res, next) => {
       email: req.body.email,
       paymentMethod: req.body.paymentMethod,
       deliveryMethod: req.body.deliveryMethod,
-      orderComments: req.body.orderComments,
+      orderComment: req.body.orderComment,
       products: req.body.products,
     });
 
     order.totalPrice = await calculateTotalPrice(order.products);
     await order.save();
 
-    const message = `Новый заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
-    await sendMessageToTelegram(message);
+    const message = `Новый - Заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
+    await sendMessageToTelegram(message, chatIds);
 
     return res.send({
       message: {
@@ -60,15 +63,16 @@ ordersRouter.post('/user', auth, async (req, res, next) => {
         email: req.body.email,
         paymentMethod: req.body.paymentMethod,
         deliveryMethod: req.body.deliveryMethod,
-        orderComments: req.body.orderComments,
+        orderComment: req.body.orderComment,
         products: req.body.products,
       });
 
       order.totalPrice = await calculateTotalPrice(order.products);
       await order.save();
 
-      const message = `Новый заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
-      await sendMessageToTelegram(message);
+      const message = `Новый - Заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
+
+      await sendMessageToTelegram(message, chatIds);
 
       return res.send({
         message: {
@@ -87,218 +91,174 @@ ordersRouter.post('/user', auth, async (req, res, next) => {
   }
 });
 
-// ordersRouter.get('/', auth, async (req, res, next) => {
-//   const user = (req as RequestWithUser).user;
-//   try {
-//     if (user.role === 'admin') {
-//       if (req.query.admin) {
-//         const adminOrders = await Order.find({ adminId: req.query.admin })
-//           .populate('userId', '-token')
-//           .populate('adminId', '-token')
-//           .populate({ path: 'apartmentId', populate: [{ path: 'hotelId' }, { path: 'roomTypeId' }] });
-//         return res.send(adminOrders);
-//       } else {
-//         const openOrders = await Order.find({ status: 'open', adminId: null })
-//           .populate('userId', '-token')
-//           .populate('adminId', '-token')
-//           .populate({ path: 'apartmentId', populate: [{ path: 'hotelId' }, { path: 'roomTypeId' }] });
-//         return res.send(openOrders);
-//       }
-//     }
-//     if (user.role === 'director') {
-//       if (req.query.admin) {
-//         const adminClosedOrders = await Order.find({ adminId: req.query.admin, status: 'closed' })
-//           .populate('userId', '-token')
-//           .populate('adminId', '-token')
-//           .populate({ path: 'apartmentId', populate: [{ path: 'hotelId' }, { path: 'roomTypeId' }] });
-//         return res.send(adminClosedOrders);
-//       } else {
-//         const closedOrders = await Order.find({ status: 'closed' })
-//           .populate('userId', '-token')
-//           .populate('adminId', '-token')
-//           .populate({ path: 'apartmentId', populate: [{ path: 'hotelId' }, { path: 'roomTypeId' }] });
-//         return res.send(closedOrders);
-//       }
-//     }
-//     if (user.role === 'user') {
-//       const yourOrders = await Order.find({ userId: user.id })
-//         .populate('userId', '-token')
-//         .populate('adminId', '-token')
-//         .populate({ path: 'apartmentId', populate: [{ path: 'hotelId' }, { path: 'roomTypeId' }] });
-//       return res.send(yourOrders);
-//     }
-//     if (user.role === 'hotel') {
-//       const hotels = await Hotel.find({ userId: user._id });
-//       const hotelsId = await hotels.map((hotel) => hotel._id);
-//       const apartments = await Apartment.find({ hotelId: { $in: hotelsId } });
-//       const apartmentIds = apartments.map((apartment) => apartment._id);
-//       const reservedRooms = await Order.find({ apartmentId: { $in: apartmentIds }, status: 'closed' })
-//         .populate('userId', '-token')
-//         .populate('adminId', '-token')
-//         .populate({ path: 'apartmentId', populate: [{ path: 'hotelId' }, { path: 'roomTypeId' }] });
-//       return res.send(reservedRooms);
-//     }
-//   } catch (e) {
-//     return next(e);
-//   }
-// });
-//
-// ordersRouter.patch('/useBonus/:id', auth, async (req, res, next) => {
-//   try {
-//     const user = (req as RequestWithUser).user;
-//     const bonusUse = parseInt(req.body.bonusUse);
-//     const order = await Order.findById(req.params.id);
-//
-//     if (!order) {
-//       return res.status(404).send({ message: { en: 'cant find order', ru: 'заказ не найден' } });
-//     }
-//     if (bonusUse > user.cashback) {
-//       return res.status(400).send({ message: { en: 'not enough bonuses', ru: 'не хватает бонусных баллов' } });
-//     }
-//     if (order.totalPrice.kgs <= bonusUse) {
-//       return res.status(400).send({
-//         message: {
-//           en: 'cant use too much bonuses',
-//           ru: 'используете слишком много бонусов',
-//         },
-//       });
-//     }
-//
-//     await Order.findOneAndUpdate(
-//       { _id: req.params.id },
-//       {
-//         $set: {
-//           totalPrice: {
-//             kgs: order.totalPrice.kgs - bonusUse,
-//             usd: order.totalPrice.usd - bonusUse / 90,
-//           },
-//         },
-//       },
-//     );
-//
-//     await User.findOneAndUpdate({ _id: user._id }, { $set: { cashback: user.cashback - bonusUse } });
-//
-//     res.send({
-//       message: {
-//         en: 'Bonus successfully used',
-//         ru: 'Бонус успешно использован',
-//       },
-//     });
-//   } catch (e) {
-//     return next(e);
-//   }
-// });
-//
-// ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
-//   const user = (req as RequestWithUser).user;
-//   try {
-//     const updatedFields = { ...req.body };
-//     updatedFields.adminId = user._id;
-//
-//     const order: HydratedDocument<IOrder> | null = await Order.findOneAndUpdate(
-//       { _id: req.params.id },
-//       { $set: updatedFields },
-//       { new: true },
-//     );
-//
-//     if (!order) {
-//       return res.status(404).send({ message: { en: 'cant find order', ru: 'заказ не найден' } });
-//     }
-//
-//     if (req.body.status === 'closed') {
-//       const orderOwner = await User.findById(order.userId);
-//       if (!orderOwner) {
-//         return res.status(403).send({
-//           message: {
-//             en: 'Cant find order owner',
-//             ru: 'Владельца заказа нет в системе',
-//           },
-//         });
-//       }
-//       if (orderOwner.status === 'vip') {
-//         await User.findOneAndUpdate(
-//           { _id: orderOwner._id },
-//           {
-//             $set: {
-//               cashback: orderOwner.cashback + (order.totalPrice.kgs / 100) * 5,
-//             },
-//           },
-//           { new: true },
-//         );
-//       }
-//       if (orderOwner.status === 'royal') {
-//         await User.findOneAndUpdate(
-//           { _id: orderOwner._id },
-//           {
-//             $set: {
-//               cashback: orderOwner.cashback + (order.totalPrice.kgs / 100) * 7,
-//             },
-//           },
-//         );
-//       }
-//     }
-//
-//     return res.send({
-//       message: {
-//         en: 'Order updated successfully',
-//         ru: 'Заказ успешно изменен',
-//       },
-//     });
-//   } catch (e) {
-//     return next(e);
-//   }
-// });
-//
-// ordersRouter.delete('/:id', auth, permit('admin', 'director', 'user'), async (req, res, next) => {
-//   const user = (req as RequestWithUser).user;
-//   const order = await Order.findById(req.params.id);
-//   try {
-//     if (order) {
-//       if (user.role === 'admin' || user.role === 'director') {
-//         await Order.deleteOne({ _id: req.params.id });
-//         return res.send({
-//           message: {
-//             en: 'Order deleted successfully',
-//             ru: 'Заказ успешно удалён',
-//           },
-//         });
-//       }
-//
-//       if (user.role === 'user') {
-//         if (order.userId.toString() === user._id.toString()) {
-//           await Order.deleteOne({ _id: req.params.id, userId: user._id });
-//           return res.send({
-//             message: {
-//               en: 'Order deleted successfully',
-//               ru: 'Заказ успешно удалён',
-//             },
-//           });
-//         } else {
-//           return res.send({
-//             message: {
-//               en: 'no permission for this action',
-//               ru: 'нет прав для этого действия',
-//             },
-//           });
-//         }
-//       }
-//     } else {
-//       return res.status(404).send({ message: 'Cant find order' });
-//     }
-//   } catch (e) {
-//     return next(e);
-//   }
-// });
+ordersRouter.get('/', auth, async (req, res, next) => {
+  const user = (req as RequestWithUser).user;
+
+  try {
+    let query = {};
+
+    switch (user.role) {
+      case 'admin':
+        query = {
+          admin_id: req.query.admin,
+          ...(req.query.admin ? {} : { status: 'open', admin_id: undefined }),
+        };
+        break;
+      case 'director':
+        query = {
+          admin_id: req.query.admin,
+          ...(req.query.admin ? { status: 'closed' } : { status: 'closed' }),
+        };
+        break;
+      case 'user':
+        query = { user_id: user.id };
+        break;
+      default:
+        return res.status(403).send('Unauthorized');
+    }
+
+    const orders = await Order.find(query).populate('user_id', '-token').populate('admin_id', '-token').exec();
+
+    const formattedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const productsWithDetails = await Promise.all(
+          order.products.map(async (productData) => {
+            const product = await Product.findOne({ goodID: productData.product }).exec();
+            return {
+              product: product,
+              quantity: productData.quantity,
+            };
+          }),
+        );
+
+        return {
+          _id: order._id,
+          orderArt: order.orderArt,
+          user_id: order.user_id,
+          admin_id: order.admin_id,
+          createdAt: order.createdAt,
+          status: order.status,
+          totalPrice: order.totalPrice,
+          firstName: order.firstName,
+          lastName: order.lastName,
+          phoneNumber: order.phoneNumber,
+          address: order.address,
+          email: order.email,
+          paymentMethod: order.paymentMethod,
+          deliveryMethod: order.deliveryMethod,
+          orderComment: order.orderComment,
+          products: productsWithDetails,
+        };
+      }),
+    );
+
+    return res.send(formattedOrders);
+  } catch (e) {
+    return next(e);
+  }
+});
+
+ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
+  const user = (req as RequestWithUser).user;
+  try {
+    const updatedFields = { ...req.body };
+    updatedFields.admin_id = user._id;
+
+    const order: HydratedDocument<IOrder> | null = await Order.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: updatedFields },
+      { new: true },
+    );
+
+    if (!order) {
+      return res.status(404).send({ message: { en: 'cant find order', ru: 'заказ не найден' } });
+    }
+
+    if (req.body.status === 'closed') {
+      const orderOwner = await User.findById(order.user_id);
+      if (!orderOwner) {
+        return res.status(403).send({
+          message: {
+            en: 'Cant find order owner',
+            ru: 'Владельца заказа нет в системе',
+          },
+        });
+      }
+    }
+
+    let message = '';
+
+    if (req.body.status === 'in progress') {
+      message = `Оформление - Заказ №: ${order.orderArt.toUpperCase()} , забрал(а) ${user.firstName} ${
+        user.lastName
+      } для оформления`;
+    } else if (req.body.status === 'closed') {
+      message = `Закрыт - Заказ №: ${order.orderArt.toUpperCase()} , оформлен и закрыт. администратором - ${
+        user.firstName
+      } ${user.lastName}`;
+    }
+    await sendMessageToTelegram(message, chatIds);
+
+    return res.send({
+      message: {
+        en: 'Order updated successfully',
+        ru: 'Заказ успешно изменен',
+      },
+    });
+  } catch (e) {
+    return next(e);
+  }
+});
+
+ordersRouter.delete('/:id', auth, permit('admin', 'director', 'user'), async (req, res, next) => {
+  const user = (req as RequestWithUser).user;
+  const order = await Order.findById(req.params.id);
+  try {
+    if (order) {
+      if (user.role === 'admin' || user.role === 'director') {
+        await Order.deleteOne({ _id: req.params.id });
+        return res.send({
+          message: {
+            en: 'Order deleted successfully',
+            ru: 'Заказ успешно удалён',
+          },
+        });
+      }
+
+      if (user.role === 'user') {
+        if (order.user_id) {
+          if (order.user_id.toString() === user._id.toString()) {
+            await Order.deleteOne({ _id: req.params.id, userId: user._id });
+            return res.send({
+              message: {
+                en: 'Order deleted successfully',
+                ru: 'Заказ успешно удалён',
+              },
+            });
+          } else {
+            return res.send({
+              message: {
+                en: 'no permission for this action',
+                ru: 'нет прав для этого действия',
+              },
+            });
+          }
+        }
+      }
+    } else {
+      return res.status(404).send({ message: 'Cant find order' });
+    }
+  } catch (e) {
+    return next(e);
+  }
+});
 export default ordersRouter;
 
 const botToken = '6719177853:AAG43TUbzPaH5MtbciFBPse-jhKcvyYw1IQ';
-const chatId = '640421282';
 let lastRequestTime = 0;
-const minInterval = 50000; // 1 минута в миллисекундах
+const minInterval = 20000; // 1 минута в миллисекундах
 
-// const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const sendMessageToTelegram = async (message: string) => {
+const sendMessageToTelegram = async (message: string, chatIds: string[]) => {
   const currentTime = Date.now();
 
   if (currentTime - lastRequestTime < minInterval) {
@@ -307,13 +267,15 @@ const sendMessageToTelegram = async (message: string) => {
   }
 
   try {
-    await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      chat_id: chatId,
-      text: message,
+    chatIds.map(async (item) => {
+      await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        chat_id: item,
+        text: message,
+      });
     });
     console.log('Message sent to Telegram:');
   } catch (error) {
-    console.error('Error sending message to Telegram:', error);
+    console.error('Error sending message to Telegram:');
   } finally {
     lastRequestTime = currentTime;
   }

@@ -1,32 +1,30 @@
-import { GlobalSuccess } from '../../types';
+import { GlobalSuccess, OrderFromServerType } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { sendOrder } from './orderThunks';
+import { changeStatusOrder, deleteOrder, getForAdminHisOrders, getOrders, sendOrder } from './orderThunks';
 import { RootState } from '../../app/store';
 
 interface OrdersState {
   sendOrderLoading: boolean;
   sendOrderError: boolean;
   orderSuccess: GlobalSuccess | null;
-  // fetchOrdersLoading: boolean;
-  // orders: Order[];
-  // changeOrderStatusLoading: string | false;
-  // deleteOrderLoading: string | false;
-  // fetchOrdersForAdminLoading: boolean;
-  // adminMyOrders: Order[];
-  // useBonusLoading: string | false;
+  fetchOrdersLoading: boolean;
+  orders: OrderFromServerType[];
+  changeOrderStatusLoading: string | false;
+  deleteOrderLoading: string | false;
+  fetchOrdersForAdminLoading: boolean;
+  adminMyOrders: OrderFromServerType[];
 }
 
 const initialState: OrdersState = {
   sendOrderLoading: false,
   sendOrderError: false,
   orderSuccess: null,
-  // fetchOrdersLoading: false,
-  // orders: [],
-  // changeOrderStatusLoading: false,
-  // deleteOrderLoading: false,
-  // fetchOrdersForAdminLoading: false,
-  // adminMyOrders: [],
-  // useBonusLoading: false,
+  fetchOrdersLoading: false,
+  orders: [],
+  changeOrderStatusLoading: false,
+  deleteOrderLoading: false,
+  fetchOrdersForAdminLoading: false,
+  adminMyOrders: [],
 };
 
 export const ordersSlice = createSlice({
@@ -49,71 +47,60 @@ export const ordersSlice = createSlice({
       state.sendOrderLoading = false;
       state.sendOrderError = true;
     });
-    // builder.addCase(getOrders.pending, (state) => {
-    //   state.orders = [];
-    //   state.fetchOrdersLoading = true;
-    // });
-    // builder.addCase(getOrders.fulfilled, (state, { payload: orders }) => {
-    //   state.fetchOrdersLoading = false;
-    //   state.orders = orders;
-    // });
-    // builder.addCase(getOrders.rejected, (state) => {
-    //   state.fetchOrdersLoading = false;
-    // });
-    // builder.addCase(changeStatusOrder.pending, (state, { meta }) => {
-    //   state.changeOrderStatusLoading = meta.arg.id;
-    // });
-    // builder.addCase(changeStatusOrder.fulfilled, (state, { payload: success }) => {
-    //   state.changeOrderStatusLoading = false;
-    //   state.orderSuccess = success;
-    // });
-    // builder.addCase(changeStatusOrder.rejected, (state) => {
-    //   state.changeOrderStatusLoading = false;
-    // });
-    // builder.addCase(deleteOrder.pending, (state, { meta }) => {
-    //   state.deleteOrderLoading = meta.arg;
-    // });
-    // builder.addCase(deleteOrder.fulfilled, (state, { payload: success }) => {
-    //   state.deleteOrderLoading = false;
-    //   state.orderSuccess = success;
-    // });
-    // builder.addCase(deleteOrder.rejected, (state) => {
-    //   state.deleteOrderLoading = false;
-    // });
-    // builder.addCase(getForAdminHisOrders.pending, (state) => {
-    //   state.adminMyOrders = [];
-    //   state.fetchOrdersForAdminLoading = true;
-    // });
-    // builder.addCase(getForAdminHisOrders.fulfilled, (state, { payload: orders }) => {
-    //   state.fetchOrdersForAdminLoading = false;
-    //   state.adminMyOrders = orders;
-    // });
-    // builder.addCase(getForAdminHisOrders.rejected, (state) => {
-    //   state.fetchOrdersForAdminLoading = false;
-    // });
-    // builder.addCase(payBonusOnOrder.pending, (state, { meta }) => {
-    //   state.useBonusLoading = meta.arg.id;
-    // });
-    // builder.addCase(payBonusOnOrder.fulfilled, (state, { payload: data }) => {
-    //   state.useBonusLoading = false;
-    //   state.orderSuccess = data;
-    // });
-    // builder.addCase(payBonusOnOrder.rejected, (state) => {
-    //   state.useBonusLoading = false;
-    // });
+    builder.addCase(getOrders.pending, (state) => {
+      state.orders = [];
+      state.fetchOrdersLoading = true;
+    });
+    builder.addCase(getOrders.fulfilled, (state, { payload: orders }) => {
+      state.fetchOrdersLoading = false;
+      state.orders = orders;
+    });
+    builder.addCase(getOrders.rejected, (state) => {
+      state.fetchOrdersLoading = false;
+    });
+    builder.addCase(changeStatusOrder.pending, (state, { meta }) => {
+      state.changeOrderStatusLoading = meta.arg.id;
+    });
+    builder.addCase(changeStatusOrder.fulfilled, (state, { payload: success }) => {
+      state.changeOrderStatusLoading = false;
+      state.orderSuccess = success;
+    });
+    builder.addCase(changeStatusOrder.rejected, (state) => {
+      state.changeOrderStatusLoading = false;
+    });
+    builder.addCase(deleteOrder.pending, (state, { meta }) => {
+      state.deleteOrderLoading = meta.arg;
+    });
+    builder.addCase(deleteOrder.fulfilled, (state, { payload: success }) => {
+      state.deleteOrderLoading = false;
+      state.orderSuccess = success;
+    });
+    builder.addCase(deleteOrder.rejected, (state) => {
+      state.deleteOrderLoading = false;
+    });
+    builder.addCase(getForAdminHisOrders.pending, (state) => {
+      state.adminMyOrders = [];
+      state.fetchOrdersForAdminLoading = true;
+    });
+    builder.addCase(getForAdminHisOrders.fulfilled, (state, { payload: orders }) => {
+      state.fetchOrdersForAdminLoading = false;
+      state.adminMyOrders = orders;
+    });
+    builder.addCase(getForAdminHisOrders.rejected, (state) => {
+      state.fetchOrdersForAdminLoading = false;
+    });
   },
 });
 
 export const ordersReducer = ordersSlice.reducer;
 
 export const { setOrderSuccessNull } = ordersSlice.actions;
-// export const selectSendOrderLoading = (state: RootState) => state.orders.sendOrderLoading;
-// export const selectSendOrderError = (state: RootState) => state.orders.sendOrderError;
-// export const selectFetchOrdersLoading = (state: RootState) => state.orders.fetchOrdersLoading;
-// export const selectOrders = (state: RootState) => state.orders.orders;
-// export const selectOrderChangeStatusLoading = (state: RootState) => state.orders.changeOrderStatusLoading;
-// export const selectOrderDeleteLoading = (state: RootState) => state.orders.deleteOrderLoading;
-// export const selectFetchOrdersForAdminLoading = (state: RootState) => state.orders.fetchOrdersForAdminLoading;
-// export const selectAdminMyOrders = (state: RootState) => state.orders.adminMyOrders;
+export const selectSendOrderLoading = (state: RootState) => state.orders.sendOrderLoading;
+export const selectSendOrderError = (state: RootState) => state.orders.sendOrderError;
+export const selectFetchOrdersLoading = (state: RootState) => state.orders.fetchOrdersLoading;
+export const selectOrders = (state: RootState) => state.orders.orders;
+export const selectOrderChangeStatusLoading = (state: RootState) => state.orders.changeOrderStatusLoading;
+export const selectOrderDeleteLoading = (state: RootState) => state.orders.deleteOrderLoading;
+export const selectFetchOrdersForAdminLoading = (state: RootState) => state.orders.fetchOrdersForAdminLoading;
+export const selectAdminMyOrders = (state: RootState) => state.orders.adminMyOrders;
 export const selectOrderSuccess = (state: RootState) => state.orders.orderSuccess;
-// export const selectUseBonusLoading = (state: RootState) => state.orders.useBonusLoading;

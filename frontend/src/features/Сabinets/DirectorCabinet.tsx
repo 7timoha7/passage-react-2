@@ -17,6 +17,8 @@ import { someStyle } from '../../styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorites from './components/Favorites';
 import UpdateBase from './components/UpdateBase';
+import ReportsAdmins from './components/ReportsAdmins';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const initialState: CabinetState = {
   myInfo: true,
@@ -24,6 +26,7 @@ const initialState: CabinetState = {
   admins: false,
   favorites: false,
   update: false,
+  reportsAdmins: false,
 };
 
 interface Props {
@@ -43,14 +46,17 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
       dispatch(getByRole('user'));
     } else if (state.admins) {
       dispatch(getByRole('admin'));
+    } else if (state.reportsAdmins) {
+      dispatch(getByRole('admin'));
     }
-  }, [dispatch, state.simpleUsers, state.admins]);
+  }, [dispatch, state.simpleUsers, state.admins, state.reportsAdmins]);
 
   const options = [
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
     { option: 'update', icon: <AutorenewIcon color={'success'} />, text: 'Обновление базы с 1С' },
     { option: 'simpleUsers', icon: <GroupIcon />, text: 'Пользователи' },
     { option: 'admins', icon: <WcIcon />, text: 'Админы' },
+    { option: 'reportsAdmins', icon: <AssignmentIcon />, text: 'Отчеты админов' },
     { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
   ];
 
@@ -69,8 +75,9 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
               <List
                 sx={{
                   width: '100%',
-                  maxWidth: 360,
+                  maxWidth: 400,
                   boxShadow: someStyle.boxShadow,
+                  paddingRight: '5px',
                 }}
                 component="nav"
                 aria-labelledby="nested-list-subheader"
@@ -94,6 +101,7 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
               {state.update && <UpdateBase />}
               {state.simpleUsers && <UserItems prop={gotUsers} role="user" />}
               {state.admins && <UserItems prop={gotUsers} role="admin" />}
+              {state.reportsAdmins && <ReportsAdmins admins={gotUsers} />}
               {state.favorites && <Favorites />}
             </Grid>
           </Grid>

@@ -24,7 +24,7 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
 
   const [state] = useState({
     id: prop._id,
-    role: role === 'hotel' ? 'user' : role === 'user' ? 'hotel' : 'hotel',
+    role: role,
   });
 
   const [open, setOpen] = useState(false);
@@ -56,12 +56,7 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
     }
   };
   return (
-    <Accordion
-      sx={{
-        boxShadow:
-          '0px 2px 1px -1px rgba(3, 201, 136, 0.7), 0px 1px 1px 0px rgba(3, 201, 136, 0.7), 0px 1px 3px 0px rgba(3, 201, 136, 0.7)',
-      }}
-    >
+    <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
         <Typography textTransform="capitalize">
           {prop.firstName} {prop.lastName}

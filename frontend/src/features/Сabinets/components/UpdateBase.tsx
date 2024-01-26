@@ -26,8 +26,6 @@ const UpdateBase = () => {
           </Grid>
         </Grid>
       </Paper>
-
-      {/* Оверлей с индикатором загрузки */}
       <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 2 }} open={loadingApi}>
         <CircularProgress color="inherit" />
       </Backdrop>

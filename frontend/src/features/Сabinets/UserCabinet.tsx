@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { Card, CardContent, Grid, List } from '@mui/material';
-import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import ListItemButton from '@mui/material/ListItemButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
 import MyInformation from './components/MyInformation';
 import { CabinetState } from '../../types';
 import { someStyle } from '../../styles';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getFavoriteProducts } from '../Products/productsThunks';
 import Favorites from './components/Favorites';
+import { selectOrders } from '../Order/orderSlice';
+import { getOrders } from '../Order/orderThunks';
+import OrderItems from '../Order/components/OrderItems';
+import PersonIcon from '@mui/icons-material/Person';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const initialState: CabinetState = {
   orders: false,
@@ -26,23 +29,27 @@ interface Props {
 const UserCabinet: React.FC<Props> = ({ exist = initialState }) => {
   const dispatch = useAppDispatch();
   const [state, setState] = React.useState<CabinetState>(exist);
+  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
+  const orders = useAppSelector(selectOrders);
 
   useEffect(() => {
     if (state.favorites) {
       dispatch(getFavoriteProducts());
     }
+    if (state.orders) {
+      dispatch(getOrders());
+    }
   }, [dispatch, state.favorites, state.orders]);
 
-  const handleClickOrders = () => {
-    setState((prev) => ({ ...prev, orders: true, favorites: false, myInfo: false }));
-  };
+  const options = [
+    { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
+    { option: 'orders', icon: <AssignmentIcon />, text: 'Мои заказы' },
+    { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
+  ];
 
-  const handleClickFavorites = () => {
-    setState((prev) => ({ ...prev, orders: false, favorites: true, myInfo: false }));
-  };
-
-  const handleClickMyInfo = () => {
-    setState((prev) => ({ ...prev, orders: false, favorites: false, myInfo: true }));
+  const handleClickOption = (option: string, index: number) => {
+    setState((prev) => ({ ...Object.fromEntries(Object.keys(prev).map((key) => [key, false])), [option]: true }));
+    setSelectedIndex(index);
   };
 
   return (
@@ -53,35 +60,28 @@ const UserCabinet: React.FC<Props> = ({ exist = initialState }) => {
             <List
               sx={{
                 width: '100%',
-                // maxWidth: 360,
+                maxWidth: 400,
                 boxShadow: someStyle.boxShadow,
               }}
               component="nav"
               aria-labelledby="nested-list-subheader"
             >
-              <ListItemButton onClick={handleClickMyInfo}>
-                <ListItemIcon>
-                  <HomeIcon style={state.myInfo ? { color: '#822020' } : {}} />
-                </ListItemIcon>
-                <ListItemText style={state.myInfo ? { color: '#822020' } : {}} primary={'Моя информация'} />
-              </ListItemButton>
-              <ListItemButton onClick={handleClickOrders}>
-                <ListItemIcon>
-                  <MapsHomeWorkIcon style={state.orders ? { color: '#822020' } : {}} />
-                </ListItemIcon>
-                <ListItemText style={state.orders ? { color: '#822020' } : {}} primary={'Мои заказы'} />
-              </ListItemButton>
-              <ListItemButton onClick={handleClickFavorites}>
-                <ListItemIcon>
-                  <FavoriteIcon style={state.favorites ? { color: '#822020' } : {}} />
-                </ListItemIcon>
-                <ListItemText style={state.favorites ? { color: '#822020' } : {}} primary={'Избранные'} />
-              </ListItemButton>
+              {options.map((option, index) => (
+                <ListItemButton
+                  key={index}
+                  selected={selectedIndex === index}
+                  onClick={() => handleClickOption(option.option, index)}
+                >
+                  <ListItemIcon style={selectedIndex === index ? { color: '#c91b1b' } : {}}>{option.icon}</ListItemIcon>
+                  <ListItemText style={selectedIndex === index ? { color: '#c41e1e' } : {}} primary={option.text} />
+                </ListItemButton>
+              ))}
             </List>
           </Grid>
           <Grid item xs>
             {state.myInfo && <MyInformation />}
             {state.favorites && <Favorites />}
+            {state.orders && <OrderItems ordersItems={orders} />}
           </Grid>
         </Grid>
       </CardContent>
