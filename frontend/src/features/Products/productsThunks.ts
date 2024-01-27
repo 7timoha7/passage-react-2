@@ -15,8 +15,7 @@ export const productsFetch = createAsyncThunk<
   { products: ProductType[]; pageInfo: PageInfo },
   { id: string; page: number }
 >('products/fetch', async ({ id, page }) => {
-  const pageSize = 30; // Установите желаемый размер страницы
-  const response = await axiosApi.get(`/products?category=${id}&page=${page}&pageSize=${pageSize}`);
+  const response = await axiosApi.get(`/products?category=${id}&page=${page}`);
   return response.data;
 });
 
@@ -30,14 +29,17 @@ export const productsFromApi = createAsyncThunk<GlobalSuccess>('products/fetchFr
   return products.data;
 });
 
-export const getFavoriteProducts = createAsyncThunk<ProductType[]>('products/getFavoriteProducts', async () => {
-  try {
-    const responseFavoriteProducts = await axiosApi.get<ProductType[]>('/products/get/favorites');
-    return responseFavoriteProducts.data;
-  } catch {
-    throw new Error();
-  }
-});
+export const getFavoriteProducts = createAsyncThunk<{ products: ProductType[]; pageInfo: PageInfo }, number>(
+  'products/getFavoriteProducts',
+  async (page) => {
+    try {
+      const responseFavoriteProducts = await axiosApi.get(`/products/get/favorites?page=${page}`);
+      return responseFavoriteProducts.data;
+    } catch {
+      throw new Error();
+    }
+  },
+);
 
 export const editProduct = createAsyncThunk<
   GlobalSuccess,

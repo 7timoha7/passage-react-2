@@ -54,6 +54,12 @@ function App() {
 
   useEffect(() => {
     if (userSuccess) {
+      if (userSuccess.message.ru === 'Вы достигли лимита в 100 избранных продуктов') {
+        enqueueSnackbar(userSuccess.message.ru, {
+          variant: 'error',
+          preventDuplicate: true,
+        });
+      }
       if (i18n.language === 'en') {
         enqueueSnackbar(userSuccess.message.en, {
           variant: 'success',

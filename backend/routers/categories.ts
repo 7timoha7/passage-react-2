@@ -11,7 +11,7 @@ categoryRouter.post('/', async (req, res, next) => {
     });
 
     await category.save();
-    return res.send({ message: 'Apartments created successfully' });
+    return res.send({ message: 'created successfully' });
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);

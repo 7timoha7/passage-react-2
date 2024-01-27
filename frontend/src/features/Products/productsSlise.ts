@@ -111,9 +111,10 @@ export const productsSLice = createSlice({
       state.favoriteProducts = [];
       state.fetchFavoriteProductsLoading = true;
     });
-    builder.addCase(getFavoriteProducts.fulfilled, (state, { payload: favoriteProducts }) => {
+    builder.addCase(getFavoriteProducts.fulfilled, (state, action) => {
       state.fetchFavoriteProductsLoading = false;
-      state.favoriteProducts = favoriteProducts;
+      state.favoriteProducts = action.payload.products;
+      state.pageInfo = action.payload.pageInfo;
     });
     builder.addCase(getFavoriteProducts.rejected, (state) => {
       state.fetchFavoriteProductsLoading = false;

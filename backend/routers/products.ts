@@ -81,11 +81,33 @@ productRouter.get('/get/favorites', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
     const favoriteProductsId = user.favorites;
-    const products = await Product.find({ goodID: { $in: favoriteProductsId } });
-    if (!products) {
-      return res.send({ message: 'You do not have favorites Products' });
+
+    // Добавляем пагинацию
+    const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+    const pageSize = 20;
+    const skip = (page - 1) * pageSize;
+
+    const products = await Product.find({ goodID: { $in: favoriteProductsId } })
+      .skip(skip)
+      .limit(pageSize);
+
+    if (!products || products.length === 0) {
+      return res.send({ message: 'You do not have favorite Products' });
     }
-    return res.json(products);
+
+    // Добавляем информацию о пагинации в ответ
+    const totalProducts = await Product.countDocuments({ goodID: { $in: favoriteProductsId } });
+    const totalPages = Math.ceil(totalProducts / pageSize);
+
+    return res.json({
+      products,
+      pageInfo: {
+        currentPage: page,
+        totalPages,
+        pageSize,
+        totalItems: totalProducts,
+      },
+    });
   } catch (e) {
     return next(e);
   }

@@ -91,7 +91,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
     } else {
       await dispatch(changeFavorites({ deleteProduct: id }));
       await dispatch(reAuthorization());
-      await dispatch(getFavoriteProducts());
+      await dispatch(getFavoriteProducts(1));
     }
   };
 

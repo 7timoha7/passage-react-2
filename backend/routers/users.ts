@@ -143,36 +143,48 @@ usersRouter.patch('/toggleAddProductToFavorites', auth, permit('user', 'admin', 
     if (addProductId) {
       const foundProduct = await Product.findOne({ goodID: addProductId });
       if (!foundProduct) {
-        return res.send({ error: 'Product is not found' });
+        return res.send({ error: 'Продукт не найден' });
       }
 
       if (user.favorites.includes(addProductId)) {
-        return res.send({ message: 'The product is already in the favorites' });
-      } else {
-        user.favorites.push(addProductId);
-        await user.save();
+        return res.send({ message: 'Продукт уже в избранном' });
+      }
+
+      // Проверка, не превысил ли пользователь лимит в 100 избранных
+      if (user.favorites.length >= 100) {
         return res.send({
           message: {
-            en: foundProduct.name + ' added to favorites successfully',
-            ru: foundProduct.name + ' успешно добавлен в избраное',
+            ru: 'Вы достигли лимита в 100 избранных продуктов',
           },
         });
       }
+
+      user.favorites.push(addProductId);
+      await user.save();
+      return res.send({
+        message: {
+          en: foundProduct.name + ' успешно добавлен в избранное',
+          ru: foundProduct.name + ' успешно добавлен в избранное',
+        },
+      });
     }
+
     if (deleteProductId) {
       const foundProduct = await Product.findOne({ goodID: deleteProductId });
       if (!foundProduct) {
-        return res.send({ error: 'Product is not found' });
+        return res.send({ error: 'Продукт не найден' });
       }
+
       if (!user.favorites.includes(deleteProductId)) {
-        return res.send({ message: 'You dont have this product in the favorites' });
+        return res.send({ message: 'У вас нет этого продукта в избранном' });
       }
+
       user.favorites = user.favorites.filter((favProduct) => favProduct.toString() !== deleteProductId);
       await user.save();
       return res.send({
         message: {
-          en: foundProduct.name + ' removed from favorites successfully',
-          ru: foundProduct.name + ' успешно уделён из избраное',
+          en: foundProduct.name + ' успешно удален из избранного',
+          ru: foundProduct.name + ' успешно удален из избранного',
         },
       });
     }

@@ -17,6 +17,7 @@ import { getFavoriteProducts } from '../productsThunks';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { fetchBasket, updateBasket } from '../../Basket/basketThunks';
+import { selectPageInfo } from '../productsSlise';
 
 interface Props {
   product: ProductType;
@@ -28,6 +29,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
   const sessionKey = localStorage.getItem('sessionKey');
+  const pageInfo = useAppSelector(selectPageInfo);
 
   const handleAddToCart = async () => {
     if (sessionKey) {
@@ -41,7 +43,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
       await dispatch(fetchBasket(sessionKey));
     }
   };
-
+  console.log(pageInfo?.pageSize);
   const onClickFavorite = async (id: string) => {
     if (!favorite) {
       await dispatch(changeFavorites({ addProduct: id }));
@@ -49,7 +51,20 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
     } else {
       await dispatch(changeFavorites({ deleteProduct: id }));
       await dispatch(reAuthorization());
-      await dispatch(getFavoriteProducts());
+      await dispatch(getFavoriteProducts(1));
+      if (pageInfo) {
+        let newPage: number;
+
+        // Check if there are still items on the current page after removal
+        if ((pageInfo.totalItems - 1) % pageInfo.pageSize !== 0) {
+          newPage = pageInfo.currentPage;
+        } else {
+          // Move to the previous page if the current page becomes empty
+          newPage = Math.max(1, pageInfo.currentPage - 1);
+        }
+
+        await dispatch(getFavoriteProducts(newPage));
+      }
     }
   };
 

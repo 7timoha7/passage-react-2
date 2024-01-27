@@ -2,8 +2,6 @@ import mongoose from 'mongoose';
 import config from './config';
 import crypto from 'crypto';
 import User from './models/User';
-import path from 'path';
-import * as fs from 'fs';
 
 const run = async () => {
   mongoose.set('strictQuery', false);

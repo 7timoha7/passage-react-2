@@ -33,9 +33,6 @@ const UserCabinet: React.FC<Props> = ({ exist = initialState }) => {
   const orders = useAppSelector(selectOrders);
 
   useEffect(() => {
-    if (state.favorites) {
-      dispatch(getFavoriteProducts());
-    }
     if (state.orders) {
       dispatch(getOrders());
     }

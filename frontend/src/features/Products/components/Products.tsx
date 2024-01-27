@@ -46,7 +46,7 @@ const Products: React.FC<Props> = ({ categoryName }) => {
     }
   };
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
     dispatch(productsFetch({ id: id || '', page }));
   };
 
