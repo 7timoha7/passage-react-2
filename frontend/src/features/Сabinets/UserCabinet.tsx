@@ -8,9 +8,8 @@ import MyInformation from './components/MyInformation';
 import { CabinetState } from '../../types';
 import { someStyle } from '../../styles';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getFavoriteProducts } from '../Products/productsThunks';
 import Favorites from './components/Favorites';
-import { selectOrders } from '../Order/orderSlice';
+import { selectOrders, selectOrdersPageInfo } from '../Order/orderSlice';
 import { getOrders } from '../Order/orderThunks';
 import OrderItems from '../Order/components/OrderItems';
 import PersonIcon from '@mui/icons-material/Person';
@@ -31,12 +30,13 @@ const UserCabinet: React.FC<Props> = ({ exist = initialState }) => {
   const [state, setState] = React.useState<CabinetState>(exist);
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const orders = useAppSelector(selectOrders);
+  const orderPageInfo = useAppSelector(selectOrdersPageInfo);
 
   useEffect(() => {
     if (state.orders) {
-      dispatch(getOrders());
+      dispatch(getOrders(1));
     }
-  }, [dispatch, state.favorites, state.orders]);
+  }, [dispatch, state.orders]);
 
   const options = [
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
@@ -78,7 +78,7 @@ const UserCabinet: React.FC<Props> = ({ exist = initialState }) => {
           <Grid item xs>
             {state.myInfo && <MyInformation />}
             {state.favorites && <Favorites />}
-            {state.orders && <OrderItems ordersItems={orders} />}
+            {state.orders && orderPageInfo && <OrderItems ordersPageInfo={orderPageInfo} ordersItems={orders} />}
           </Grid>
         </Grid>
       </CardContent>

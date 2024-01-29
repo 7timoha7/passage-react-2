@@ -36,7 +36,7 @@ ordersRouter.post('/', async (req, res, next) => {
 
     return res.send({
       message: {
-        en: 'Order created successfully',
+        en: 'OrderForm created successfully',
         ru: 'Заказ успешно создан',
       },
     });
@@ -76,7 +76,7 @@ ordersRouter.post('/user', auth, async (req, res, next) => {
 
       return res.send({
         message: {
-          en: 'Order created successfully',
+          en: 'OrderForm created successfully',
           ru: 'Заказ успешно создан',
         },
       });
@@ -117,7 +117,25 @@ ordersRouter.get('/', auth, async (req, res, next) => {
         return res.status(403).send('Unauthorized');
     }
 
-    const orders = await Order.find(query).populate('user_id', '-token').populate('admin_id', '-token').exec();
+    // Добавляем пагинацию
+    const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+    const pageSize = 15;
+    const skip = (page - 1) * pageSize;
+
+    const orders = await Order.find(query)
+      .skip(skip)
+      .limit(pageSize)
+      .populate('user_id', '-token')
+      .populate('admin_id', '-token')
+      .exec();
+
+    if (!orders || orders.length === 0) {
+      return res.send({ message: 'No orders found' });
+    }
+
+    // Добавляем информацию о пагинации в ответ
+    const totalOrders = await Order.countDocuments(query);
+    const totalPages = Math.ceil(totalOrders / pageSize);
 
     const formattedOrders = await Promise.all(
       orders.map(async (order) => {
@@ -152,7 +170,15 @@ ordersRouter.get('/', auth, async (req, res, next) => {
       }),
     );
 
-    return res.send(formattedOrders);
+    return res.send({
+      orders: formattedOrders,
+      pageInfo: {
+        currentPage: page,
+        totalPages,
+        pageSize,
+        totalItems: totalOrders,
+      },
+    });
   } catch (e) {
     return next(e);
   }
@@ -201,7 +227,7 @@ ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
 
     return res.send({
       message: {
-        en: 'Order updated successfully',
+        en: 'OrderForm updated successfully',
         ru: 'Заказ успешно изменен',
       },
     });
@@ -219,7 +245,7 @@ ordersRouter.delete('/:id', auth, permit('admin', 'director', 'user'), async (re
         await Order.deleteOne({ _id: req.params.id });
         return res.send({
           message: {
-            en: 'Order deleted successfully',
+            en: 'OrderForm deleted successfully',
             ru: 'Заказ успешно удалён',
           },
         });
@@ -231,7 +257,7 @@ ordersRouter.delete('/:id', auth, permit('admin', 'director', 'user'), async (re
             await Order.deleteOne({ _id: req.params.id, userId: user._id });
             return res.send({
               message: {
-                en: 'Order deleted successfully',
+                en: 'OrderForm deleted successfully',
                 ru: 'Заказ успешно удалён',
               },
             });

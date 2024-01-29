@@ -17,10 +17,10 @@ import GooglePhoneNumber from './components/UI/VerifyPage/GooglePhoneNumber';
 import Cabinet from './features/Сabinets/Cabinet';
 import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute';
 import NoFoundPage from './components/UI/NoFoundPage/NoFoundPage';
-import ProductsPage from './features/Products/ProductsPage';
-import ProductFullPage from './features/Products/ProductFullPage';
+import ProductsPage from './features/Products/components/ProductsPage';
+import ProductFullPage from './features/Products/components/ProductFullPage';
 import BasketPage from './features/Basket/BasketPage';
-import Order from './features/Order/Order';
+import OrderForm from './features/Order/components/OrderForm';
 import AboutPage from './components/UI/AboutPage/AboutPage';
 import ContactsPage from './components/UI/СontactsPage/СontactsPage';
 import ProductEdit from './features/Products/components/ProductEdit';
@@ -135,7 +135,7 @@ function App() {
         <Route path="/products/:id" element={<ProductsPage />} />
         <Route path="/product/:id" element={<ProductFullPage />} />
         <Route path="/basket/" element={<BasketPage />} />
-        <Route path="/order/" element={<Order />} />
+        <Route path="/order/" element={<OrderForm />} />
         <Route path="/about/" element={<AboutPage />} />
         <Route path="/contacts/" element={<ContactsPage />} />
         <Route path="/search-results/:text" element={<SearchPage />} />

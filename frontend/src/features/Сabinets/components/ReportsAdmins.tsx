@@ -8,7 +8,7 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectAdminMyOrders } from '../../Order/orderSlice';
+import { selectAdminMyOrders, selectAdminMyOrdersPageInfo } from '../../Order/orderSlice';
 import { getForAdminHisOrders } from '../../Order/orderThunks';
 import OrderItems from '../../Order/components/OrderItems';
 import { selectGetUsersByRoleLoading } from '../../users/usersSlice';
@@ -53,13 +53,14 @@ const ReportsAdmins: React.FC<Props> = ({ admins }) => {
   const adminOrders = useAppSelector(selectAdminMyOrders);
   const loading = useAppSelector(selectGetUsersByRoleLoading);
   const dispatch = useAppDispatch();
+  const adminOrdersPageInfo = useAppSelector(selectAdminMyOrdersPageInfo);
   const handleChange = (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   useEffect(() => {
     if (expanded) {
-      dispatch(getForAdminHisOrders(expanded));
+      dispatch(getForAdminHisOrders({ id: expanded, page: 1 }));
     }
   }, [dispatch, expanded]);
 
@@ -77,7 +78,9 @@ const ReportsAdmins: React.FC<Props> = ({ admins }) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <OrderItems ordersItems={adminOrders} />
+                {adminOrdersPageInfo && (
+                  <OrderItems ordersItems={adminOrders} adminPageInfo={adminOrdersPageInfo} id={admin._id} />
+                )}
               </AccordionDetails>
             </Accordion>
           );

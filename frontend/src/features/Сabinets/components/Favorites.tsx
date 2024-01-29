@@ -68,20 +68,28 @@ const Favorites = () => {
       <Typography variant={'h5'} textAlign={'center'}>
         Избранные товары
       </Typography>
-      {favoriteProductsLoading ? (
-        <Spinner />
-      ) : (
+      {favoriteProducts ? (
         <>
-          {renderPagination()}
-          <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={2} mb={2} justifyContent={'center'}>
-            {favoriteProducts.map((item) => (
-              <Grid item key={item._id}>
-                <ProductCard product={item} indicator={indicator(item)} />
+          {favoriteProductsLoading ? (
+            <Spinner />
+          ) : (
+            <>
+              {renderPagination()}
+              <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={2} mb={2} justifyContent={'center'}>
+                {favoriteProducts.map((item) => (
+                  <Grid item key={item._id}>
+                    <ProductCard product={item} indicator={indicator(item)} />
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-          {renderPagination()}
+              {renderPagination()}
+            </>
+          )}
         </>
+      ) : (
+        <Typography variant={'h5'} textAlign={'center'}>
+          Пусто
+        </Typography>
       )}
     </>
   );

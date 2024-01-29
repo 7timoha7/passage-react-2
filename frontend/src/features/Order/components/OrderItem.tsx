@@ -16,15 +16,17 @@ import dayjs from 'dayjs';
 import { LoadingButton } from '@mui/lab';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
-import { OrderFromServerType, User } from '../../../types';
+import { OrderFromServerType, PageInfo, User } from '../../../types';
 import { selectOrderChangeStatusLoading, selectOrderDeleteLoading } from '../orderSlice';
 import { changeStatusOrder, deleteOrder, getForAdminHisOrders, getOrders } from '../orderThunks';
 
 interface Props {
   prop: OrderFromServerType;
+  pageInfo?: PageInfo;
+  adminPageInfo?: PageInfo;
 }
 
-const OrderItem: React.FC<Props> = ({ prop }) => {
+const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const buttonLoading = useAppSelector(selectOrderChangeStatusLoading);
@@ -34,20 +36,53 @@ const OrderItem: React.FC<Props> = ({ prop }) => {
   const background = prop.status === 'open' ? '#FFEAE9' : prop.status === 'in progress' ? 'lightyellow' : '#CCFFCD';
   const handleClickOnCheckout = async (id: string) => {
     await dispatch(changeStatusOrder({ id: id, status: 'in progress' }));
-    await dispatch(getOrders());
+
+    if (pageInfo) {
+      let newPage: number;
+
+      if ((pageInfo.totalItems - 1) % pageInfo.pageSize !== 0) {
+        newPage = pageInfo.currentPage;
+      } else {
+        newPage = Math.max(1, pageInfo.currentPage - 1);
+      }
+
+      await dispatch(getOrders(newPage));
+    }
   };
 
   const handleClickOnClose = async (id: string) => {
     if (user?._id) {
       await dispatch(changeStatusOrder({ id: id, status: 'closed' }));
-      await dispatch(getForAdminHisOrders(user?._id));
+
+      if (adminPageInfo) {
+        let newPage: number;
+
+        if ((adminPageInfo.totalItems - 1) % adminPageInfo.pageSize !== 0) {
+          newPage = adminPageInfo.currentPage;
+        } else {
+          newPage = Math.max(1, adminPageInfo.currentPage - 1);
+        }
+
+        await dispatch(getForAdminHisOrders({ id: user?._id, page: newPage }));
+      }
     }
   };
 
   const handleDeleteOrder = async (id: string, admin: User | null) => {
     if (admin) {
       await dispatch(deleteOrder(id)).unwrap();
-      await dispatch(getForAdminHisOrders(admin._id));
+
+      if (adminPageInfo) {
+        let newPage: number;
+
+        if ((adminPageInfo.totalItems - 1) % adminPageInfo.pageSize !== 0) {
+          newPage = adminPageInfo.currentPage;
+        } else {
+          newPage = Math.max(1, adminPageInfo.currentPage - 1);
+        }
+
+        await dispatch(getForAdminHisOrders({ id: admin._id, page: newPage }));
+      }
     }
   };
 
@@ -122,7 +157,7 @@ const OrderItem: React.FC<Props> = ({ prop }) => {
         )}
         <Accordion sx={{ mb: 2, background: '#88d8e3' }}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-            <Typography>Товары: {prop.products.length + 1}</Typography>
+            <Typography>Товары: {prop.products.length}</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ background: 'WhiteSmoke' }}>
             {prop.products.map((item) => {

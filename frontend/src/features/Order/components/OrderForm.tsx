@@ -13,23 +13,23 @@ import {
   Typography,
 } from '@mui/material';
 import { MuiTelInput } from 'mui-tel-input';
-import ProductTable from './components/ProductTable';
+import ProductTable from './ProductTable';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { sendOrder } from './orderThunks';
-import { OrderSendType } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { sendOrder } from '../orderThunks';
+import { OrderSendType } from '../../../types';
 import { useSelector } from 'react-redux';
-import { selectBasket } from '../Basket/basketSlice';
-import { selectUser } from '../users/usersSlice';
-import { fetchBasket, updateBasket } from '../Basket/basketThunks';
-import { selectSendOrderLoading } from './orderSlice';
+import { selectBasket } from '../../Basket/basketSlice';
+import { selectUser } from '../../users/usersSlice';
+import { fetchBasket, updateBasket } from '../../Basket/basketThunks';
+import { selectSendOrderLoading } from '../orderSlice';
 import { LoadingButton } from '@mui/lab';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
-const Order = () => {
+const OrderForm = () => {
   const [formData, setFormData] = useState<OrderSendType>({
     firstName: '',
     lastName: '',
@@ -102,13 +102,6 @@ const Order = () => {
       await dispatch(fetchBasket(user._id));
     }
   };
-
-  // const handleSubmit = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   await dispatch(sendOrder(formData));
-  //   await clearBasket('clear');
-  //   navigate('/');
-  // };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -260,4 +253,4 @@ const Order = () => {
   );
 };
 
-export default Order;
+export default OrderForm;

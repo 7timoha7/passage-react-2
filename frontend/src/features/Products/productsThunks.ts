@@ -60,10 +60,8 @@ export const editProduct = createAsyncThunk<
       formData.append('measureCode', product.measureCode);
       formData.append('measureName', product.measureName);
       formData.append('ownerID', product.ownerID);
-      formData.append('quantity', product.quantity.toString()); // Assuming quantity is a number
-      formData.append('price', product.price.toString()); // Assuming price is a number
-
-      // Add other fields as needed
+      formData.append('quantity', product.quantity.toString());
+      formData.append('price', product.price.toString());
 
       if (product.images) {
         for (const image of product.images) {

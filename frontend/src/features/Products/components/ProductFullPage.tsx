@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectProductLoading, selectProductOne } from './productsSlise';
-import { productFetch } from './productsThunks';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import ProductFullCard from './components/ProductFullCard';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectProductLoading, selectProductOne } from '../productsSlise';
+import { productFetch } from '../productsThunks';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import ProductFullCard from './ProductFullCard';
 import React from 'react';
 
 const ProductFullPage = () => {

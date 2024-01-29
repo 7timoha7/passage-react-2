@@ -18,7 +18,12 @@ import { getForAdminHisOrders, getOrders } from '../Order/orderThunks';
 import WorkIcon from '@mui/icons-material/Work';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import OrderItems from '../Order/components/OrderItems';
-import { selectAdminMyOrders, selectOrders } from '../Order/orderSlice';
+import {
+  selectAdminMyOrders,
+  selectAdminMyOrdersPageInfo,
+  selectOrders,
+  selectOrdersPageInfo,
+} from '../Order/orderSlice';
 
 const initialState: CabinetState = {
   myInfo: true,
@@ -40,6 +45,8 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
   const gotUsers = useAppSelector(selectUsersByRole);
   const unacceptedOrders = useAppSelector(selectOrders);
   const orders = useAppSelector(selectAdminMyOrders);
+  const orderPageInfo = useAppSelector(selectOrdersPageInfo);
+  const adminPageInfo = useAppSelector(selectAdminMyOrdersPageInfo);
 
   useEffect(() => {
     if (user) {
@@ -47,10 +54,10 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
         dispatch(getByRole('user'));
       }
       if (state.myOrders) {
-        dispatch(getForAdminHisOrders(user._id));
+        dispatch(getForAdminHisOrders({ id: user._id, page: 1 }));
       }
       if (state.unacceptedOrders) {
-        dispatch(getOrders());
+        dispatch(getOrders(1));
       }
     }
   }, [dispatch, user, state.users, state.myOrders, state.unacceptedOrders]);
@@ -101,8 +108,10 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
               {state.myInfo && <MyInformation />}
               {state.users && <UserItems prop={gotUsers} role="user" />}
               {state.favorites && <Favorites />}
-              {state.myOrders && <OrderItems ordersItems={orders} />}
-              {state.unacceptedOrders && <OrderItems ordersItems={unacceptedOrders} />}
+              {state.myOrders && adminPageInfo && <OrderItems ordersItems={orders} adminPageInfo={adminPageInfo} />}
+              {state.unacceptedOrders && orderPageInfo && (
+                <OrderItems ordersPageInfo={orderPageInfo} ordersItems={unacceptedOrders} />
+              )}
             </Grid>
           </Grid>
         </CardContent>

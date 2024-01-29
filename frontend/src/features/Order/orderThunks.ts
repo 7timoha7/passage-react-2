@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { GlobalSuccess, OrderFromServerType, OrderSendType } from '../../types';
+import { GlobalSuccess, OrderFromServerType, OrderSendType, PageInfo, ProductType } from '../../types';
 import axiosApi from '../../axiosApi';
 import { RootState } from '../../app/store';
 
@@ -20,26 +20,38 @@ export const sendOrder = createAsyncThunk<
   }
 });
 
-export const getOrders = createAsyncThunk<OrderFromServerType[]>('orders/getOrders', async () => {
-  try {
-    const responseOrders = await axiosApi.get<OrderFromServerType[]>('/orders');
-    return responseOrders.data;
-  } catch {
-    throw new Error();
-  }
-});
-
-export const getForAdminHisOrders = createAsyncThunk<OrderFromServerType[], string>(
-  'orders/getOrdersForAdmin',
-  async (id) => {
+export const getOrders = createAsyncThunk<{ orders: OrderFromServerType[]; pageInfo: PageInfo }, number>(
+  'orders/getOrders',
+  async (page) => {
     try {
-      const responseOrders = await axiosApi.get<OrderFromServerType[]>('/orders?admin=' + id);
+      const responseOrders = await axiosApi.get<{
+        orders: OrderFromServerType[];
+        pageInfo: PageInfo;
+      }>(`/orders?page=${page}`);
       return responseOrders.data;
     } catch {
       throw new Error();
     }
   },
 );
+
+export const getForAdminHisOrders = createAsyncThunk<
+  { orders: OrderFromServerType[]; pageInfo: PageInfo },
+  {
+    id: string;
+    page: number;
+  }
+>('orders/getOrdersForAdmin', async ({ id, page }) => {
+  try {
+    const responseOrders = await axiosApi.get<{
+      orders: OrderFromServerType[];
+      pageInfo: PageInfo;
+    }>(`/orders?admin=${id}&page=${page}`);
+    return responseOrders.data;
+  } catch {
+    throw new Error();
+  }
+});
 
 export interface ChangeStatusProps {
   id: string;

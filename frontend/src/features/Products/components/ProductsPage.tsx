@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectCategory, selectFetchOneCategoriesLoading } from '../MenuCategories/menuCategoriesSlice';
-import { fetchOneCategories } from '../MenuCategories/menuCategoriesThunks';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import Products from './components/Products';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectCategory, selectFetchOneCategoriesLoading } from '../../MenuCategories/menuCategoriesSlice';
+import { fetchOneCategories } from '../../MenuCategories/menuCategoriesThunks';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import Products from './Products';
 import React from 'react';
 
 const ProductsPage = () => {

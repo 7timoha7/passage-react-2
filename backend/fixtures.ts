@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import crypto from 'crypto';
 import User from './models/User';
+import Order from './models/Order';
 
 const run = async () => {
   mongoose.set('strictQuery', false);
@@ -17,7 +18,7 @@ const run = async () => {
     console.log('Collections were not present, skipping drop...');
   }
 
-  await User.create(
+  const [admin, user, director] = await User.create(
     {
       email: 'admin@gmail.com',
       firstName: 'Admin',
@@ -49,6 +50,29 @@ const run = async () => {
       isVerified: true,
     },
   );
+
+  const item = 50;
+
+  for (let i = 0; i < item; i++) {
+    await Order.create({
+      user_id: user._id,
+      createdAt: '2024-01-25T11:16:03.280Z',
+      status: 'open',
+      products: [
+        {
+          product: '57c55071-b0ad-11ec-812e-1831bfcbb43d',
+          quantity: 1,
+        },
+      ],
+      deliveryMethod: 'самовывоз',
+      firstName: 'artem',
+      lastName: 'Mark',
+      phoneNumber: '+996 333 333 333',
+      address: '',
+      email: 'director@gmail.com',
+      paymentMethod: 'наличные',
+    });
+  }
 
   await db.close();
 };
