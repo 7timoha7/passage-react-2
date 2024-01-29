@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { GlobalSuccess, OrderFromServerType, OrderSendType, PageInfo, ProductType } from '../../types';
+import { GlobalSuccess, OrderFromServerType, OrderSendType, PageInfo } from '../../types';
 import axiosApi from '../../axiosApi';
 import { RootState } from '../../app/store';
 

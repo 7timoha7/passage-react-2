@@ -21,8 +21,9 @@ const OrderItems: React.FC<Props> = ({ ordersItems, ordersPageInfo, adminPageInf
   const dispatch = useAppDispatch();
   const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
     if (ordersPageInfo) {
-      dispatch(getOrders(ordersPageInfo.currentPage));
+      dispatch(getOrders(page));
     } else if (adminPageInfo && id) {
+      console.log('111');
       dispatch(getForAdminHisOrders({ page: page, id: id }));
     }
   };
