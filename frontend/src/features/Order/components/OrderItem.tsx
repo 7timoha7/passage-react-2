@@ -220,7 +220,7 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
             </LoadingButton>
           </Box>
         )}
-        {user && user.role === 'director' && (
+        {user && user.role === 'director' && !prop.user_id && (
           <Button
             onClick={() => setOpenDelete(true)}
             size="small"

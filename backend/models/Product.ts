@@ -42,6 +42,15 @@ const ProductSchema = new Schema<IProduct>({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+  },
+  size: {
+    type: String,
+  },
+  thickness: {
+    type: String,
+  },
 });
 
 const Product = mongoose.model('Product', ProductSchema);

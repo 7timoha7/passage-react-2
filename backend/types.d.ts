@@ -36,6 +36,9 @@ export interface IProduct {
   images: string[] | null;
   quantity: number;
   price: number;
+  description: string;
+  size: string;
+  thickness: string;
 }
 
 export interface IProductQuantityFromApi {
@@ -68,6 +71,7 @@ export interface IProductFromApi {
   ownerID: string;
   imageBase64: string;
   imagesBase64: [];
+  description: string;
 }
 
 export interface IBasket {

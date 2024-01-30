@@ -123,6 +123,7 @@ ordersRouter.get('/', auth, async (req, res, next) => {
     const skip = (page - 1) * pageSize;
 
     const orders = await Order.find(query)
+      .sort({ createdAt: -1 }) // Сортировка по убыванию даты создания (от новых к старым)
       .skip(skip)
       .limit(pageSize)
       .populate('user_id', '-token')
@@ -241,14 +242,23 @@ ordersRouter.delete('/:id', auth, permit('admin', 'director', 'user'), async (re
   const order = await Order.findById(req.params.id);
   try {
     if (order) {
-      if (user.role === 'admin' || user.role === 'director') {
-        await Order.deleteOne({ _id: req.params.id });
-        return res.send({
-          message: {
-            en: 'OrderForm deleted successfully',
-            ru: 'Заказ успешно удалён',
-          },
-        });
+      if (!order.user_id) {
+        if (user.role === 'admin' || user.role === 'director') {
+          await Order.deleteOne({ _id: req.params.id });
+          return res.send({
+            message: {
+              en: 'OrderForm deleted successfully',
+              ru: 'Заказ успешно удалён',
+            },
+          });
+        } else {
+          return res.send({
+            message: {
+              en: 'OrderForm deleted successfully',
+              ru: 'У заказа есть юзер, удаление запрещено! ',
+            },
+          });
+        }
       }
 
       if (user.role === 'user') {
@@ -282,7 +292,7 @@ export default ordersRouter;
 
 const botToken = '6719177853:AAG43TUbzPaH5MtbciFBPse-jhKcvyYw1IQ';
 let lastRequestTime = 0;
-const minInterval = 20000; // 1 минута в миллисекундах
+const minInterval = 10000; // 1 минута в миллисекундах
 
 const sendMessageToTelegram = async (message: string, chatIds: string[]) => {
   const currentTime = Date.now();

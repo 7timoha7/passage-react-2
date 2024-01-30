@@ -45,23 +45,40 @@ const fetchData = async (method: string) => {
   }
 };
 
+// Функция для обработки строки description и извлечения размера, толщины и описания
+const processDescription = (description: string): { size: string; thickness: string; description: string } => {
+  const [size, thickness, productDescription] = description.split('\\').map((part) => part.trim());
+
+  return {
+    size: size || '', // Если size не указан, установите пустую строку
+    thickness: thickness || '', // Если thickness не указан, установите пустую строку
+    description: productDescription || '', // Если описание не указано, установите пустую строку
+  };
+};
+
+// Функция для расчета площади на основе размера
+const calculateArea = (size: string): number => {
+  const [width, height] = size.split('*').map(Number);
+  return (width * height) / 1000000; // Переводим из мм² в м²
+};
+
+// Функция для пересчета цены на квадратный метр
+const calculatePricePerSquareMeter = (price: number, area: number): number => {
+  return price / area;
+};
+
 const createProducts = async (
   products: IProductFromApi[],
   prices: IProductPriceFromApi[],
   quantities: IProductQuantityFromApi[],
 ): Promise<void> => {
   try {
-    const updatedProducts = []; // Создаем массив для хранения обновленных товаров
+    const updatedProducts = [];
 
     for (const productData of products) {
       const quantityData = quantities.find((q) => q.goodID === productData.goodID);
-      if (!quantityData || quantityData.quantity <= 0) {
-        // Пропускаем продукты с нулевым количеством
-        continue;
-      }
-
-      if (!productData.article) {
-        // Пропускаем продукты без артикула
+      if (!quantityData || quantityData.quantity <= 0 || !productData.article) {
+        // Пропускаем продукты с нулевым количеством или без артикула
         continue;
       }
 
@@ -93,6 +110,17 @@ const createProducts = async (
         }
       }
 
+      const { size, thickness, description } = processDescription(productData.description);
+
+      // Новая переменная для хранения пересчитанной цены
+      let recalculatedPrice = priceData.price;
+
+      if (productData.measureName && productData.measureName.toLowerCase() === 'м2' && size) {
+        // Если единица измерения - "м2" и размер присутствует, то производим расчет новой цены
+        const area = calculateArea(size); // Функция для расчета площади
+        recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
+      }
+
       const product = new Product({
         name: productData.name,
         article: productData.article,
@@ -101,12 +129,15 @@ const createProducts = async (
         measureName: productData.measureName,
         ownerID: productData.ownerID,
         quantity: quantityData.quantity,
-        price: priceData.price,
-        images: productImages, // Сохраняем массив путей к изображениям
+        price: recalculatedPrice,
+        images: productImages,
+        size,
+        thickness,
+        description,
       });
 
       await product.save();
-      updatedProducts.push(product); // Добавляем обновленный продукт в массив
+      updatedProducts.push(product);
     }
 
     // Обновляем все продукты одним запросом к базе данных
@@ -124,6 +155,7 @@ const createProducts = async (
     console.error('Ошибка при создании товаров:', error);
   }
 };
+
 const createCategories = async (categoriesData: ICategoryFromApi[]): Promise<void> => {
   try {
     // Шаг 1: Создаем категории, в которых есть товары
