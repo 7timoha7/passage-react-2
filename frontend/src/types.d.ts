@@ -170,3 +170,9 @@ export interface OrderFromServerType {
     quantity: number;
   }[];
 }
+
+export interface ChatIdAdminType {
+  _id: string;
+  chat_id: string;
+  user_id: string;
+}

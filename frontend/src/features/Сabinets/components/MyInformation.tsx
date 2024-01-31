@@ -7,6 +7,7 @@ import ChangePassword from './ChangePassword';
 import { someStyle } from '../../../styles';
 import CurveText from '../../../components/UI/CurveText/CurveText';
 import { useEffect } from 'react';
+import ChatIdAdminForm from './ChatIdAdminForm';
 
 const MyInformation = () => {
   const user = useAppSelector(selectUser);
@@ -25,8 +26,10 @@ const MyInformation = () => {
               {user.firstName} {user.lastName}
             </Typography>
           </Box>
+          {user.role === 'admin' && <CurveText name="Статус" data={user.role} />}
           <CurveText name="Телефон" data={user.phoneNumber} />
           <CurveText name="Почта" data={user.email} />
+          {user.role === 'admin' && <ChatIdAdminForm user={user} />}
           <ChangePassword />
         </>
       )}

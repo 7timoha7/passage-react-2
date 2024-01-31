@@ -9,6 +9,7 @@ import productRouter from './routers/products';
 import productFromApiRouter from './routers/productsFromApi';
 import basketRouter from './routers/baskets';
 import ordersRouter from './routers/orders';
+import chatIdAdminRouter from './routers/chatIdAdmins';
 
 const app = express();
 const port = 8000;
@@ -31,6 +32,7 @@ app.use('/products', productRouter);
 app.use('/productsFromApi', productFromApiRouter);
 app.use('/basket', basketRouter);
 app.use('/orders', ordersRouter);
+app.use('/chatIdAdmins', chatIdAdminRouter);
 
 const run = async () => {
   mongoose.set('strictQuery', false);

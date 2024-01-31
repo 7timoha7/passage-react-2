@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { selectUser, selectUserSuccess, setUserSuccessNull } from './features/users/usersSlice';
+import {
+  selectChatIdAdminSuccess,
+  selectUser,
+  selectUserSuccess,
+  setUserSuccessNull,
+} from './features/users/usersSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import Home from './containers/Home';
 import MainPage from './containers/MainPage';
@@ -41,6 +46,7 @@ function App() {
   const basketSuccess = useAppSelector(selectBasketSuccess);
   const productFromApiSuccess = useAppSelector(selectProductsFromApiSuccess);
   const orderSuccess = useAppSelector(selectOrderSuccess);
+  const chatIdAdminSuccess = useAppSelector(selectChatIdAdminSuccess);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { i18n } = useTranslation();
@@ -51,6 +57,23 @@ function App() {
     }
     dispatch(setBasketSuccessNull());
   }, [basketSuccess, dispatch, enqueueSnackbar]);
+
+  useEffect(() => {
+    if (chatIdAdminSuccess) {
+      if (i18n.language === 'en') {
+        enqueueSnackbar(chatIdAdminSuccess.message.en, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      } else {
+        enqueueSnackbar(chatIdAdminSuccess.message.ru, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      }
+    }
+    dispatch(setProductSuccessNull());
+  }, [chatIdAdminSuccess, dispatch, enqueueSnackbar, i18n.language]);
 
   useEffect(() => {
     if (userSuccess) {

@@ -59,7 +59,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <Box textAlign={'center'}>
+    <Box>
       <Button variant="outlined" onClick={handleClickOpen}>
         {'Изменить пароль'}
       </Button>

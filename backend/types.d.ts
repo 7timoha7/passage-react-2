@@ -107,17 +107,7 @@ export interface IOrder {
   }[];
 }
 
-// export interface OrderSendType {
-//   firstName: string;
-//   lastName: string;
-//   phoneNumber: string;
-//   address: string;
-//   email: string;
-//   paymentMethod: string;
-//   deliveryMethod: string;
-//   orderComments: string;
-//   product: {
-//     productId: string;
-//     quantity: number;
-//   }[];
-// }
+export interface IChatIdAdmin {
+  user_id: ObjectId;
+  chat_id: string;
+}

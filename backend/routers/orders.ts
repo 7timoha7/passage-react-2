@@ -8,10 +8,9 @@ import permit from '../middleware/permit';
 import { IOrder } from '../types';
 import User from '../models/User';
 import Product from '../models/Product';
+import ChatIdAdmin from '../models/ChatIdAdmin';
 
 const ordersRouter = express.Router();
-
-const chatIds = ['640421282']; // Массив с chat_id
 
 ordersRouter.post('/', async (req, res, next) => {
   try {
@@ -32,7 +31,14 @@ ordersRouter.post('/', async (req, res, next) => {
     await order.save();
 
     const message = `Новый - Заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
-    await sendMessageToTelegram(message, chatIds);
+
+    //Этот код выбирает все объекты ChatIdAdmin, проецирует только поле chat_id
+    const chatIds = await ChatIdAdmin.find({}, { _id: 0 });
+    const chatIdNumbers: string[] = Array.from(chatIds, (chatIdAdmin) => chatIdAdmin.chat_id);
+
+    if (chatIdNumbers.length) {
+      await sendMessageToTelegram(message, chatIdNumbers);
+    }
 
     return res.send({
       message: {
@@ -72,7 +78,13 @@ ordersRouter.post('/user', auth, async (req, res, next) => {
 
       const message = `Новый - Заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
 
-      await sendMessageToTelegram(message, chatIds);
+      //Этот код выбирает все объекты ChatIdAdmin, проецирует только поле chat_id
+      const chatIds = await ChatIdAdmin.find({}, { _id: 0 });
+      const chatIdNumbers: string[] = Array.from(chatIds, (chatIdAdmin) => chatIdAdmin.chat_id);
+
+      if (chatIdNumbers.length) {
+        await sendMessageToTelegram(message, chatIdNumbers);
+      }
 
       return res.send({
         message: {
@@ -224,7 +236,13 @@ ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
         user.firstName
       } ${user.lastName}`;
     }
-    await sendMessageToTelegram(message, chatIds);
+
+    //Этот код выбирает все объекты ChatIdAdmin, проецирует только поле chat_id
+    const chatIds = await ChatIdAdmin.find({}, { _id: 0 });
+    const chatIdNumbers: string[] = Array.from(chatIds, (chatIdAdmin) => chatIdAdmin.chat_id);
+    if (chatIdNumbers.length) {
+      await sendMessageToTelegram(message, chatIdNumbers);
+    }
 
     return res.send({
       message: {
@@ -290,29 +308,43 @@ ordersRouter.delete('/:id', auth, permit('admin', 'director', 'user'), async (re
 });
 export default ordersRouter;
 
-const botToken = '6719177853:AAG43TUbzPaH5MtbciFBPse-jhKcvyYw1IQ';
-let lastRequestTime = 0;
-const minInterval = 10000; // 1 минута в миллисекундах
-
-const sendMessageToTelegram = async (message: string, chatIds: string[]) => {
-  const currentTime = Date.now();
-
-  if (currentTime - lastRequestTime < minInterval) {
-    console.log('Слишком частые запросы. Подождите.');
-    return;
-  }
+const isChatIdValid = async (chatId: string): Promise<boolean> => {
+  const botToken = '6719177853:AAG43TUbzPaH5MtbciFBPse-jhKcvyYw1IQ';
 
   try {
-    chatIds.map(async (item) => {
-      await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        chat_id: item,
-        text: message,
-      });
+    const response = await axios.get(`https://api.telegram.org/bot${botToken}/getChat`, {
+      params: {
+        chat_id: chatId,
+      },
     });
-    console.log('Message sent to Telegram:');
+
+    // Проверяем, что API Telegram вернуло успешный статус
+    return response.data.ok === true;
   } catch (error) {
-    console.error('Error sending message to Telegram:');
-  } finally {
-    lastRequestTime = currentTime;
+    // Если возникает ошибка, например, 404 Not Found, то чат не существует
+    return false;
+  }
+};
+
+const sendMessageToTelegram = async (message: string, chatIds: string[]) => {
+  const validChatIds = await Promise.all(chatIds.map(isChatIdValid));
+
+  const botToken = '6719177853:AAG43TUbzPaH5MtbciFBPse-jhKcvyYw1IQ';
+
+  try {
+    for (let i = 0; i < chatIds.length; i++) {
+      if (validChatIds[i]) {
+        await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          chat_id: chatIds[i],
+          text: message,
+        });
+        console.log(`Message sent to Telegram for chat_id: ${chatIds[i]}`);
+      } else {
+        console.error(`Invalid or non-existent chat_id: ${chatIds[i]}`);
+      }
+    }
+    console.log('All messages sent successfully.');
+  } catch (error) {
+    console.error('Error sending messages to Telegram:');
   }
 };

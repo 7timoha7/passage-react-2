@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
+  ChatIdAdminType,
   GlobalError,
   GlobalSuccess,
   LoginMutation,
@@ -165,6 +166,42 @@ export const changeFavorites = createAsyncThunk<GlobalSuccess, changeProps>('use
   try {
     const payload = data.addProduct ? { addProduct: data.addProduct } : { deleteProduct: data.deleteProduct };
     const response = await axiosApi.patch('/users/toggleAddProductToFavorites', payload);
+    return response.data;
+  } catch {
+    throw new Error();
+  }
+});
+
+export const createChatIdAdmin = createAsyncThunk<GlobalSuccess, string>('users/createChatIdAdmin', async (chat_id) => {
+  try {
+    const response = await axiosApi.post('/chatIdAdmins', { chat_id });
+    return response.data;
+  } catch {
+    throw new Error();
+  }
+});
+
+export const fetchOneChatIdAdmin = createAsyncThunk<ChatIdAdminType>('users/fetchOneChatIdAdmin', async () => {
+  try {
+    const response = await axiosApi.get<ChatIdAdminType>('/chatIdAdmins');
+    return response.data;
+  } catch {
+    throw new Error();
+  }
+});
+
+export const editChatIdAdmin = createAsyncThunk<GlobalSuccess, string>('users/editChatIdAdmin', async (chat_id) => {
+  try {
+    const response = await axiosApi.patch('/chatIdAdmins', { chat_id });
+    return response.data;
+  } catch {
+    throw new Error();
+  }
+});
+
+export const deleteChatIdAdmin = createAsyncThunk<GlobalSuccess>('users/deleteChatIdAdmin', async () => {
+  try {
+    const response = await axiosApi.delete('/chatIdAdmins');
     return response.data;
   } catch {
     throw new Error();

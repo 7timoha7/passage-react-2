@@ -28,7 +28,7 @@ const OrderSchema = new Schema<IOrder>({
   admin_id: {
     type: Schema.Types.ObjectId || undefined,
     ref: 'User',
-    default: undefined,
+    default: null,
     validate: {
       validator: async (value: Types.ObjectId) => {
         if (value === null) {

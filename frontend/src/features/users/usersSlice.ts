@@ -1,8 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { GlobalError, GlobalSuccess, User, ValidationError } from '../../types';
+import { ChatIdAdminType, GlobalError, GlobalSuccess, User, ValidationError } from '../../types';
 import {
   changeFavorites,
   changePass,
+  createChatIdAdmin,
+  deleteChatIdAdmin,
+  editChatIdAdmin,
+  fetchOneChatIdAdmin,
   getByRole,
   getUsers,
   googleLogin,
@@ -16,6 +20,7 @@ import {
   verify,
 } from './usersThunks';
 import { RootState } from '../../app/store';
+import { updateBasket } from '../Basket/basketThunks';
 
 interface UsersState {
   user: User | null;
@@ -30,6 +35,9 @@ interface UsersState {
   getUsersByRoleLoading: boolean;
   usersByRole: User[];
   users: User[];
+  chatIdAdmin: ChatIdAdminType | null;
+  chatIdAdminSuccess: GlobalSuccess | null;
+  chatIdAdminLoading: boolean;
 }
 
 const initialState: UsersState = {
@@ -45,6 +53,9 @@ const initialState: UsersState = {
   userLoading: false,
   usersByRole: [],
   users: [],
+  chatIdAdmin: null,
+  chatIdAdminSuccess: null,
+  chatIdAdminLoading: false,
 };
 
 export const usersSlice = createSlice({
@@ -67,7 +78,53 @@ export const usersSlice = createSlice({
       state.Success = null;
     },
   },
+
   extraReducers: (builder) => {
+    builder.addCase(deleteChatIdAdmin.fulfilled, (state, { payload: success }) => {
+      state.chatIdAdminLoading = false;
+      state.chatIdAdminSuccess = success;
+    });
+    builder.addCase(deleteChatIdAdmin.pending, (state) => {
+      state.chatIdAdminLoading = true;
+    });
+    builder.addCase(deleteChatIdAdmin.rejected, (state) => {
+      state.chatIdAdminLoading = false;
+    });
+
+    builder.addCase(createChatIdAdmin.fulfilled, (state, { payload: success }) => {
+      state.chatIdAdminLoading = false;
+      state.chatIdAdminSuccess = success;
+    });
+    builder.addCase(createChatIdAdmin.pending, (state) => {
+      state.chatIdAdminLoading = true;
+    });
+    builder.addCase(createChatIdAdmin.rejected, (state) => {
+      state.chatIdAdminLoading = false;
+    });
+
+    builder.addCase(editChatIdAdmin.fulfilled, (state, { payload: success }) => {
+      state.chatIdAdminLoading = false;
+      state.chatIdAdminSuccess = success;
+    });
+    builder.addCase(editChatIdAdmin.pending, (state) => {
+      state.chatIdAdminLoading = true;
+    });
+    builder.addCase(editChatIdAdmin.rejected, (state) => {
+      state.chatIdAdminLoading = false;
+    });
+
+    builder.addCase(fetchOneChatIdAdmin.pending, (state) => {
+      state.chatIdAdmin = null;
+      state.chatIdAdminLoading = true;
+    });
+    builder.addCase(fetchOneChatIdAdmin.fulfilled, (state, action) => {
+      state.chatIdAdmin = action.payload;
+      state.chatIdAdminLoading = false;
+    });
+    builder.addCase(fetchOneChatIdAdmin.rejected, (state) => {
+      state.chatIdAdminLoading = false;
+    });
+
     builder.addCase(register.pending, (state) => {
       state.registerLoading = true;
       state.registerError = null;
@@ -175,3 +232,7 @@ export const selectUsersByRole = (state: RootState) => state.users.usersByRole;
 export const selectUsers = (state: RootState) => state.users.users;
 export const selectUsersLoading = (state: RootState) => state.users.userLoading;
 export const selectUserSuccess = (state: RootState) => state.users.Success;
+
+export const selectChatIdAdmin = (state: RootState) => state.users.chatIdAdmin;
+export const selectChatIdAdminLoading = (state: RootState) => state.users.chatIdAdminLoading;
+export const selectChatIdAdminSuccess = (state: RootState) => state.users.chatIdAdminSuccess;
