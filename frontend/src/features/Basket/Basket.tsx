@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, Grid, IconButton, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
+import {
+  Badge,
+  Button,
+  CircularProgress,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Popover,
+  Typography,
+} from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { v4 as uuidv4 } from 'uuid';
 import { createBasket, fetchBasket, updateBasket } from './basketThunks';
-import { selectBasket } from './basketSlice';
+import { selectBasket, selectBasketUpdateLoading } from './basketSlice';
 import { BasketTypeOnServerMutation } from '../../types';
 import { selectUser } from '../users/usersSlice';
 import Divider from '@mui/material/Divider';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useNavigate } from 'react-router-dom';
+import { LoadingButton } from '@mui/lab';
 
 const Basket = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -19,6 +31,12 @@ const Basket = () => {
   const basket = useAppSelector(selectBasket);
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
+  const addBasketLoading = useAppSelector(selectBasketUpdateLoading);
+
+  const loadingBasket = () => {
+    return !!addBasketLoading;
+  };
+
   const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -105,10 +123,20 @@ const Basket = () => {
           {stateBasket?.items.map((item, index) => (
             <ListItem key={index}>
               <ListItemText primary={item.product.name + ' x ' + item.quantity + 'шт'} />
-              <IconButton color="primary" onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}>
-                <AddCircleOutlineIcon style={{ color: 'red' }} />
+
+              <IconButton
+                disabled={addBasketLoading === item.product.goodID}
+                color="primary"
+                onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}
+              >
+                {addBasketLoading === item.product.goodID ? (
+                  <CircularProgress size={'23px'} color="error" />
+                ) : (
+                  <AddCircleOutlineIcon style={{ color: 'red' }} />
+                )}
               </IconButton>
               <IconButton
+                disabled={addBasketLoading === item.product.goodID}
                 color="primary"
                 onClick={() =>
                   item.quantity === 1
@@ -116,7 +144,11 @@ const Basket = () => {
                     : handleUpdateBasket(item.product.goodID, 'decrease')
                 }
               >
-                <RemoveCircleOutlineIcon style={{ color: 'black' }} />
+                {addBasketLoading === item.product.goodID ? (
+                  <CircularProgress size={'23px'} color="error" />
+                ) : (
+                  <RemoveCircleOutlineIcon style={{ color: 'black' }} />
+                )}
               </IconButton>
               <Typography variant="body2">{`${item.product.price * item.quantity} сом`}</Typography>
             </ListItem>
@@ -129,19 +161,25 @@ const Basket = () => {
           <ListItem>
             <Grid container spacing={2}>
               <Grid item>
-                <Button onClick={() => navigateToFullBasket()} variant="outlined" color="error">
+                <LoadingButton
+                  loading={loadingBasket()}
+                  onClick={() => navigateToFullBasket()}
+                  variant="outlined"
+                  color="error"
+                >
                   Перейти в корзину
-                </Button>
+                </LoadingButton>
               </Grid>
               <Grid item>
-                <Button
+                <LoadingButton
+                  loading={loadingBasket()}
                   disabled={stateBasket?.items.length === 0}
                   onClick={() => clearBasket('clear')}
                   variant="text"
                   color="error"
                 >
                   Очистить корзину
-                </Button>
+                </LoadingButton>
               </Grid>
             </Grid>
           </ListItem>

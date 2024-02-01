@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   Paper,
   Table,
@@ -18,14 +19,15 @@ import { BasketTypeOnServerMutation, ProductType } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { apiURL } from '../../../constants';
 import { useNavigate } from 'react-router-dom';
-import { selectUser } from '../../users/usersSlice';
-import { selectBasket } from '../../Basket/basketSlice';
+import { selectFetchFavoriteProductsOneLoading, selectUser } from '../../users/usersSlice';
+import { selectBasket, selectBasketUpdateLoading } from '../../Basket/basketSlice';
 import { fetchBasket, updateBasket } from '../../Basket/basketThunks';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { changeFavorites, reAuthorization } from '../../users/usersThunks';
 import { getFavoriteProducts } from '../productsThunks';
 import Card from '@mui/material/Card';
+import { LoadingButton } from '@mui/lab';
 
 interface Props {
   product: ProductType;
@@ -39,6 +41,8 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
   const navigate = useNavigate();
   const basket = useAppSelector(selectBasket);
   const storedBasketId = localStorage.getItem('sessionKey');
+  const addBasketLoading = useAppSelector(selectBasketUpdateLoading);
+  const favoriteLoading = useAppSelector(selectFetchFavoriteProductsOneLoading);
 
   useEffect(() => {
     if (storedBasketId) {
@@ -116,7 +120,17 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
         {user &&
           user.isVerified &&
           (user.role === 'user' || user.role === 'director' || user.role === 'admin') &&
-          (favorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />)}
+          (favorite ? (
+            favoriteLoading === product.goodID ? (
+              <CircularProgress size={'20px'} color="error" />
+            ) : (
+              <FavoriteIcon color="error" />
+            )
+          ) : favoriteLoading === product.goodID ? (
+            <CircularProgress size={'20px'} color="error" />
+          ) : (
+            <FavoriteBorderIcon />
+          ))}
       </Box>
       <Grid container>
         <Grid item sx={{ width: '100%', mb: 3, display: 'flex', justifyContent: 'center' }}>
@@ -165,15 +179,16 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
               <Grid item>
                 <Tooltip title={indicator(product) ? 'Товар уже в корзине' : 'Добавить в корзину'} arrow>
                   <div>
-                    <Button
+                    <LoadingButton
                       onClick={handleAddToCart}
                       disabled={indicator(product)}
                       variant="outlined"
                       endIcon={<AddShoppingCartIcon />}
                       color="error"
+                      loading={addBasketLoading === product.goodID}
                     >
                       {indicator(product) ? 'В корзине' : 'Добавить в корзину'}
-                    </Button>
+                    </LoadingButton>
                   </div>
                 </Tooltip>
               </Grid>

@@ -180,6 +180,5 @@ export const selectPageInfo = (state: RootState) => state.products.pageInfo;
 export const selectSearchResults = (state: RootState) => state.products.searchResults;
 export const selectSearchLoading = (state: RootState) => state.products.searchLoading;
 export const selectPageInfoSearch = (state: RootState) => state.products.pageInfoSearch;
-
 export const selectSearchResultsPreview = (state: RootState) => state.products.searchResultsPreview;
 export const selectSearchLoadingPreview = (state: RootState) => state.products.searchLoadingPreview;

@@ -11,13 +11,15 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { apiURL } from '../../../constants';
-import { selectUser } from '../../users/usersSlice';
+import { selectFetchFavoriteProductsOneLoading, selectUser } from '../../users/usersSlice';
 import { changeFavorites, reAuthorization } from '../../users/usersThunks';
 import { getFavoriteProducts } from '../productsThunks';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { fetchBasket, updateBasket } from '../../Basket/basketThunks';
 import { selectPageInfo } from '../productsSlise';
+import { selectBasketUpdateLoading } from '../../Basket/basketSlice';
+import { CircularProgress } from '@mui/material';
 
 interface Props {
   product: ProductType;
@@ -30,6 +32,8 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
   const user = useAppSelector(selectUser);
   const sessionKey = localStorage.getItem('sessionKey');
   const pageInfo = useAppSelector(selectPageInfo);
+  const addBasketLoading = useAppSelector(selectBasketUpdateLoading);
+  const favoriteLoading = useAppSelector(selectFetchFavoriteProductsOneLoading);
 
   const handleAddToCart = async () => {
     if (sessionKey) {
@@ -43,7 +47,6 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
       await dispatch(fetchBasket(sessionKey));
     }
   };
-  console.log(pageInfo?.pageSize);
   const onClickFavorite = async (id: string) => {
     if (!favorite) {
       await dispatch(changeFavorites({ addProduct: id }));
@@ -122,7 +125,17 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           {user &&
             user.isVerified &&
             (user.role === 'user' || user.role === 'director' || user.role === 'admin') &&
-            (favorite ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />)}
+            (favorite ? (
+              favoriteLoading === product.goodID ? (
+                <CircularProgress size={'20px'} color="error" />
+              ) : (
+                <FavoriteIcon color="error" />
+              )
+            ) : favoriteLoading === product.goodID ? (
+              <CircularProgress size={'20px'} color="error" />
+            ) : (
+              <FavoriteBorderIcon />
+            ))}
         </Box>
         <CardContent
           sx={{
@@ -142,22 +155,26 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
             }}
           >
             <Tooltip title={indicator ? 'Товар уже в корзине' : 'Добавить в корзину'} arrow>
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (!indicator) {
-                    handleAddToCart();
-                  }
-                }}
-                style={{
-                  cursor: indicator ? 'not-allowed' : 'pointer',
-                }}
-              >
-                <AddShoppingCartIcon
-                  fontSize="large"
-                  color={indicator ? 'disabled' : indicator ? 'error' : 'inherit'}
-                />
-              </div>
+              {addBasketLoading === product.goodID ? (
+                <CircularProgress size={'20px'} color="error" />
+              ) : (
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!indicator) {
+                      handleAddToCart();
+                    }
+                  }}
+                  style={{
+                    cursor: indicator ? 'not-allowed' : 'pointer',
+                  }}
+                >
+                  <AddShoppingCartIcon
+                    fontSize="large"
+                    color={indicator ? 'disabled' : indicator ? 'error' : 'inherit'}
+                  />
+                </div>
+              )}
             </Tooltip>
           </Box>
         </CardContent>

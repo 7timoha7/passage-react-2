@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ExpandMore, ChevronRight } from '@mui/icons-material'; // Импорт иконок
 import './Categories.css';
-import { useNavigate } from 'react-router-dom'; // Импорт стилей
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
+import { selectFetchAllCategoriesLoading } from './menuCategoriesSlice';
+import Spinner from '../../components/UI/Spinner/Spinner'; // Импорт стилей
 
 interface Category {
   _id: string;
@@ -55,6 +58,7 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
   const [categoryTree, setCategoryTree] = useState<HierarchicalCategory[]>([]);
   const [openState, setOpenState] = useState<OpenState>({});
   const navigate = useNavigate();
+  const loading = useAppSelector(selectFetchAllCategoriesLoading);
   const navigateAndClose = (item: string) => {
     navigate('products/' + item);
     close();
@@ -89,28 +93,34 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
 
     return (
       <CategoryWrapper>
-        {categories.map((category) => (
-          <div key={category.ID}>
-            {category.subCategories && category.subCategories.length > 0 ? (
-              <CategoryItem $level={$level} onClick={() => handleCategoryClick(category.ID)}>
-                <IconWrapper>{openState[category.ID] ? <ExpandMore /> : <ChevronRight />}</IconWrapper>
-                {category.name}
-              </CategoryItem>
-            ) : (
-              <CategoryItem
-                style={{ background: 'rgba(194,145,145,0.71)' }}
-                $level={$level + 1}
-                onClick={() => navigateAndClose(category.ID)}
-              >
-                <IconWrapper />
-                {category.name}
-              </CategoryItem>
-            )}
-            {openState[category.ID] && category.subCategories && (
-              <SubCategoryList>{renderCategories(category.subCategories, $level + 1)}</SubCategoryList>
-            )}
-          </div>
-        ))}
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            {categories.map((category) => (
+              <div key={category.ID}>
+                {category.subCategories && category.subCategories.length > 0 ? (
+                  <CategoryItem $level={$level} onClick={() => handleCategoryClick(category.ID)}>
+                    <IconWrapper>{openState[category.ID] ? <ExpandMore /> : <ChevronRight />}</IconWrapper>
+                    {category.name}
+                  </CategoryItem>
+                ) : (
+                  <CategoryItem
+                    style={{ background: 'rgba(194,145,145,0.71)' }}
+                    $level={$level + 1}
+                    onClick={() => navigateAndClose(category.ID)}
+                  >
+                    <IconWrapper />
+                    {category.name}
+                  </CategoryItem>
+                )}
+                {openState[category.ID] && category.subCategories && (
+                  <SubCategoryList>{renderCategories(category.subCategories, $level + 1)}</SubCategoryList>
+                )}
+              </div>
+            ))}
+          </>
+        )}
       </CategoryWrapper>
     );
   };

@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Divider,
   Grid,
   IconButton,
@@ -17,10 +18,12 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import React, { useEffect, useState } from 'react';
 import { BasketTypeOnServerMutation } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectBasket } from './basketSlice';
+import { selectBasket, selectBasketOneLoading, selectBasketUpdateLoading } from './basketSlice';
 import { fetchBasket, updateBasket } from './basketThunks';
 import { useNavigate } from 'react-router-dom';
 import { selectUser } from '../users/usersSlice';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import { LoadingButton } from '@mui/lab';
 
 const BasketPage = () => {
   const [stateBasket, setStateBasket] = useState<BasketTypeOnServerMutation | null>(null);
@@ -28,6 +31,12 @@ const BasketPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
+  const addBasketLoading = useAppSelector(selectBasketUpdateLoading);
+  const oneBasketLoading = useAppSelector(selectBasketOneLoading);
+
+  const loadingBasket = () => {
+    return !!addBasketLoading;
+  };
 
   useEffect(() => {
     if (basket) {
@@ -70,76 +79,97 @@ const BasketPage = () => {
       <Typography variant="h4" gutterBottom textAlign={'center'}>
         Корзина
       </Typography>
-      {stateBasket?.items ? (
-        <>
-          <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Название</TableCell>
-                  <TableCell align="center">Количество</TableCell>
-                  <TableCell align="center">+/-</TableCell>
-                  <TableCell align="center">Цена</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {stateBasket.items.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{item.product.name}</TableCell>
-                    <TableCell align="center">{item.quantity}</TableCell>
-                    <TableCell align="center">
-                      <IconButton color="primary" onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}>
-                        <AddCircleOutlineIcon style={{ color: 'red' }} />
-                      </IconButton>
-                      <IconButton
-                        color="primary"
-                        onClick={() =>
-                          item.quantity === 1
-                            ? handleUpdateBasket(item.product.goodID, 'remove')
-                            : handleUpdateBasket(item.product.goodID, 'decrease')
-                        }
-                      >
-                        <RemoveCircleOutlineIcon style={{ color: 'black' }} />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="center">{`${item.product.price * item.quantity} сом`}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Divider sx={{ marginY: 2 }} />
-          <Typography variant="h5" gutterBottom>
-            Общая сумма: {stateBasket.totalPrice} сом
-          </Typography>
-          <Grid container spacing={2} justifyContent="flex-end">
-            <Grid item>
-              <Button
-                disabled={stateBasket?.items.length === 0}
-                onClick={() => navigate('/order')}
-                variant="contained"
-                color="error"
-                sx={{ marginLeft: 2 }}
-              >
-                Оформить заказ
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                disabled={stateBasket?.items.length === 0}
-                variant="outlined"
-                color="error"
-                onClick={() => clearBasket('clear')}
-              >
-                Очистить корзину
-              </Button>
-            </Grid>
-          </Grid>
-        </>
+      {oneBasketLoading ? (
+        <Spinner />
       ) : (
-        <Typography variant="h5" gutterBottom textAlign={'center'}>
-          Нет товаров
-        </Typography>
+        <>
+          {stateBasket?.items ? (
+            <>
+              <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Название</TableCell>
+                      <TableCell align="center">Количество</TableCell>
+                      <TableCell align="center">+/-</TableCell>
+                      <TableCell align="center">Цена</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {stateBasket.items.map((item, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{item.product.name}</TableCell>
+                        <TableCell align="center">{item.quantity}</TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            disabled={addBasketLoading === item.product.goodID}
+                            color="primary"
+                            onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}
+                          >
+                            {addBasketLoading === item.product.goodID ? (
+                              <CircularProgress size={'20px'} color="error" />
+                            ) : (
+                              <AddCircleOutlineIcon style={{ color: 'red' }} />
+                            )}
+                          </IconButton>
+                          <IconButton
+                            disabled={addBasketLoading === item.product.goodID}
+                            color="primary"
+                            onClick={() =>
+                              item.quantity === 1
+                                ? handleUpdateBasket(item.product.goodID, 'remove')
+                                : handleUpdateBasket(item.product.goodID, 'decrease')
+                            }
+                          >
+                            {addBasketLoading === item.product.goodID ? (
+                              <CircularProgress size={'20px'} color="error" />
+                            ) : (
+                              <RemoveCircleOutlineIcon style={{ color: 'black' }} />
+                            )}
+                          </IconButton>
+                        </TableCell>
+                        <TableCell align="center">{`${item.product.price * item.quantity} сом`}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Divider sx={{ marginY: 2 }} />
+              <Typography variant="h5" gutterBottom>
+                Общая сумма: {stateBasket.totalPrice} сом
+              </Typography>
+              <Grid container spacing={2} justifyContent="flex-end">
+                <Grid item>
+                  <LoadingButton
+                    loading={loadingBasket()}
+                    disabled={stateBasket?.items.length === 0}
+                    onClick={() => navigate('/order')}
+                    variant="contained"
+                    color="error"
+                    sx={{ marginLeft: 2 }}
+                  >
+                    Оформить заказ
+                  </LoadingButton>
+                </Grid>
+                <Grid item>
+                  <LoadingButton
+                    loading={loadingBasket()}
+                    disabled={stateBasket?.items.length === 0}
+                    variant="outlined"
+                    color="error"
+                    onClick={() => clearBasket('clear')}
+                  >
+                    Очистить корзину
+                  </LoadingButton>
+                </Grid>
+              </Grid>
+            </>
+          ) : (
+            <Typography variant="h5" gutterBottom textAlign={'center'}>
+              Нет товаров
+            </Typography>
+          )}
+        </>
       )}
     </Paper>
   );

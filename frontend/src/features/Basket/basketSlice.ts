@@ -8,7 +8,7 @@ interface BasketState {
   basketCreateLoading: boolean;
   basketCreateError: ValidationError | null;
   error: boolean;
-  basketUpdateLoading: boolean;
+  basketUpdateLoading: false | string;
   basketSuccess: GlobalSuccess | null;
   basketOneLoading: boolean;
 }
@@ -50,8 +50,10 @@ export const basketSlice = createSlice({
       state.basketSuccess = success;
       state.error = false;
     });
-    builder.addCase(updateBasket.pending, (state) => {
-      state.basketUpdateLoading = true;
+    builder.addCase(updateBasket.pending, (state, { meta }) => {
+      if (meta.arg.product_id) {
+        state.basketUpdateLoading = meta.arg.product_id;
+      }
       state.error = false;
     });
     builder.addCase(updateBasket.rejected, (state) => {

@@ -37,6 +37,7 @@ interface UsersState {
   chatIdAdmin: ChatIdAdminType | null;
   chatIdAdminSuccess: GlobalSuccess | null;
   chatIdAdminLoading: boolean;
+  fetchFavoriteProductsOneLoading: string | false;
 }
 
 const initialState: UsersState = {
@@ -55,6 +56,7 @@ const initialState: UsersState = {
   chatIdAdmin: null,
   chatIdAdminSuccess: null,
   chatIdAdminLoading: false,
+  fetchFavoriteProductsOneLoading: false,
 };
 
 export const usersSlice = createSlice({
@@ -211,6 +213,17 @@ export const usersSlice = createSlice({
     });
     builder.addCase(changeFavorites.fulfilled, (state, { payload: success }) => {
       state.Success = success;
+      state.fetchFavoriteProductsOneLoading = false;
+    });
+    builder.addCase(changeFavorites.pending, (state, { meta }) => {
+      if (meta.arg.addProduct) {
+        state.fetchFavoriteProductsOneLoading = meta.arg.addProduct;
+      } else if (meta.arg.deleteProduct) {
+        state.fetchFavoriteProductsOneLoading = meta.arg.deleteProduct;
+      }
+    });
+    builder.addCase(changeFavorites.rejected, (state) => {
+      state.fetchFavoriteProductsOneLoading = false;
     });
   },
 });
@@ -234,3 +247,4 @@ export const selectUserSuccess = (state: RootState) => state.users.Success;
 export const selectChatIdAdmin = (state: RootState) => state.users.chatIdAdmin;
 export const selectChatIdAdminLoading = (state: RootState) => state.users.chatIdAdminLoading;
 export const selectChatIdAdminSuccess = (state: RootState) => state.users.chatIdAdminSuccess;
+export const selectFetchFavoriteProductsOneLoading = (state: RootState) => state.users.fetchFavoriteProductsOneLoading;
