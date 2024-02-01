@@ -24,7 +24,7 @@ const ProductEdit = () => {
     goodID: '',
     measureCode: '',
     measureName: '',
-    quantity: 0,
+    quantity: [],
   });
 
   const [stateImg, setStateImg] = useState<ImgType>({

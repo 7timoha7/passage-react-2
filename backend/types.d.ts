@@ -34,7 +34,11 @@ export interface IProduct {
   measureName: string;
   ownerID: string;
   images: string[] | null;
-  quantity: number;
+  quantity: {
+    name: string;
+    stockID: string;
+    quantity: number;
+  }[];
   price: number;
   description: string;
   size: string;
@@ -46,6 +50,11 @@ export interface IProductQuantityFromApi {
   goodID: string;
   stockID: string;
   quantity: number;
+}
+
+export interface IProductQuantityStocksFromApi {
+  name: string;
+  stockID: string;
 }
 
 export interface IProductPriceFromApi {

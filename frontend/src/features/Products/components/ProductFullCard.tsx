@@ -197,7 +197,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                 <TableCell component="th" scope="row">
                   Описание:
                 </TableCell>
-                <TableCell>{/*{product.description}*/}</TableCell>
+                <TableCell>{product.description}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
@@ -205,17 +205,32 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                 </TableCell>
                 <TableCell>{product.measureName}</TableCell>
               </TableRow>
+              {product.size && product.thickness && (
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Размер:
+                  </TableCell>
+                  <TableCell>
+                    <Box>
+                      <Typography variant={'caption'}>Ширина/высота(мм): {product.size}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant={'caption'}>Толщина(мм): {product.thickness}</Typography>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              )}
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Склад:
+                  Наличие:
                 </TableCell>
-                <TableCell>{product.ownerID}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Размер:
+                <TableCell>
+                  {product.quantity.map((stock, index) => (
+                    <Typography key={stock.stockID + index} variant={'caption'}>
+                      {stock.name}: {stock.quantity}
+                    </Typography>
+                  ))}
                 </TableCell>
-                <TableCell>{/*{product.dimensions}*/}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">

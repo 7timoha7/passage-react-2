@@ -65,8 +65,15 @@ export interface ProductType {
   measureName: string;
   ownerID: string;
   images: string[];
-  quantity: number;
+  quantity: {
+    name: string;
+    stockID: string;
+    quantity: number;
+  }[];
   price: number;
+  description: string;
+  size: string;
+  thickness: string;
 }
 
 export interface ImgType {
@@ -82,7 +89,11 @@ export interface ProductTypeMutation {
   measureName: string;
   ownerID: string;
   images?: File[];
-  quantity: number;
+  quantity: {
+    name: string;
+    stockID: string;
+    quantity: number;
+  }[];
   price: number;
 }
 

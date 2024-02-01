@@ -180,7 +180,7 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
                   </Grid>
                   <Grid item xs={12} sm={12} lg={6} xl={3}>
                     <Typography>
-                      Количество: <span style={{ fontWeight: 'bold' }}>{item.product.quantity}</span>
+                      Количество: <span style={{ fontWeight: 'bold' }}>{item.quantity}</span>
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={12} lg={6} xl={3}>

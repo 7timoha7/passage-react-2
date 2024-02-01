@@ -1,6 +1,12 @@
 import axios from 'axios';
 import express from 'express';
-import { ICategoryFromApi, IProductFromApi, IProductPriceFromApi, IProductQuantityFromApi } from '../types';
+import {
+  ICategoryFromApi,
+  IProductFromApi,
+  IProductPriceFromApi,
+  IProductQuantityFromApi,
+  IProductQuantityStocksFromApi,
+} from '../types';
 import path from 'path';
 import * as fs from 'fs';
 import Product from '../models/Product';
@@ -67,18 +73,110 @@ const calculatePricePerSquareMeter = (price: number, area: number): number => {
   return price / area;
 };
 
+// const createProducts = async (
+//   products: IProductFromApi[],
+//   prices: IProductPriceFromApi[],
+//   quantities: IProductQuantityFromApi[],
+// ): Promise<void> => {
+//   try {
+//     const updatedProducts = [];
+//
+//     for (const productData of products) {
+//       const quantityData = quantities.find((q) => q.goodID === productData.goodID);
+//       if (!quantityData || quantityData.quantity <= 0 || !productData.article) {
+//         // Пропускаем продукты с нулевым количеством или без артикула
+//         continue;
+//       }
+//
+//       const priceData = prices.find((p) => p.goodID === productData.goodID);
+//       if (!priceData || !priceData.price) {
+//         // Пропускаем продукты без цены
+//         continue;
+//       }
+//
+//       const imageFolder = path.join(process.cwd(), 'public/images/imagesProduct', productData.goodID);
+//
+//       // Создаем папку только если у товара есть изображение
+//       if (productData.imageBase64 && !fs.existsSync(imageFolder)) {
+//         fs.mkdirSync(imageFolder, { recursive: true });
+//       }
+//
+//       const productImages = [];
+//
+//       // Проверяем, что у продукта есть изображение перед добавлением в массив
+//       if (productData.imageBase64) {
+//         const images = productData.imageBase64.split(',');
+//
+//         for (const image of images) {
+//           const imageName = 'image' + (images.indexOf(image) + 1) + '.jpg';
+//           const imagePath = path.join(imageFolder, imageName);
+//
+//           fs.writeFileSync(imagePath, image, 'base64');
+//           productImages.push(path.join('/images/imagesProduct', productData.goodID, imageName));
+//         }
+//       }
+//
+//       const { size, thickness, description } = processDescription(productData.description);
+//
+//       // Новая переменная для хранения пересчитанной цены
+//       let recalculatedPrice = priceData.price;
+//
+//       if (productData.measureName && productData.measureName.toLowerCase() === 'м2' && size) {
+//         // Если единица измерения - "м2" и размер присутствует, то производим расчет новой цены
+//         const area = calculateArea(size); // Функция для расчета площади
+//         recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
+//       }
+//
+//       const product = new Product({
+//         name: productData.name,
+//         article: productData.article,
+//         goodID: productData.goodID,
+//         measureCode: productData.measureCode,
+//         measureName: productData.measureName,
+//         ownerID: productData.ownerID,
+//         quantity: quantityData.quantity,
+//         price: recalculatedPrice,
+//         images: productImages,
+//         size,
+//         thickness,
+//         description,
+//       });
+//
+//       await product.save();
+//       updatedProducts.push(product);
+//     }
+//
+//     // Обновляем все продукты одним запросом к базе данных
+//     await Product.bulkWrite(
+//       updatedProducts.map((product) => ({
+//         updateOne: {
+//           filter: { _id: product._id },
+//           update: { $set: { images: product.images } },
+//         },
+//       })),
+//     );
+//
+//     console.log('Товары успешно созданы и обновлены в базе данных.');
+//   } catch (error) {
+//     console.error('Ошибка при создании товаров:', error);
+//   }
+// };
+
 const createProducts = async (
   products: IProductFromApi[],
   prices: IProductPriceFromApi[],
   quantities: IProductQuantityFromApi[],
+  quantitiesStocks: IProductQuantityStocksFromApi[],
 ): Promise<void> => {
   try {
     const updatedProducts = [];
 
     for (const productData of products) {
-      const quantityData = quantities.find((q) => q.goodID === productData.goodID);
-      if (!quantityData || quantityData.quantity <= 0 || !productData.article) {
-        // Пропускаем продукты с нулевым количеством или без артикула
+      const quantityDataArray = quantities.filter((q) => q.goodID === productData.goodID);
+
+      // Проверка, что есть хотя бы один элемент в массиве и все элементы имеют положительное количество
+      if (quantityDataArray.length === 0 || !quantityDataArray.every((q) => q.quantity > 0) || !productData.article) {
+        // Пропускаем продукты с нулевым количеством, отрицательным количеством или без артикула
         continue;
       }
 
@@ -128,12 +226,19 @@ const createProducts = async (
         measureCode: productData.measureCode,
         measureName: productData.measureName,
         ownerID: productData.ownerID,
-        quantity: quantityData.quantity,
+        quantity: quantityDataArray.map((quantityData) => {
+          const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
+          return {
+            name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
+            stockID: quantityData.stockID,
+            quantity: quantityData.quantity,
+          };
+        }),
         price: recalculatedPrice,
         images: productImages,
-        size,
-        thickness,
-        description,
+        size: size || '', // Добавим пустую строку, если size не определен
+        thickness: thickness || '', // Добавим пустую строку, если thickness не определен
+        description: description || '', // Добавим пустую строку, если description не определен
       });
 
       await product.save();
@@ -239,11 +344,16 @@ productFromApiRouter.get('/', auth, permit('director'), async (req, res, next) =
     const responsePrice = await fetchData('goods-price-get');
 
     const products: IProductFromApi[] = responseProducts.result.goods;
-    const quantity: IProductQuantityFromApi[] = responseQuantity.result.goods;
+
+    const quantity = responseQuantity.result;
+    const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
+    const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
+
     const price: IProductPriceFromApi[] = responsePrice.result.goods;
+
     const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
 
-    await createProducts(products, price, quantity);
+    await createProducts(products, price, quantityGoods, quantityStocks);
     await createCategories(categories);
 
     console.log('loadingTRUE ! ! ! ');

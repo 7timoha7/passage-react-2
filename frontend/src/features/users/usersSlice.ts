@@ -20,7 +20,6 @@ import {
   verify,
 } from './usersThunks';
 import { RootState } from '../../app/store';
-import { updateBasket } from '../Basket/basketThunks';
 
 interface UsersState {
   user: User | null;
@@ -232,7 +231,6 @@ export const selectUsersByRole = (state: RootState) => state.users.usersByRole;
 export const selectUsers = (state: RootState) => state.users.users;
 export const selectUsersLoading = (state: RootState) => state.users.userLoading;
 export const selectUserSuccess = (state: RootState) => state.users.Success;
-
 export const selectChatIdAdmin = (state: RootState) => state.users.chatIdAdmin;
 export const selectChatIdAdminLoading = (state: RootState) => state.users.chatIdAdminLoading;
 export const selectChatIdAdminSuccess = (state: RootState) => state.users.chatIdAdminSuccess;

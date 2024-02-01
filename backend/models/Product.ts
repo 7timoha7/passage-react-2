@@ -18,8 +18,23 @@ const ProductSchema = new Schema<IProduct>({
     required: true,
   },
   quantity: {
-    type: Number,
-    required: true,
+    type: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        stockID: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    default: [],
   },
   article: {
     type: String,
