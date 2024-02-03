@@ -67,6 +67,11 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>({
     type: String,
     default: null,
   },
+  createdAt: {
+    type: String,
+    required: true,
+    default: new Date().toISOString(),
+  },
 });
 
 UserSchema.pre('save', async function (next) {

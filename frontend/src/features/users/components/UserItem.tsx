@@ -6,7 +6,7 @@ import { Button, Typography } from '@mui/material';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { User } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectUser } from '../usersSlice';
+import { selectUser, selectUsersByRolePageInfo } from '../usersSlice';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -21,6 +21,7 @@ interface Props {
 const UserItem: React.FC<Props> = ({ prop, role }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const gotUsersPageInfo = useAppSelector(selectUsersByRolePageInfo);
 
   const [state] = useState({
     id: prop._id,
@@ -33,10 +34,23 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
     setOpen(true);
   };
 
+  const newPageGetByRole = async (role: string) => {
+    if (gotUsersPageInfo) {
+      let newPage: number;
+
+      if ((gotUsersPageInfo.totalItems - 1) % gotUsersPageInfo.pageSize !== 0) {
+        newPage = gotUsersPageInfo.currentPage;
+      } else {
+        newPage = Math.max(1, gotUsersPageInfo.currentPage - 1);
+      }
+      await dispatch(getByRole({ role, page: newPage }));
+    }
+  };
+
   const handleYes = async () => {
     if (user?.role === 'admin') {
       await dispatch(changeRole(state));
-      await dispatch(getByRole(role));
+      await newPageGetByRole(role);
       await setOpen(false);
     } else {
       if (role === 'admin' || role === 'user') {
@@ -46,15 +60,16 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
             role: role === 'admin' ? 'user' : role === 'user' ? 'admin' : 'admin',
           }),
         );
-        await dispatch(getByRole(role));
+        await newPageGetByRole(role);
         await setOpen(false);
       } else {
         await dispatch(changeRole(state));
-        await dispatch(getByRole(role));
+        await newPageGetByRole(role);
         await setOpen(false);
       }
     }
   };
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">

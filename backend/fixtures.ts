@@ -53,6 +53,38 @@ const run = async () => {
     },
   );
 
+  // Создаем массив пользователей
+  const users = Array.from({ length: 300 }, (_, index) => ({
+    email: `user${index + 1}@gmail.com`,
+    firstName: `User${index + 1}`,
+    lastName: 'Userovich',
+    password: '123',
+    token: crypto.randomUUID(),
+    role: 'user',
+    phoneNumber: `0555 ${Math.floor(Math.random() * 100000000)}`,
+    isVerified: true,
+  }));
+
+  // Создаем массив администраторов
+  const admins = Array.from({ length: 50 }, (_, index) => ({
+    email: `admin${index + 1}@gmail.com`,
+    firstName: `Admin${index + 1}`,
+    lastName: 'Adminich',
+    password: '123',
+    token: crypto.randomUUID(),
+    role: 'admin',
+    phoneNumber: `0555 ${Math.floor(Math.random() * 100000000)}`,
+    isVerified: true,
+  }));
+
+  // Объединяем массивы пользователей и администраторов
+  const usersAndAdmins = [...users, ...admins];
+
+  // Создаем фикстурные данные в базе данных
+  const [createdUsersAndAdmins] = await User.create(usersAndAdmins);
+
+  console.log('Фикстурные данные созданы:', createdUsersAndAdmins);
+
   const item = 50;
 
   for (let i = 0; i < item; i++) {

@@ -70,14 +70,38 @@ usersRouter.post('/session/token', auth, async (req, res, next) => {
 usersRouter.get('/getByRole', auth, permit('admin', 'director'), async (req, res, next) => {
   try {
     const roleUsers = req.query.roleUsers as string;
-    if (roleUsers === 'admin') {
-      const admins = await User.find({ role: 'admin' }).select(['-token', '-verificationToken', '-favorites']);
-      return res.send(admins);
+    const query = { role: roleUsers };
+
+    // Извлекаем параметры пагинации из строки запроса
+    const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+    const pageSize = 15;
+    const skip = (page - 1) * pageSize;
+
+    // Находим пользователей на основе роли и применяем пагинацию
+    const users = await User.find(query)
+      .select(['-token', '-verificationToken', '-favorites'])
+      .sort({ createdAt: -1 }) // Сортировка по убыванию даты создания
+      .skip(skip)
+      .limit(pageSize)
+      .exec();
+
+    if (!users || users.length === 0) {
+      return res.send({ message: `Нет пользователей с ролью ${roleUsers}` });
     }
-    if (roleUsers === 'user') {
-      const users = await User.find({ role: 'user' }).select(['-token', '-verificationToken', '-favorites']);
-      return res.send(users);
-    }
+
+    // Получаем общее количество пользователей для пагинации
+    const totalUsers = await User.countDocuments(query);
+    const totalPages = Math.ceil(totalUsers / pageSize);
+
+    return res.send({
+      users,
+      pageInfo: {
+        currentPage: page,
+        totalPages,
+        pageSize,
+        totalItems: totalUsers,
+      },
+    });
   } catch (e) {
     return next(e);
   }

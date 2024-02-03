@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getByRole } from '../users/usersThunks';
-import { selectGetUsersByRoleLoading, selectUsersByRole } from '../users/usersSlice';
+import { selectGetUsersByRoleLoading, selectUsersByRole, selectUsersByRolePageInfo } from '../users/usersSlice';
 import { Box, Card, CardContent, Grid, List, Typography } from '@mui/material';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -37,17 +37,18 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(selectGetUsersByRoleLoading);
   const gotUsers = useAppSelector(selectUsersByRole);
+  const gotUsersPageInfo = useAppSelector(selectUsersByRolePageInfo);
 
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const [state, setState] = React.useState<CabinetState>(exist);
 
   useEffect(() => {
     if (state.simpleUsers) {
-      dispatch(getByRole('user'));
+      dispatch(getByRole({ role: 'user', page: 1 }));
     } else if (state.admins) {
-      dispatch(getByRole('admin'));
+      dispatch(getByRole({ role: 'admin', page: 1 }));
     } else if (state.reportsAdmins) {
-      dispatch(getByRole('admin'));
+      dispatch(getByRole({ role: 'admin', page: 1 }));
     }
   }, [dispatch, state.simpleUsers, state.admins, state.reportsAdmins]);
 
@@ -99,9 +100,15 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
             <Grid item xs>
               {state.myInfo && <MyInformation />}
               {state.update && <UpdateBase />}
-              {state.simpleUsers && <UserItems prop={gotUsers} role="user" />}
-              {state.admins && <UserItems prop={gotUsers} role="admin" />}
-              {state.reportsAdmins && <ReportsAdmins admins={gotUsers} />}
+              {state.simpleUsers && gotUsersPageInfo && (
+                <UserItems gotUsersPageInfo={gotUsersPageInfo} prop={gotUsers} role="user" />
+              )}
+              {state.admins && gotUsersPageInfo && (
+                <UserItems gotUsersPageInfo={gotUsersPageInfo} prop={gotUsers} role="admin" />
+              )}
+              {state.reportsAdmins && gotUsersPageInfo && (
+                <ReportsAdmins gotUsersPageInfo={gotUsersPageInfo} admins={gotUsers} />
+              )}
               {state.favorites && <Favorites />}
             </Grid>
           </Grid>

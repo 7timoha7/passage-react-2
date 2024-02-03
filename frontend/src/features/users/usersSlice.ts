@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ChatIdAdminType, GlobalError, GlobalSuccess, User, ValidationError } from '../../types';
+import { ChatIdAdminType, GlobalError, GlobalSuccess, PageInfo, User, ValidationError } from '../../types';
 import {
   changeFavorites,
   changePass,
@@ -33,6 +33,7 @@ interface UsersState {
   modalCoverState: boolean;
   getUsersByRoleLoading: boolean;
   usersByRole: User[];
+  usersByRolePageInfo: PageInfo | null;
   users: User[];
   chatIdAdmin: ChatIdAdminType | null;
   chatIdAdminSuccess: GlobalSuccess | null;
@@ -52,6 +53,7 @@ const initialState: UsersState = {
   getUsersByRoleLoading: false,
   userLoading: false,
   usersByRole: [],
+  usersByRolePageInfo: null,
   users: [],
   chatIdAdmin: null,
   chatIdAdminSuccess: null,
@@ -163,9 +165,10 @@ export const usersSlice = createSlice({
       state.usersByRole = [];
       state.getUsersByRoleLoading = true;
     });
-    builder.addCase(getByRole.fulfilled, (state, { payload: admins }) => {
+    builder.addCase(getByRole.fulfilled, (state, { payload: { users, pageInfo } }) => {
       state.getUsersByRoleLoading = false;
-      state.usersByRole = admins;
+      state.usersByRole = users;
+      state.usersByRolePageInfo = pageInfo;
     });
     builder.addCase(getByRole.rejected, (state) => {
       state.getUsersByRoleLoading = false;
@@ -241,6 +244,7 @@ export const selectLogoutLoading = (state: RootState) => state.users.logoutLoadi
 export const selectModalCoverState = (state: RootState) => state.users.modalCoverState;
 export const selectGetUsersByRoleLoading = (state: RootState) => state.users.getUsersByRoleLoading;
 export const selectUsersByRole = (state: RootState) => state.users.usersByRole;
+export const selectUsersByRolePageInfo = (state: RootState) => state.users.usersByRolePageInfo;
 export const selectUsers = (state: RootState) => state.users.users;
 export const selectUsersLoading = (state: RootState) => state.users.userLoading;
 export const selectUserSuccess = (state: RootState) => state.users.Success;

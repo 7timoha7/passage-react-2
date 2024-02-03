@@ -12,6 +12,7 @@ export interface IUser {
   googleId?: string;
   isVerified: boolean;
   verificationToken: string | null;
+  createdAt: string;
 }
 
 export interface ICategory {

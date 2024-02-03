@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react';
-import { User } from '../../../types';
-
+import { PageInfo, User } from '../../../types';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 import MuiAccordionSummary, { AccordionSummaryProps } from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material';
+import { Box, Stack, styled } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAdminMyOrders, selectAdminMyOrdersPageInfo } from '../../Order/orderSlice';
 import { getForAdminHisOrders } from '../../Order/orderThunks';
 import OrderItems from '../../Order/components/OrderItems';
 import { selectGetUsersByRoleLoading } from '../../users/usersSlice';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import { getByRole } from '../../users/usersThunks';
+import Pagination from '@mui/material/Pagination';
 
 interface Props {
   admins: User[];
+  gotUsersPageInfo: PageInfo;
 }
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} {...props} />)(
@@ -48,7 +50,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }));
 
-const ReportsAdmins: React.FC<Props> = ({ admins }) => {
+const ReportsAdmins: React.FC<Props> = ({ admins, gotUsersPageInfo }) => {
   const [expanded, setExpanded] = React.useState<string | false>('');
   const adminOrders = useAppSelector(selectAdminMyOrders);
   const loading = useAppSelector(selectGetUsersByRoleLoading);
@@ -64,27 +66,57 @@ const ReportsAdmins: React.FC<Props> = ({ admins }) => {
     }
   }, [dispatch, expanded]);
 
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
+    dispatch(getByRole({ role: 'admin', page: page }));
+  };
+
+  const renderPagination = () => {
+    if (gotUsersPageInfo && gotUsersPageInfo.totalPages > 1) {
+      return (
+        <Box display="flex" justifyContent="center" sx={{ m: 2 }}>
+          <Stack spacing={2}>
+            <Pagination
+              showFirstButton
+              showLastButton
+              count={gotUsersPageInfo.totalPages}
+              page={gotUsersPageInfo.currentPage}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+              size={'small'}
+            />
+          </Stack>
+        </Box>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
       {loading ? (
         <Spinner />
       ) : (
-        admins.map((admin) => {
-          return (
-            <Accordion key={admin._id} expanded={expanded === admin._id} onChange={handleChange(admin._id)}>
-              <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-                <Typography>
-                  {admin.firstName} {admin.lastName}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {adminOrdersPageInfo && (
-                  <OrderItems ordersItems={adminOrders} adminPageInfo={adminOrdersPageInfo} id={admin._id} />
-                )}
-              </AccordionDetails>
-            </Accordion>
-          );
-        })
+        <>
+          {renderPagination()}
+          {admins.map((admin) => {
+            return (
+              <Accordion key={admin._id} expanded={expanded === admin._id} onChange={handleChange(admin._id)}>
+                <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+                  <Typography>
+                    {admin.firstName} {admin.lastName}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {adminOrdersPageInfo && (
+                    <OrderItems ordersItems={adminOrders} adminPageInfo={adminOrdersPageInfo} id={admin._id} />
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+          {renderPagination()}
+        </>
       )}
     </>
   );

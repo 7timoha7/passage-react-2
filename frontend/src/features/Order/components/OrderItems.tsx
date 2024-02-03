@@ -23,7 +23,6 @@ const OrderItems: React.FC<Props> = ({ ordersItems, ordersPageInfo, adminPageInf
     if (ordersPageInfo) {
       dispatch(getOrders(page));
     } else if (adminPageInfo && id) {
-      console.log('111');
       dispatch(getForAdminHisOrders({ page: page, id: id }));
     }
   };
@@ -81,7 +80,6 @@ const OrderItems: React.FC<Props> = ({ ordersItems, ordersPageInfo, adminPageInf
                 ),
             )}
           </Box>
-
           {renderPagination()}
         </>
       ) : (

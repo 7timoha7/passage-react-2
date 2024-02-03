@@ -4,6 +4,7 @@ import {
   GlobalError,
   GlobalSuccess,
   LoginMutation,
+  PageInfo,
   RegisterMutation,
   RegisterResponse,
   User,
@@ -48,9 +49,18 @@ export const logout = createAsyncThunk('users/logout', async (_, { dispatch }) =
   dispatch(unsetUser());
 });
 
-export const getByRole = createAsyncThunk<User[], string>('users/getByRole', async (role) => {
+export const getByRole = createAsyncThunk<
+  {
+    users: User[];
+    pageInfo: PageInfo;
+  },
+  { role: string; page: number }
+>('users/getByRole', async ({ role, page }) => {
   try {
-    const responseAdmins = await axiosApi.get<User[]>('/users/getByRole?roleUsers=' + role);
+    const responseAdmins = await axiosApi.get<{
+      users: User[];
+      pageInfo: PageInfo;
+    }>(`/users/getByRole?roleUsers=${role}&page=${page}`);
     return responseAdmins.data;
   } catch {
     throw new Error();

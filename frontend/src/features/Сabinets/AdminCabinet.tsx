@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectUser, selectUsersByRole } from '../users/usersSlice';
+import { selectUser, selectUsersByRole, selectUsersByRolePageInfo } from '../users/usersSlice';
 import { Box, Card, Grid, List, ListItemButton } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import PersonIcon from '@mui/icons-material/Person';
@@ -43,6 +43,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const gotUsers = useAppSelector(selectUsersByRole);
+  const gotUsersPageInfo = useAppSelector(selectUsersByRolePageInfo);
   const unacceptedOrders = useAppSelector(selectOrders);
   const orders = useAppSelector(selectAdminMyOrders);
   const orderPageInfo = useAppSelector(selectOrdersPageInfo);
@@ -51,7 +52,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
   useEffect(() => {
     if (user) {
       if (state.users) {
-        dispatch(getByRole('user'));
+        dispatch(getByRole({ role: 'user', page: 1 }));
       }
       if (state.myOrders) {
         dispatch(getForAdminHisOrders({ id: user._id, page: 1 }));
@@ -106,7 +107,9 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
             </Grid>
             <Grid item xs>
               {state.myInfo && <MyInformation />}
-              {state.users && <UserItems prop={gotUsers} role="user" />}
+              {state.users && gotUsersPageInfo && (
+                <UserItems gotUsersPageInfo={gotUsersPageInfo} prop={gotUsers} role="user" />
+              )}
               {state.favorites && <Favorites />}
               {state.myOrders && adminPageInfo && user?._id && (
                 <OrderItems ordersItems={orders} adminPageInfo={adminPageInfo} id={user._id} />
