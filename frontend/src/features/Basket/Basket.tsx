@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
   Badge,
-  Button,
   CircularProgress,
   Grid,
   IconButton,
-  List,
   ListItem,
-  ListItemText,
   Popover,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography,
 } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -119,71 +121,81 @@ const Basket = () => {
           horizontal: 'right',
         }}
       >
-        <List sx={{ background: 'linear-gradient(45deg, rgb(172, 172, 172), rgb(252, 140, 140))' }}>
-          {stateBasket?.items.map((item, index) => (
-            <ListItem key={index}>
-              <ListItemText primary={item.product.name + ' x ' + item.quantity + 'шт'} />
-
-              <IconButton
-                disabled={addBasketLoading === item.product.goodID}
-                color="primary"
-                onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}
-              >
-                {addBasketLoading === item.product.goodID ? (
-                  <CircularProgress size={'23px'} color="error" />
-                ) : (
-                  <AddCircleOutlineIcon style={{ color: 'red' }} />
-                )}
-              </IconButton>
-              <IconButton
-                disabled={addBasketLoading === item.product.goodID}
-                color="primary"
-                onClick={() =>
-                  item.quantity === 1
-                    ? handleUpdateBasket(item.product.goodID, 'remove')
-                    : handleUpdateBasket(item.product.goodID, 'decrease')
-                }
-              >
-                {addBasketLoading === item.product.goodID ? (
-                  <CircularProgress size={'23px'} color="error" />
-                ) : (
-                  <RemoveCircleOutlineIcon style={{ color: 'black' }} />
-                )}
-              </IconButton>
-              <Typography variant="body2">{`${item.product.price * item.quantity} сом`}</Typography>
-            </ListItem>
-          ))}
-          <Divider />
-          <ListItem>
-            <Typography variant="subtitle1">Общая сумма: {stateBasket?.totalPrice} сом</Typography>
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <Grid container spacing={2}>
-              <Grid item>
-                <LoadingButton
-                  loading={loadingBasket()}
-                  onClick={() => navigateToFullBasket()}
-                  variant="outlined"
-                  color="error"
-                >
-                  Перейти в корзину
-                </LoadingButton>
-              </Grid>
-              <Grid item>
-                <LoadingButton
-                  loading={loadingBasket()}
-                  disabled={stateBasket?.items.length === 0}
-                  onClick={() => clearBasket('clear')}
-                  variant="text"
-                  color="error"
-                >
-                  Очистить корзину
-                </LoadingButton>
-              </Grid>
-            </Grid>
-          </ListItem>
-        </List>
+        <TableContainer>
+          <Table>
+            <TableBody>
+              {stateBasket?.items.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>
+                    <Typography variant="body1">{item.product.name}</Typography>
+                  </TableCell>
+                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      disabled={addBasketLoading === item.product.goodID}
+                      color="primary"
+                      style={{ color: 'red' }} // ваш цвет для кнопок +
+                      onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}
+                    >
+                      {addBasketLoading === item.product.goodID ? (
+                        <CircularProgress size={'23px'} color="error" />
+                      ) : (
+                        <AddCircleOutlineIcon />
+                      )}
+                    </IconButton>
+                    <IconButton
+                      disabled={addBasketLoading === item.product.goodID}
+                      color="primary"
+                      style={{ color: 'black' }} // ваш цвет для кнопок -
+                      onClick={() =>
+                        item.quantity === 1
+                          ? handleUpdateBasket(item.product.goodID, 'remove')
+                          : handleUpdateBasket(item.product.goodID, 'decrease')
+                      }
+                    >
+                      {addBasketLoading === item.product.goodID ? (
+                        <CircularProgress size={'23px'} color="error" />
+                      ) : (
+                        <RemoveCircleOutlineIcon />
+                      )}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2">{`${item.product.price * item.quantity} сом`}</Typography>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Divider />
+        <ListItem>
+          <Typography variant="subtitle1">Общая сумма: {stateBasket?.totalPrice} сом</Typography>
+        </ListItem>
+        <Divider />
+        <Grid container spacing={2} sx={{ p: 1 }}>
+          <Grid item>
+            <LoadingButton
+              loading={loadingBasket()}
+              onClick={() => navigateToFullBasket()}
+              variant="outlined"
+              color="error"
+            >
+              Перейти в корзину
+            </LoadingButton>
+          </Grid>
+          <Grid item>
+            <LoadingButton
+              loading={loadingBasket()}
+              disabled={stateBasket?.items.length === 0}
+              onClick={() => clearBasket('clear')}
+              variant="text"
+              color="error"
+            >
+              Очистить корзину
+            </LoadingButton>
+          </Grid>
+        </Grid>
       </Popover>
     </>
   );

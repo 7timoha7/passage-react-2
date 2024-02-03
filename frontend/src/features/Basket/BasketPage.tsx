@@ -87,14 +87,14 @@ const BasketPage = () => {
             <>
               <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
                 <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Название</TableCell>
-                      <TableCell align="center">Количество</TableCell>
-                      <TableCell align="center">+/-</TableCell>
-                      <TableCell align="center">Цена</TableCell>
-                    </TableRow>
-                  </TableHead>
+                  {/*<TableHead>*/}
+                  {/*  <TableRow>*/}
+                  {/*    <TableCell>Название</TableCell>*/}
+                  {/*    <TableCell align="center">Количество</TableCell>*/}
+                  {/*    <TableCell align="center">+/-</TableCell>*/}
+                  {/*    <TableCell align="center">Цена</TableCell>*/}
+                  {/*  </TableRow>*/}
+                  {/*</TableHead>*/}
                   <TableBody>
                     {stateBasket.items.map((item, index) => (
                       <TableRow key={index}>
