@@ -1,5 +1,4 @@
 import {
-  Button,
   CircularProgress,
   Divider,
   Grid,
@@ -9,7 +8,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Typography,
 } from '@mui/material';
@@ -128,7 +126,7 @@ const BasketPage = () => {
                             )}
                           </IconButton>
                         </TableCell>
-                        <TableCell align="center">{`${item.product.price * item.quantity} сом`}</TableCell>
+                        <TableCell align="center">{`${(item.product.price * item.quantity).toFixed(2)} сом`}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

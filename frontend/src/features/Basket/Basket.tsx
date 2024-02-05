@@ -25,6 +25,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 
 const Basket = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -121,6 +122,9 @@ const Basket = () => {
           horizontal: 'right',
         }}
       >
+        <IconButton aria-label="Закрыть" onClick={handlePopoverClose}>
+          <DisabledByDefaultIcon />
+        </IconButton>
         <TableContainer>
           <Table>
             <TableBody>
@@ -161,7 +165,7 @@ const Basket = () => {
                     </IconButton>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="body2">{`${item.product.price * item.quantity} сом`}</Typography>
+                    <Typography variant="body2">{`${(item.product.price * item.quantity).toFixed(2)} сом`}</Typography>
                   </TableCell>
                 </TableRow>
               ))}

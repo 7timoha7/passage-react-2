@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Box } from '@mui/system';
 import { useAppDispatch, useAppSelector } from '../../../../../app/hooks';
 import { searchProductsPreview } from '../../../../../features/Products/productsThunks';
-import { apiURL } from '../../../../../constants';
-import { useNavigate } from 'react-router-dom';
 import noImg from '../../../../../assets/images/no_image.jpg';
-import { Box, Button } from '@mui/material';
+import { apiURL, placeHolderImg } from '../../../../../constants';
+import { useNavigate } from 'react-router-dom';
 import {
   clearSearchResultsPreview,
   selectSearchLoadingPreview,
   selectSearchResultsPreview,
 } from '../../../../../features/Products/productsSlise';
+import { Button } from '@mui/material';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
-const Search: React.FC = () => {
+const CustomSearchBar: React.FC = () => {
   const dispatch = useAppDispatch();
   const searchResultsPreview = useAppSelector(selectSearchResultsPreview);
   const searchLoadingPreview = useAppSelector(selectSearchLoadingPreview);
@@ -76,19 +79,10 @@ const Search: React.FC = () => {
   }, [handleClickOutside]);
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        width: '100%',
-        background: 'rgba(255,255,255,0.49)',
-        padding: '7px',
-        borderRadius: '5px',
-      }}
-    >
+    <Box position="relative" width="100%">
       <TextField
-        variant={'filled'}
-        size={'small'}
-        color={'error'}
+        // variant="outlined"
+        size="small"
         label="Живой поиск"
         type="search"
         value={query}
@@ -102,7 +96,7 @@ const Search: React.FC = () => {
         onFocus={() => dispatch(clearSearchResultsPreview())}
       />
       {searchResultsPreview.results.length > 0 && (
-        <div>
+        <Box>
           <ul
             ref={menuRef}
             style={{
@@ -125,18 +119,26 @@ const Search: React.FC = () => {
                 key={option._id}
                 style={{
                   padding: '8px',
-                  display: 'flex',
+                  display: 'flex', // Добавлено свойство display: flex
+                  alignItems: 'center', // Добавлено свойство align-items: center
                   cursor: 'pointer',
                   borderBottom: '1px solid #ccc',
                   color: 'black',
                 }}
                 onClick={() => handleProductCard(option._id)}
               >
-                <img
-                  src={option.images[0] ? apiURL + option.images[0] : noImg}
-                  alt={option.name}
-                  style={{ width: '24px', height: '24px', marginRight: '8px' }}
-                />
+                <Box marginRight={2}>
+                  <LazyLoadImage
+                    src={option.images[0] ? apiURL + option.images[0] : noImg}
+                    alt={option.name}
+                    width="35px"
+                    height="35px"
+                    style={{ objectFit: 'contain' }}
+                    placeholderSrc={placeHolderImg}
+                    effect="blur"
+                  />
+                </Box>
+
                 <div>
                   <div style={{ fontWeight: 'bold' }}>{option.name}</div>
                   <div style={{ marginLeft: '8px' }}>Цена: {option.price}</div>
@@ -145,16 +147,16 @@ const Search: React.FC = () => {
             ))}
           </ul>
           {searchResultsPreview.hasMore && (
-            <Box display={'flex'} justifyContent={'center'}>
-              <Button color={'error'} onClick={handleExtendedSearch}>
+            <Box display="flex" justifyContent="center">
+              <Button color="error" onClick={handleExtendedSearch}>
                 Все результаты
               </Button>
             </Box>
           )}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 
-export default Search;
+export default CustomSearchBar;

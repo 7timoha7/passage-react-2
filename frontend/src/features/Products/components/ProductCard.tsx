@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -10,7 +9,7 @@ import noImage from '../../../assets/images/no_image.jpg';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { apiURL } from '../../../constants';
+import { apiURL, placeHolderImg } from '../../../constants';
 import { selectFetchFavoriteProductsOneLoading, selectUser } from '../../users/usersSlice';
 import { changeFavorites, reAuthorization } from '../../users/usersThunks';
 import { getFavoriteProducts } from '../productsThunks';
@@ -20,6 +19,8 @@ import { fetchBasket, updateBasket } from '../../Basket/basketThunks';
 import { selectPageInfo } from '../productsSlise';
 import { selectBasketUpdateLoading } from '../../Basket/basketSlice';
 import { CircularProgress } from '@mui/material';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 interface Props {
   product: ProductType;
@@ -108,7 +109,15 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           },
         }}
       >
-        <CardMedia component="img" height="194" image={imgProduct} alt="Product" />
+        <LazyLoadImage
+          effect="blur" // можно изменить на 'opacity' или другой
+          src={imgProduct}
+          alt="Product"
+          height={200}
+          width="100%"
+          placeholderSrc={placeHolderImg}
+          style={{ objectFit: 'contain' }}
+        />
         <Box
           sx={{
             position: 'absolute',

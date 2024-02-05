@@ -7,7 +7,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectCategories } from './menuCategoriesSlice';
 import { fetchCategories } from './menuCategoriesThunks';
-import AccordionCategories from './AccordionCategories';
 import { Typography } from '@mui/material';
 import Categories from './Categories';
 

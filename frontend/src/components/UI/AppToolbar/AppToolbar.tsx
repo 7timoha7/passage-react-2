@@ -22,6 +22,7 @@ const AppToolbar = () => {
   });
   return (
     <Box mb={3} sx={{ flexGrow: 1, margin: 0 }}>
+      <NavigateTop />
       <AppBar position="sticky" sx={ToolBarStyles}>
         <Toolbar>
           <Container maxWidth="xl">
@@ -41,10 +42,8 @@ const AppToolbar = () => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid item>
-                <NavigateTop />
-              </Grid>
-              <Grid item>
+
+              <Grid item sx={{ flexGrow: 1, minWidth: 0 }}>
                 <Search />
               </Grid>
               <Grid item>{user ? <UserMenu user={user} /> : <AnonymousMenu />}</Grid>

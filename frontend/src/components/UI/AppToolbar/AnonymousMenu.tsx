@@ -27,6 +27,7 @@ const AnonymousMenu = () => {
               variant="outlined"
               startIcon={<AccountCircle />}
               color="secondary"
+              sx={{ ':hover': { color: 'rgba(110,102,102,0.72)' } }}
             >
               <Typography mt={0.5} fontWeight="bold">
                 Регистрация
@@ -34,7 +35,14 @@ const AnonymousMenu = () => {
             </Button>
           </Grid>
           <Grid item>
-            <Button component={NavLink} to="/login" variant="outlined" startIcon={<LockOutlined />} color="secondary">
+            <Button
+              sx={{ ':hover': { color: 'rgba(110,102,102,0.72)' } }}
+              component={NavLink}
+              to="/login"
+              variant="outlined"
+              startIcon={<LockOutlined />}
+              color="secondary"
+            >
               <Typography mt={0.5} fontWeight="bold">
                 Вход
               </Typography>
