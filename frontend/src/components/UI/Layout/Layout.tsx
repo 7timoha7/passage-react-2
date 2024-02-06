@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, useMediaQuery, Container } from '@mui/material';
+import { Box, Container, useMediaQuery } from '@mui/material';
 import AppToolbar from '../AppToolbar/AppToolbar';
 import MenuCategories from '../../../features/MenuCategories/MenuCategories';
 import Footer from '../Footer/Footer';
 import { useLocation } from 'react-router-dom';
+import BreadcrumbsPage from '../BreadcrumbsPage';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isMobile = useMediaQuery('(max-width:1200px)');
@@ -23,9 +24,8 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       >
         <MenuCategories />
         <Box maxWidth={'100%'} component="main" sx={{ flex: 1, boxSizing: 'border-box' }}>
+          <BreadcrumbsPage />
           {location.pathname === '/' ? <Box>{children}</Box> : <Container sx={{ mt: 2, mb: 2 }}>{children}</Container>}
-          {/*<Container sx={{ mt: 2, mb: 2 }}>{children}</Container>*/}
-          {/*<Box>{children}</Box>*/}
         </Box>
       </Box>
       <footer style={{ flexShrink: 0 }}>
