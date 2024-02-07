@@ -264,6 +264,10 @@ ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
       message = `Закрыт - Заказ №: ${updatedOrder.orderArt.toUpperCase()} , оформлен и закрыт. администратором - ${
         user.firstName
       } ${user.lastName}`;
+    } else if (req.body.status === 'canceled') {
+      message = `Отменен - Заказ №: ${updatedOrder.orderArt.toUpperCase()} , отменен. администратором - ${
+        user.firstName
+      } ${user.lastName}`;
     }
 
     // Этот код выбирает все объекты ChatIdAdmin, проецирует только поле chat_id

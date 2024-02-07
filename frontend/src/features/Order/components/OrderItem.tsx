@@ -33,7 +33,18 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
   const deleteOrderLoading = useAppSelector(selectOrderDeleteLoading);
   const [openDelete, setOpenDelete] = useState(false);
 
-  const background = prop.status === 'open' ? '#FFEAE9' : prop.status === 'in progress' ? 'lightyellow' : '#CCFFCD';
+  // const background = prop.status === 'open' ? '#FFEAE9' : prop.status === 'in progress' ? 'lightyellow' : '#CCFFCD';
+  const backgroundOrder = () => {
+    if (prop.status === 'open') {
+      return '#FFEAE9';
+    } else if (prop.status === 'in progress') {
+      return 'lightyellow';
+    } else if (prop.status === 'canceled') {
+      return '#fca5a5';
+    } else {
+      return '#CCFFCD';
+    }
+  };
   const handleClickOnCheckout = async (id: string) => {
     await dispatch(changeStatusOrder({ id: id, status: 'in progress' }));
 
@@ -50,9 +61,13 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
     }
   };
 
-  const handleClickOnClose = async (id: string) => {
+  const handleClickOnClose = async (id: string, status: string) => {
     if (user?._id) {
-      await dispatch(changeStatusOrder({ id: id, status: 'closed' }));
+      if (status === 'closed') {
+        await dispatch(changeStatusOrder({ id: id, status: status }));
+      } else if (status === 'canceled') {
+        await dispatch(changeStatusOrder({ id: id, status: status }));
+      }
 
       if (adminPageInfo) {
         let newPage: number;
@@ -93,11 +108,13 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
       return '#bbc700';
     } else if (color === 'closed') {
       return '#0028b2';
+    } else if (color === 'canceled') {
+      return '#b20000';
     }
   };
 
   return (
-    <Accordion sx={{ background }}>
+    <Accordion sx={{ background: backgroundOrder }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
         <Grid container justifyContent="space-between">
           <Grid item xs={12} sm={12} lg={6} xl={3}>
@@ -193,44 +210,68 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
             })}
           </AccordionDetails>
         </Accordion>
-        {user && user.role === 'admin' && prop.status === 'open' && (
-          <Box textAlign="right">
-            <LoadingButton
-              variant="contained"
-              loading={buttonLoading === prop._id}
-              size="small"
-              sx={{ background: '#099100' }}
-              onClick={() => handleClickOnCheckout(prop._id)}
-            >
-              Оформить заказ
-            </LoadingButton>
-          </Box>
-        )}
-        {user && user.role === 'admin' && prop.status === 'in progress' && (
-          <Box textAlign="right">
-            <LoadingButton
-              variant="contained"
-              loading={buttonLoading === prop._id}
-              color="success"
-              onClick={() => handleClickOnClose(prop._id)}
-              size="small"
-              sx={{ background: '#004fb4' }}
-            >
-              Закрыть заказ
-            </LoadingButton>
-          </Box>
-        )}
-        {user && user.role === 'director' && !prop.user_id && (
-          <Button
-            onClick={() => setOpenDelete(true)}
-            size="small"
-            variant="contained"
-            color="error"
-            sx={{ background: '#CD1818' }}
-          >
-            Удалить
-          </Button>
-        )}
+        <Grid container spacing={2} justifyContent={'flex-end'}>
+          {user && user.role === 'admin' && prop.status === 'open' && (
+            <Grid item>
+              <Box textAlign="right">
+                <LoadingButton
+                  variant="contained"
+                  loading={buttonLoading === prop._id}
+                  size="small"
+                  sx={{ background: '#099100' }}
+                  onClick={() => handleClickOnCheckout(prop._id)}
+                >
+                  Оформить заказ
+                </LoadingButton>
+              </Box>
+            </Grid>
+          )}
+          {user && user.role === 'admin' && prop.status === 'in progress' && (
+            <Grid item>
+              <Box textAlign="right">
+                <LoadingButton
+                  variant="contained"
+                  loading={buttonLoading === prop._id}
+                  color="success"
+                  onClick={() => handleClickOnClose(prop._id, 'closed')}
+                  size="small"
+                  sx={{ background: '#004fb4' }}
+                >
+                  Закрыть заказ
+                </LoadingButton>
+              </Box>
+            </Grid>
+          )}
+          {user && user.role === 'admin' && prop.status === 'in progress' && (
+            <Grid item>
+              <Box textAlign="right">
+                <LoadingButton
+                  variant="contained"
+                  loading={buttonLoading === prop._id}
+                  color="error"
+                  onClick={() => handleClickOnClose(prop._id, 'canceled')}
+                  size="small"
+                  sx={{ background: '#b40000' }}
+                >
+                  Отменить
+                </LoadingButton>
+              </Box>
+            </Grid>
+          )}
+          {user && user.role === 'director' && !prop.user_id && (
+            <Grid item>
+              <Button
+                onClick={() => setOpenDelete(true)}
+                size="small"
+                variant="contained"
+                color="error"
+                sx={{ background: '#CD1818' }}
+              >
+                Удалить
+              </Button>
+            </Grid>
+          )}
+        </Grid>
         <Dialog open={openDelete} onClose={() => setOpenDelete(false)}>
           <DialogContent>
             <Typography variant="body1">Вы уверены, что хотите удалить выбранный заказ ?</Typography>

@@ -27,7 +27,7 @@ const BreadcrumbsPage = () => {
       if (pathName === 'products' && categoryId) {
         const categoryPath = getCategoryPath(categoryId);
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/frontend/src/public">
+          <Link underline="hover" key="1" color="inherit" href="/">
             Главная
           </Link>,
           <Link underline="hover" key="2" color="inherit" href={`/products/${categoryId}`}>
@@ -38,7 +38,7 @@ const BreadcrumbsPage = () => {
       } else if (pathName === 'product' && productOne) {
         const categoryPath = getCategoryPath(productOne.ownerID);
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/frontend/src/public">
+          <Link underline="hover" key="1" color="inherit" href="/">
             Главная
           </Link>,
           <Link underline="hover" key="2" color="inherit" href={`/products/${productOne.ownerID}`}>
