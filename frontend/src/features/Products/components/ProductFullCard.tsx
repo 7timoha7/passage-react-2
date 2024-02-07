@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -17,7 +17,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import noImage from '../../../assets/images/no_image.jpg';
 import { ProductType } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { apiURL, placeHolderImg } from '../../../constants';
+import { placeHolderImg } from '../../../constants';
 import { useNavigate } from 'react-router-dom';
 import { selectFetchFavoriteProductsOneLoading, selectUser } from '../../users/usersSlice';
 import { selectBasket, selectBasketUpdateLoading } from '../../Basket/basketSlice';
@@ -30,13 +30,14 @@ import Card from '@mui/material/Card';
 import { LoadingButton } from '@mui/lab';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import ProductGallery from './ProductGallery';
 
 interface Props {
   product: ProductType;
 }
 
 const ProductFullCard: React.FC<Props> = ({ product }) => {
-  const [selectedImage, setSelectedImage] = useState(product.images.length ? product.images[0] : '');
+  // const [selectedImage, setSelectedImage] = useState(product.images.length ? product.images[0] : '');
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -122,9 +123,11 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
       <Grid container>
         <Grid item sx={{ width: '100%', mb: 3, display: 'flex', justifyContent: 'center' }}>
           <Card sx={{ p: 2, width: '100%' }}>
-            <Box>
+            {product.images.length ? (
+              <ProductGallery images={product.images} />
+            ) : (
               <LazyLoadImage
-                src={product.images.length ? apiURL + '/' + selectedImage : noImage}
+                src={noImage}
                 alt={product.name}
                 width="100%"
                 height="600px"
@@ -132,27 +135,40 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                 placeholderSrc={placeHolderImg}
                 style={{ objectFit: 'contain' }}
               />
-              <Grid container spacing={1} mt={2}>
-                {product.images.length
-                  ? product.images.map((image, index) => (
-                      <Grid item key={index}>
-                        <LazyLoadImage
-                          src={apiURL + '/' + image}
-                          alt={product.name}
-                          width="60px"
-                          height="60px"
-                          style={{ cursor: 'pointer', border: '1px solid #ccc', objectFit: 'contain' }}
-                          effect="blur"
-                          placeholderSrc={placeHolderImg}
-                          onClick={() => setSelectedImage(image)}
-                        />
-                      </Grid>
-                    ))
-                  : null}
-              </Grid>
-            </Box>
+            )}
+
+            {/*<Box>*/}
+            {/*  <LazyLoadImage*/}
+            {/*    src={product.images.length ? apiURL + '/' + selectedImage : noImage}*/}
+            {/*    alt={product.name}*/}
+            {/*    width="100%"*/}
+            {/*    height="600px"*/}
+            {/*    effect="blur"*/}
+            {/*    placeholderSrc={placeHolderImg}*/}
+            {/*    style={{ objectFit: 'contain' }}*/}
+            {/*  />*/}
+            {/*  <Grid container spacing={1} mt={2}>*/}
+            {/*    {product.images.length*/}
+            {/*      ? product.images.map((image, index) => (*/}
+            {/*          <Grid item key={index}>*/}
+            {/*            <LazyLoadImage*/}
+            {/*              src={apiURL + '/' + image}*/}
+            {/*              alt={product.name}*/}
+            {/*              width="60px"*/}
+            {/*              height="60px"*/}
+            {/*              style={{ cursor: 'pointer', border: '1px solid #ccc', objectFit: 'contain' }}*/}
+            {/*              effect="blur"*/}
+            {/*              placeholderSrc={placeHolderImg}*/}
+            {/*              onClick={() => setSelectedImage(image)}*/}
+            {/*            />*/}
+            {/*          </Grid>*/}
+            {/*        ))*/}
+            {/*      : null}*/}
+            {/*  </Grid>*/}
+            {/*</Box>*/}
           </Card>
         </Grid>
+
         <Grid item>
           <Box
             sx={{
