@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Breadcrumbs, Link } from '@mui/material';
 import { useLocation } from 'react-router-dom';
-import { useAppSelector } from '../../app/hooks';
-import { selectCategories } from '../../features/MenuCategories/menuCategoriesSlice';
-import { selectProductOne } from '../../features/Products/productsSlise';
+import { useAppSelector } from '../../../app/hooks';
+import { selectCategories } from '../../../features/MenuCategories/menuCategoriesSlice';
+import { selectProductOne } from '../../../features/Products/productsSlise';
 
 const BreadcrumbsPage = () => {
   const location = useLocation();
@@ -27,7 +27,7 @@ const BreadcrumbsPage = () => {
       if (pathName === 'products' && categoryId) {
         const categoryPath = getCategoryPath(categoryId);
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link underline="hover" key="1" color="inherit" href="/frontend/src/public">
             Главная
           </Link>,
           <Link underline="hover" key="2" color="inherit" href={`/products/${categoryId}`}>
@@ -38,7 +38,7 @@ const BreadcrumbsPage = () => {
       } else if (pathName === 'product' && productOne) {
         const categoryPath = getCategoryPath(productOne.ownerID);
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link underline="hover" key="1" color="inherit" href="/frontend/src/public">
             Главная
           </Link>,
           <Link underline="hover" key="2" color="inherit" href={`/products/${productOne.ownerID}`}>
@@ -57,11 +57,15 @@ const BreadcrumbsPage = () => {
   }, [pathName, categoryId, categories, productOne]);
 
   return (
-    <Box sx={{ m: 1 }}>
-      <Breadcrumbs separator="›" aria-label="breadcrumb">
-        {breadcrumbs}
-      </Breadcrumbs>
-    </Box>
+    <>
+      {url !== '/' ? (
+        <Box sx={{ m: 1 }}>
+          <Breadcrumbs separator="›" aria-label="breadcrumb">
+            {breadcrumbs}
+          </Breadcrumbs>
+        </Box>
+      ) : null}
+    </>
   );
 };
 

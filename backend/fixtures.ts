@@ -81,9 +81,9 @@ const run = async () => {
   const usersAndAdmins = [...users, ...admins];
 
   // Создаем фикстурные данные в базе данных
-  const [createdUsersAndAdmins] = await User.create(usersAndAdmins);
+  await User.create(usersAndAdmins);
 
-  console.log('Фикстурные данные созданы:', createdUsersAndAdmins);
+  console.log('Фикстурные данные созданы:');
 
   const item = 50;
 

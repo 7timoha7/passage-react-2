@@ -38,6 +38,10 @@ import {
 import { selectBasketSuccess, setBasketSuccessNull } from './features/Basket/basketSlice';
 import SearchPage from './components/UI/AppToolbar/NavigateTop/Components/SearchPage';
 import { selectOrderSuccess, setOrderSuccessNull } from './features/Order/orderSlice';
+import { Alert } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import { createBasket, fetchBasket } from './features/Basket/basketThunks';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -134,11 +138,18 @@ function App() {
 
   useEffect(() => {
     if (orderSuccess) {
+      const messageAlert = orderSuccess.message.ru.includes('Заказ уже взят администратором:');
       if (i18n.language === 'en') {
         enqueueSnackbar(orderSuccess.message.en, {
           variant: 'success',
           preventDuplicate: true,
         });
+      } else if (messageAlert) {
+        enqueueSnackbar(orderSuccess.message.ru, {
+          variant: 'error',
+          preventDuplicate: true,
+        });
+        alert(orderSuccess.message.ru);
       } else {
         enqueueSnackbar(orderSuccess.message.ru, {
           variant: 'success',
@@ -148,6 +159,20 @@ function App() {
     }
     dispatch(setOrderSuccessNull());
   }, [orderSuccess, i18n.language, dispatch, enqueueSnackbar]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchBasket('1'));
+    }
+    let storedBasketId = localStorage.getItem('sessionKey');
+    if (storedBasketId) {
+      dispatch(createBasket({ sessionKey: storedBasketId }));
+      dispatch(fetchBasket(storedBasketId));
+    } else {
+      storedBasketId = uuidv4();
+      localStorage.setItem('sessionKey', storedBasketId);
+    }
+  }, [user, dispatch]);
 
   return (
     <Routes>

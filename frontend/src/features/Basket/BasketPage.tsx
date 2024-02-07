@@ -13,8 +13,7 @@ import {
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import React, { useEffect, useState } from 'react';
-import { BasketTypeOnServerMutation } from '../../types';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectBasket, selectBasketOneLoading, selectBasketUpdateLoading } from './basketSlice';
 import { fetchBasket, updateBasket } from './basketThunks';
@@ -24,7 +23,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import { LoadingButton } from '@mui/lab';
 
 const BasketPage = () => {
-  const [stateBasket, setStateBasket] = useState<BasketTypeOnServerMutation | null>(null);
+  // const [stateBasket, setStateBasket] = useState<BasketTypeOnServerMutation | null>(null);
   const basket = useAppSelector(selectBasket);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -36,36 +35,20 @@ const BasketPage = () => {
     return !!addBasketLoading;
   };
 
-  useEffect(() => {
-    if (basket) {
-      setStateBasket(basket);
-    }
-  }, [basket]);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchBasket('1'));
-    }
-    const storedBasketId = localStorage.getItem('sessionKey');
-    if (storedBasketId) {
-      dispatch(fetchBasket(storedBasketId));
-    }
-  }, [dispatch, user]);
-
   const handleUpdateBasket = async (product_id: string, action: 'increase' | 'decrease' | 'remove') => {
     if (user) {
       await dispatch(updateBasket({ sessionKey: user._id, product_id, action }));
       await dispatch(fetchBasket(user._id));
-    } else if (stateBasket?.session_key) {
-      await dispatch(updateBasket({ sessionKey: stateBasket.session_key, product_id, action }));
-      await dispatch(fetchBasket(stateBasket.session_key));
+    } else if (basket?.session_key) {
+      await dispatch(updateBasket({ sessionKey: basket.session_key, product_id, action }));
+      await dispatch(fetchBasket(basket.session_key));
     }
   };
 
   const clearBasket = async (action: 'clear') => {
-    if (stateBasket?.session_key) {
-      await dispatch(updateBasket({ action: action, sessionKey: stateBasket.session_key, product_id: action }));
-      await dispatch(fetchBasket(stateBasket.session_key));
+    if (basket?.session_key) {
+      await dispatch(updateBasket({ action: action, sessionKey: basket.session_key, product_id: action }));
+      await dispatch(fetchBasket(basket.session_key));
     } else if (user) {
       await dispatch(updateBasket({ action: action, sessionKey: user._id, product_id: action }));
       await dispatch(fetchBasket(user._id));
@@ -81,7 +64,7 @@ const BasketPage = () => {
         <Spinner />
       ) : (
         <>
-          {stateBasket?.items ? (
+          {basket?.items ? (
             <>
               <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
                 <Table>
@@ -94,7 +77,7 @@ const BasketPage = () => {
                   {/*  </TableRow>*/}
                   {/*</TableHead>*/}
                   <TableBody>
-                    {stateBasket.items.map((item, index) => (
+                    {basket.items.map((item, index) => (
                       <TableRow key={index}>
                         <TableCell>{item.product.name}</TableCell>
                         <TableCell align="center">{item.quantity}</TableCell>
@@ -134,13 +117,13 @@ const BasketPage = () => {
               </TableContainer>
               <Divider sx={{ marginY: 2 }} />
               <Typography variant="h5" gutterBottom>
-                Общая сумма: {stateBasket.totalPrice} сом
+                Общая сумма: {basket.totalPrice} сом
               </Typography>
               <Grid container spacing={2} justifyContent="flex-end">
                 <Grid item>
                   <LoadingButton
                     loading={loadingBasket()}
-                    disabled={stateBasket?.items.length === 0}
+                    disabled={basket?.items?.length === 0}
                     onClick={() => navigate('/order')}
                     variant="contained"
                     color="error"
@@ -152,7 +135,7 @@ const BasketPage = () => {
                 <Grid item>
                   <LoadingButton
                     loading={loadingBasket()}
-                    disabled={stateBasket?.items.length === 0}
+                    disabled={basket?.items?.length === 0}
                     variant="outlined"
                     color="error"
                     onClick={() => clearBasket('clear')}

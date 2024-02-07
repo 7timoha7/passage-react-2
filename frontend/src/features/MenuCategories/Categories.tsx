@@ -46,7 +46,7 @@ const CategoryItem = styled.div<{ $level: number }>`
 `;
 
 const SpecialCategoryItem = styled(CategoryItem)`
-  background: rgba(204, 115, 115, 0.29);
+  background: rgba(231, 225, 225, 0.42);
 
   &:hover {
     background: rgba(145, 145, 145, 0.58);

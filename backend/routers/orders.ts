@@ -199,17 +199,46 @@ ordersRouter.get('/', auth, async (req, res, next) => {
 
 ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
   const user = (req as RequestWithUser).user;
+
   try {
+    // Находим заказ по ID
+    const order: HydratedDocument<IOrder> | null = await Order.findOne({ _id: req.params.id });
+
+    if (!order) {
+      return res.status(404).send({ message: { en: 'cant find order', ru: 'заказ не найден' } });
+    }
+
+    // Проверяем, есть ли админ в ордере
+    if (order.admin_id && req.body.status === 'in progress') {
+      const claimingAdmin = await User.findById(order.admin_id);
+      if (!claimingAdmin) {
+        return res.status(500).send({
+          message: {
+            en: 'Error retrieving claiming admin information',
+            ru: 'Ошибка при получении информации о забирающем админе',
+          },
+        });
+      }
+
+      return res.send({
+        message: {
+          en: `Order already claimed by admin: ${claimingAdmin.firstName} ${claimingAdmin.lastName}`,
+          ru: `Заказ уже взят администратором: ${claimingAdmin.firstName} ${claimingAdmin.lastName}`,
+        },
+      });
+    }
+
+    // Продолжаем обновление заказа
     const updatedFields = { ...req.body };
     updatedFields.admin_id = user._id;
 
-    const order: HydratedDocument<IOrder> | null = await Order.findOneAndUpdate(
+    const updatedOrder: HydratedDocument<IOrder> | null = await Order.findOneAndUpdate(
       { _id: req.params.id },
       { $set: updatedFields },
       { new: true },
     );
 
-    if (!order) {
+    if (!updatedOrder) {
       return res.status(404).send({ message: { en: 'cant find order', ru: 'заказ не найден' } });
     }
 
@@ -228,18 +257,19 @@ ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
     let message = '';
 
     if (req.body.status === 'in progress') {
-      message = `Оформление - Заказ №: ${order.orderArt.toUpperCase()} , забрал(а) ${user.firstName} ${
+      message = `Оформление - Заказ №: ${updatedOrder.orderArt.toUpperCase()} , забрал(а) ${user.firstName} ${
         user.lastName
       } для оформления`;
     } else if (req.body.status === 'closed') {
-      message = `Закрыт - Заказ №: ${order.orderArt.toUpperCase()} , оформлен и закрыт. администратором - ${
+      message = `Закрыт - Заказ №: ${updatedOrder.orderArt.toUpperCase()} , оформлен и закрыт. администратором - ${
         user.firstName
       } ${user.lastName}`;
     }
 
-    //Этот код выбирает все объекты ChatIdAdmin, проецирует только поле chat_id
+    // Этот код выбирает все объекты ChatIdAdmin, проецирует только поле chat_id
     const chatIds = await ChatIdAdmin.find({}, { _id: 0 });
     const chatIdNumbers: string[] = Array.from(chatIds, (chatIdAdmin) => chatIdAdmin.chat_id);
+
     if (chatIdNumbers.length) {
       await sendMessageToTelegram(message, chatIdNumbers);
     }

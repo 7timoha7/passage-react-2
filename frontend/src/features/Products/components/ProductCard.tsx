@@ -36,7 +36,8 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
   const addBasketLoading = useAppSelector(selectBasketUpdateLoading);
   const favoriteLoading = useAppSelector(selectFetchFavoriteProductsOneLoading);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.persist(); // сохраняем событие
     if (sessionKey) {
       await dispatch(
         updateBasket({
@@ -46,6 +47,15 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
         }),
       );
       await dispatch(fetchBasket(sessionKey));
+    } else if (user) {
+      await dispatch(
+        updateBasket({
+          sessionKey: '1',
+          product_id: product.goodID,
+          action: 'increase',
+        }),
+      );
+      await dispatch(fetchBasket('1'));
     }
   };
   const onClickFavorite = async (id: string) => {
@@ -58,15 +68,11 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
       await dispatch(getFavoriteProducts(1));
       if (pageInfo) {
         let newPage: number;
-
-        // Check if there are still items on the current page after removal
         if ((pageInfo.totalItems - 1) % pageInfo.pageSize !== 0) {
           newPage = pageInfo.currentPage;
         } else {
-          // Move to the previous page if the current page becomes empty
           newPage = Math.max(1, pageInfo.currentPage - 1);
         }
-
         await dispatch(getFavoriteProducts(newPage));
       }
     }
@@ -128,7 +134,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           }}
           onClick={(e) => {
             e.stopPropagation();
-            onClickFavorite(product.goodID);
+            onClickFavorite(product.goodID).then((r) => r);
           }}
         >
           {user &&
@@ -163,18 +169,16 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
               alignSelf: 'flex-end',
             }}
           >
-            <Tooltip title={indicator ? 'Товар уже в корзине' : 'Добавить в корзину'} arrow>
-              {addBasketLoading === product.goodID ? (
-                <CircularProgress size={'20px'} color="error" />
-              ) : (
-                <div
+            {addBasketLoading !== product.goodID ? (
+              <Tooltip title={indicator ? 'Товар уже в корзине' : 'Добавить в корзину'} arrow placement="top">
+                <Box
                   onClick={(e) => {
                     e.stopPropagation();
                     if (!indicator) {
-                      handleAddToCart();
+                      handleAddToCart(e).then((r) => r);
                     }
                   }}
-                  style={{
+                  sx={{
                     cursor: indicator ? 'not-allowed' : 'pointer',
                   }}
                 >
@@ -182,9 +186,11 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
                     fontSize="large"
                     color={indicator ? 'disabled' : indicator ? 'error' : 'inherit'}
                   />
-                </div>
-              )}
-            </Tooltip>
+                </Box>
+              </Tooltip>
+            ) : (
+              <CircularProgress size={'20px'} color="error" />
+            )}
           </Box>
         </CardContent>
       </Card>

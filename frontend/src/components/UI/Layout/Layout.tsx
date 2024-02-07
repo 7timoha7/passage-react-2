@@ -4,7 +4,7 @@ import AppToolbar from '../AppToolbar/AppToolbar';
 import MenuCategories from '../../../features/MenuCategories/MenuCategories';
 import Footer from '../Footer/Footer';
 import { useLocation } from 'react-router-dom';
-import BreadcrumbsPage from '../BreadcrumbsPage';
+import BreadcrumbsPage from '../BreadcrumbsPage/BreadcrumbsPage';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isMobile = useMediaQuery('(max-width:1200px)');

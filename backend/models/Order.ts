@@ -49,7 +49,7 @@ const OrderSchema = new Schema<IOrder>({
     type: String,
     required: true,
     default: 'open',
-    enum: ['open', 'in progress', 'closed', 'return'],
+    enum: ['open', 'in progress', 'closed', 'canceled'],
   },
   products: {
     type: [

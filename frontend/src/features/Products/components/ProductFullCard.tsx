@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import noImage from '../../../assets/images/no_image.jpg';
-import { BasketTypeOnServerMutation, ProductType } from '../../../types';
+import { ProductType } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { apiURL, placeHolderImg } from '../../../constants';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +37,6 @@ interface Props {
 
 const ProductFullCard: React.FC<Props> = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(product.images.length ? product.images[0] : '');
-  const [stateBasket, setStateBasket] = useState<BasketTypeOnServerMutation | null>(null);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -46,38 +45,24 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
   const addBasketLoading = useAppSelector(selectBasketUpdateLoading);
   const favoriteLoading = useAppSelector(selectFetchFavoriteProductsOneLoading);
 
-  useEffect(() => {
-    if (storedBasketId) {
-      dispatch(fetchBasket(storedBasketId));
-    } else if (user) {
-      dispatch(fetchBasket('1'));
-    }
-  }, [dispatch, storedBasketId, user]);
-
-  useEffect(() => {
-    if (basket) {
-      setStateBasket(basket);
-    }
-  }, [basket]);
-
   const indicator = (item: ProductType) => {
-    if (stateBasket && item) {
-      return stateBasket.items.some((itemBasket) => itemBasket.product.goodID === item.goodID);
+    if (basket && item) {
+      return basket?.items?.some((itemBasket) => itemBasket.product.goodID === item.goodID);
     } else {
       return false;
     }
   };
 
   const handleAddToCart = async () => {
-    if (basket?.session_key) {
+    if (storedBasketId) {
       await dispatch(
         updateBasket({
-          sessionKey: basket.session_key,
+          sessionKey: storedBasketId,
           product_id: product.goodID,
           action: 'increase',
         }),
       );
-      await dispatch(fetchBasket(basket.session_key));
+      await dispatch(fetchBasket(storedBasketId));
     } else if (user) {
       await dispatch(
         updateBasket({
