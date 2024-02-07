@@ -89,9 +89,17 @@ const ChatIdAdminForm: React.FC<Props> = ({ user }) => {
             {showInstructions && (
               <div>
                 <Typography variant="body2" color="textSecondary" style={{ marginTop: 16 }}>
-                  Простая инструкция:
+                  Инструкция:
                 </Typography>
                 <ol>
+                  <li>
+                    Перейдите к боту{' '}
+                    <a href="https://t.me/passage_bishkek_bot" target="_blank" rel="noopener noreferrer">
+                      @passage_bishkek_bot
+                    </a>
+                    .
+                  </li>
+                  <li>Нажмите &ldquo;Start&rdquo; внизу экрана, чтобы начать взаимодействие с ботом.</li>
                   <li>
                     Откройте Telegram и найдите бота{' '}
                     <a href="https://t.me/userinfobot" target="_blank" rel="noopener noreferrer">
@@ -104,6 +112,7 @@ const ChatIdAdminForm: React.FC<Props> = ({ user }) => {
                   <li>
                     Вернитесь на этот сайт, введите скопированный ID в поле выше и нажмите &ldquo;Отправить&rdquo;.
                   </li>
+                  <li>После этого, уведомления о заказах будут приходить вам через этот бот.</li>
                 </ol>
               </div>
             )}
