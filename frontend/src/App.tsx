@@ -38,8 +38,6 @@ import {
 import { selectBasketSuccess, setBasketSuccessNull } from './features/Basket/basketSlice';
 import SearchPage from './components/UI/AppToolbar/NavigateTop/Components/SearchPage';
 import { selectOrderSuccess, setOrderSuccessNull } from './features/Order/orderSlice';
-import { Alert } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
 import { createBasket, fetchBasket } from './features/Basket/basketThunks';
 import { v4 as uuidv4 } from 'uuid';
 
