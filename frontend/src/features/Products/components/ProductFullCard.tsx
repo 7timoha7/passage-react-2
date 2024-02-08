@@ -31,6 +31,8 @@ import { LoadingButton } from '@mui/lab';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import ProductGallery from './ProductGallery';
+import * as isoCountries from 'i18n-iso-countries';
+import CountryFlag from 'react-country-flag';
 
 interface Props {
   product: ProductType;
@@ -45,6 +47,15 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
   const storedBasketId = localStorage.getItem('sessionKey');
   const addBasketLoading = useAppSelector(selectBasketUpdateLoading);
   const favoriteLoading = useAppSelector(selectFetchFavoriteProductsOneLoading);
+
+  isoCountries.registerLocale(require('i18n-iso-countries/langs/ru.json'));
+  const countryName = isoCountries.getName(product.originCountry, 'ru');
+
+  let isoCountryCode: string | undefined = '';
+
+  if (countryName != null) {
+    isoCountryCode = isoCountries.getAlpha2Code(countryName, 'ru');
+  }
 
   const indicator = (item: ProductType) => {
     if (basket && item) {
@@ -258,6 +269,33 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                   ))}
                 </TableCell>
               </TableRow>
+              {product.originCountry && (
+                <TableRow>
+                  <TableCell component="th" scope="row">
+                    Страна производитель:
+                  </TableCell>
+                  <TableCell>
+                    <Grid container spacing={2} alignItems={'center'}>
+                      <Grid item>{countryName && <Typography>{countryName}</Typography>}</Grid>
+                      <Grid item>
+                        {isoCountryCode && (
+                          <CountryFlag
+                            countryCode={isoCountryCode}
+                            svg
+                            style={{
+                              width: '100%',
+                              maxWidth: '35px',
+                              height: 'auto',
+                              border: '2px solid rgba(70,69,69,0.98)',
+                              borderRadius: '5px',
+                            }}
+                          />
+                        )}
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+              )}
               <TableRow>
                 <TableCell component="th" scope="row">
                   Артикул:

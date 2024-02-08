@@ -81,6 +81,22 @@ const calculatePricePerSquareMeter = (price: number, area: number): number => {
   return price * area; // Исправим на умножение
 };
 
+// const saveProductsToFile = (
+//   products: { [x: string]: any; imageBase64: any; imagesBase64: any }[],
+//   filePath: fs.PathOrFileDescriptor,
+// ) => {
+//   // Создаем массив данных для сохранения в файл, исключая ключи imageBase64 и imagesBase64
+//   const dataToSave = products.map(({ imageBase64, imagesBase64, ...rest }) => rest);
+//
+//   // Преобразуем данные в формат JSON
+//   const jsonData = JSON.stringify(dataToSave, null, 2);
+//
+//   // Сохраняем данные в файл
+//   fs.writeFileSync(filePath, jsonData);
+//
+//   console.log(`Данные сохранены в файл: ${filePath}`);
+// };
+
 const createProducts = async (
   products: IProductFromApi[],
   prices: IProductPriceFromApi[],
@@ -169,6 +185,7 @@ const createProducts = async (
         size,
         thickness,
         description,
+        originCountry: productData.originCountry,
       });
 
       await product.save();

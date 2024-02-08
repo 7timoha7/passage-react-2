@@ -44,6 +44,7 @@ export interface IProduct {
   description: string;
   size: string;
   thickness: string;
+  originCountry: string;
 }
 
 export interface IProductQuantityFromApi {
@@ -82,6 +83,7 @@ export interface IProductFromApi {
   imageBase64: string;
   imagesBase64: [];
   description: string;
+  originCountry: string;
 }
 
 export interface IBasket {

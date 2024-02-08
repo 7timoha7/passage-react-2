@@ -65,6 +65,9 @@ const ProductSchema = new Schema<IProduct>({
   thickness: {
     type: String,
   },
+  originCountry: {
+    type: String,
+  },
 });
 
 const Product = mongoose.model('Product', ProductSchema);

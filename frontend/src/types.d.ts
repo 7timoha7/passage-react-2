@@ -74,6 +74,7 @@ export interface ProductType {
   description: string;
   size: string;
   thickness: string;
+  originCountry: string;
 }
 
 export interface ImgType {
