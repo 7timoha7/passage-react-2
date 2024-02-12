@@ -36,7 +36,18 @@ const MenuCategories = () => {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box
+      sx={{
+        display: 'flex',
+
+        '@media (max-width: 1200px)': {
+          mb: 1,
+        },
+        '@media (min-width: 1200px)': {
+          mr: 2,
+        },
+      }}
+    >
       <CssBaseline />
       <Box
         component="nav"
@@ -101,8 +112,9 @@ const MenuCategories = () => {
           flexGrow: 1,
           pl: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          background: 'rgba(166,143,143,0.38)',
+          background: 'rgba(180,118,238,0.32)',
           display: { lg: 'none' },
+          borderRadius: '5px',
         }}
       >
         <IconButton
@@ -112,6 +124,9 @@ const MenuCategories = () => {
           onClick={handleDrawerToggle}
           sx={{
             borderRadius: 0,
+            '&:hover': {
+              color: '#ffffff',
+            },
           }}
         >
           <MenuIcon fontSize={'large'} />

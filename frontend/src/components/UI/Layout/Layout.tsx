@@ -17,29 +17,31 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <header>
         <AppToolbar />
       </header>
-      <Box
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: isMobile ? 'column' : 'row',
-          mt: 4,
-        }}
-      >
-        <Box sx={{ border: 'none' }}>
-          <MenuCategories />
-        </Box>
+      <Container maxWidth={'xl'}>
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            mt: 4,
+          }}
+        >
+          <Box sx={{ border: 'none' }}>
+            <MenuCategories />
+          </Box>
 
-        <Box maxWidth={'100%'} component="main" sx={{ flex: 1, boxSizing: 'border-box' }}>
-          <BreadcrumbsPage />
-          {location.pathname === '/' ? <Box>{children}</Box> : <Container sx={{ mt: 2, mb: 2 }}>{children}</Container>}
+          <Box maxWidth={'100%'} component="main" sx={{ flex: 1, boxSizing: 'border-box' }}>
+            <BreadcrumbsPage />
+            {children}
+          </Box>
         </Box>
-      </Box>
-      {location.pathname === '/' && (
-        <Container maxWidth={'xl'}>
-          <Bestsellers />
-          <ProductsNews />
-        </Container>
-      )}
+        {location.pathname === '/' && (
+          <>
+            <Bestsellers />
+            <ProductsNews />
+          </>
+        )}
+      </Container>
 
       <footer style={{ flexShrink: 0, marginTop: '10px' }}>
         <Footer />

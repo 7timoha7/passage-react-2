@@ -125,7 +125,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
   return (
     <Box
       sx={{
-        height: newsSize ? '400px' : '100%',
+        height: newsSize ? '405px' : '100%',
       }}
     >
       <Card
