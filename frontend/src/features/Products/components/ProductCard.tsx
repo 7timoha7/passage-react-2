@@ -32,9 +32,10 @@ import {
 interface Props {
   product: ProductType;
   indicator?: boolean;
+  newsSize?: boolean;
 }
 
-const ProductCard: React.FC<Props> = ({ product, indicator }) => {
+const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
@@ -122,7 +123,11 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
   };
 
   return (
-    <Box sx={{ height: '100%' }}>
+    <Box
+      sx={{
+        height: newsSize ? '400px' : '100%',
+      }}
+    >
       <Card
         onClick={() => navigate('/product/' + product._id)}
         sx={{
@@ -133,7 +138,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           position: 'relative',
           transition: 'box-shadow 0.3s',
           '&:hover': {
-            boxShadow: indicator ? 'none' : '0px 0px 10px 2px rgba(255,0,0,0.75)',
+            boxShadow: indicator ? 'none' : '0px 0px 3px 3px rgba(0,200,255,1)',
           },
           '@media (max-width:600px)': {
             width: '200px',
@@ -193,9 +198,12 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
             flexDirection: 'column',
           }}
         >
-          <Typography variant="body2" color="black">
-            {product.name}
-          </Typography>
+          <Box>
+            <Typography variant="body2" color="black">
+              {product.name}
+            </Typography>
+          </Box>
+
           <Typography color="red">{product.price + ' сом'}</Typography>
           <Box
             sx={{

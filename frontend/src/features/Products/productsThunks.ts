@@ -19,6 +19,14 @@ export const productsFetch = createAsyncThunk<
   return response.data;
 });
 
+export const productsFetchNews = createAsyncThunk<{ products: ProductType[]; pageInfo: PageInfo }, number>(
+  'products/fetchNews',
+  async (page) => {
+    const response = await axiosApi.get(`/products/news?page=${page}`);
+    return response.data;
+  },
+);
+
 export const productFetch = createAsyncThunk<ProductType, string>('products/fetchOne', async (id) => {
   const products = await axiosApi.get<ProductType>('/products/' + id);
   return products.data;

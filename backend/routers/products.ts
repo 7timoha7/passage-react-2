@@ -68,6 +68,34 @@ productRouter.get('/', async (req, res) => {
   }
 });
 
+productRouter.get('/news', async (req, res) => {
+  try {
+    const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+    const pageSize = 20;
+
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / pageSize);
+
+    const products = await Product.find()
+      .sort({ article: -1 }) // Сортируем по убыванию значения поля article
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    return res.send({
+      products,
+      pageInfo: {
+        currentPage: page,
+        totalPages,
+        pageSize,
+        totalItems: totalProducts,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.sendStatus(500);
+  }
+});
+
 productRouter.get('/:id', async (req, res, next) => {
   try {
     const productRes = await Product.findById(req.params.id);

@@ -57,7 +57,6 @@ export interface CategoriesType {
 }
 
 export interface ProductType {
-  height: number;
   _id: string;
   name: string;
   article: string;

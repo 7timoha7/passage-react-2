@@ -81,10 +81,8 @@ const Bestsellers: React.FC = () => {
   return (
     <div
       style={{
-        position: 'relative',
         border: '5px solid rgba(55,52,147,0.82)',
         borderRadius: '10px',
-        padding: '10px',
         marginTop: '10px',
       }}
     >
@@ -100,6 +98,7 @@ const Bestsellers: React.FC = () => {
           height: auto !important;
           padding-bottom: 10px;
           padding-top: 10px;
+          padding-left: 7px;      
         }
 
         .slick-list {
@@ -134,7 +133,7 @@ const Bestsellers: React.FC = () => {
         <Slider ref={sliderRef} {...sliderSettings}>
           {bestsellersProduct.map((item) => (
             <div key={item._id}>
-              <ProductCard indicator={indicator(item)} product={item} />
+              <ProductCard newsSize={true} indicator={indicator(item)} product={item} />
             </div>
           ))}
         </Slider>

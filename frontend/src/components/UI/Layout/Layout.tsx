@@ -6,6 +6,7 @@ import Footer from '../Footer/Footer';
 import { useLocation } from 'react-router-dom';
 import BreadcrumbsPage from '../BreadcrumbsPage/BreadcrumbsPage';
 import Bestsellers from '../../../features/Bestsellers/Bestsellers';
+import ProductsNews from '../../../features/Products/components/ProductsNews';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isMobile = useMediaQuery('(max-width:1200px)');
@@ -36,6 +37,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       {location.pathname === '/' && (
         <Container maxWidth={'xl'}>
           <Bestsellers />
+          <ProductsNews />
         </Container>
       )}
 
