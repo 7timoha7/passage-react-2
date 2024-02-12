@@ -21,6 +21,13 @@ import { selectBasketUpdateLoading } from '../../Basket/basketSlice';
 import { CircularProgress } from '@mui/material';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
+import { LoadingButton } from '@mui/lab';
+import { createBestseller, deleteBestseller, fetchBestsellers } from '../../Bestsellers/bestsellersThunks';
+import {
+  selectBestsellers,
+  selectCreateBestsellersLoading,
+  selectDeleteBestsellersLoading,
+} from '../../Bestsellers/bestsellersSlice';
 
 interface Props {
   product: ProductType;
@@ -87,6 +94,33 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
     imgProduct = apiURL + product.images[0];
   }
 
+  const addBestsellerBtn = async () => {
+    await dispatch(createBestseller(product.goodID));
+    await dispatch(fetchBestsellers());
+  };
+
+  const deleteBestsellerBtn = async () => {
+    await dispatch(deleteBestseller(product.goodID));
+    await dispatch(fetchBestsellers());
+  };
+
+  const bestsellers = useAppSelector(selectBestsellers);
+  const bestsellersAddLoading = useAppSelector(selectCreateBestsellersLoading);
+  const bestsellersDeleteLoading = useAppSelector(selectDeleteBestsellersLoading);
+
+  const bestsellerAdded = () => {
+    let flag = false;
+    if (bestsellers.length) {
+      bestsellers.forEach((item) => {
+        if (item.goodID === product.goodID) {
+          flag = true;
+        }
+      });
+    }
+
+    return flag;
+  };
+
   return (
     <Box sx={{ height: '100%' }}>
       <Card
@@ -110,7 +144,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           '@media (max-width:420px)': {
             width: '165px',
           },
-          '@media (max-width:389px)': {
+          '@media (max-width:400px)': {
             width: '100%',
           },
         }}
@@ -193,6 +227,35 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
             )}
           </Box>
         </CardContent>
+        {user?.role === 'admin' && (
+          <>
+            {!bestsellerAdded() ? (
+              <LoadingButton
+                loading={bestsellersAddLoading}
+                color={'success'}
+                disabled={bestsellerAdded()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addBestsellerBtn().then((r) => r);
+                }}
+              >
+                Добавить в хиты продаж
+              </LoadingButton>
+            ) : (
+              <LoadingButton
+                loading={bestsellersDeleteLoading}
+                color={'error'}
+                disabled={!bestsellerAdded()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteBestsellerBtn().then((r) => r);
+                }}
+              >
+                Удалить из хиты продаж
+              </LoadingButton>
+            )}
+          </>
+        )}
       </Card>
     </Box>
   );

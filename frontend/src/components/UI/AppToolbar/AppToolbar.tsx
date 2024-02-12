@@ -34,13 +34,9 @@ const AppToolbar = () => {
               sx={{ '@media (max-width: 550px)': { justifyContent: 'center' } }}
             >
               <Grid item>
-                <Grid container alignItems="center">
-                  <Typography variant="h6" component="div" fontWeight="bold" mr={3}>
-                    <Link to="/" style={{ margin: 'auto' }}>
-                      <img style={{ maxWidth: '100px' }} src="/logo.svg" alt="passage" />
-                    </Link>
-                  </Typography>
-                </Grid>
+                <Link to="/" style={{ margin: 'auto' }}>
+                  <img style={{ maxWidth: '100px' }} src="/logo.svg" alt="passage" />
+                </Link>
               </Grid>
 
               <Grid item sx={{ flexGrow: 1, minWidth: 0 }}>

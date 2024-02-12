@@ -43,7 +43,8 @@ const MenuCategories = () => {
         sx={{
           width: { lg: drawerWidth },
           flexShrink: { sm: 0 },
-          background: 'linear-gradient(270deg, rgb(47, 36, 36), rgb(204, 43, 43))',
+          background: 'rgba(55,52,147,0.82)',
+          borderRadius: '10px',
         }}
         aria-label="mailbox folders"
       >
@@ -59,7 +60,7 @@ const MenuCategories = () => {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              background: 'linear-gradient(270deg, rgb(47, 36, 36), rgb(204, 43, 43))',
+              background: 'rgb(55,52,147)',
             },
             '& .MuiDrawer-paperAnchorLeft': {
               width: drawerWidth,

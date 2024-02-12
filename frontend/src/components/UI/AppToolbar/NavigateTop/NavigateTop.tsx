@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { FooterStyle } from '../../../../styles';
 
 const NavigateTop = () => {
   const menu = [
@@ -29,8 +30,7 @@ const NavigateTop = () => {
       justifyContent={'center'}
       sx={{
         flexWrap: 'wrap',
-        background:
-          'linear-gradient(90deg, rgba(80,65,65,0.3402961282169118) 0%, rgba(200,39,39,0.3010804419424019) 50%, rgba(72,55,55,0.3346938873205533) 100%)',
+        background: 'rgb(55,52,147)',
       }}
     >
       {menu.map((item) => (
@@ -43,7 +43,7 @@ const NavigateTop = () => {
             // fontWeight: 'bold',
             textDecoration: 'none',
             marginRight: '50px',
-            ':hover': { color: 'rgba(185,31,31,0.67)' },
+            ':hover': { color: 'rgba(255,255,255,0.67)' },
           }}
           key={item.name}
         >

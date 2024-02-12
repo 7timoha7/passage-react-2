@@ -7,6 +7,7 @@ import { categoriesReducer } from '../features/MenuCategories/menuCategoriesSlic
 import { productsReducer } from '../features/Products/productsSlise';
 import { basketReducer } from '../features/Basket/basketSlice';
 import { ordersReducer } from '../features/Order/orderSlice';
+import { bestsellersReducer } from '../features/Bestsellers/bestsellersSlice';
 
 const usersPersistConfig = {
   key: 'passage:users',
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   products: persistReducer(usersPersistConfig, productsReducer),
   basket: persistReducer(usersPersistConfig, basketReducer),
   orders: persistReducer(usersPersistConfig, ordersReducer),
+  bestsellers: persistReducer(usersPersistConfig, bestsellersReducer),
 });
 
 export const store = configureStore({

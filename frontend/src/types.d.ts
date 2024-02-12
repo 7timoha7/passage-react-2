@@ -57,6 +57,7 @@ export interface CategoriesType {
 }
 
 export interface ProductType {
+  height: number;
   _id: string;
   name: string;
   article: string;
@@ -187,4 +188,9 @@ export interface ChatIdAdminType {
   _id: string;
   chat_id: string;
   user_id: string;
+}
+
+export interface BestsellerType {
+  _id: string;
+  bestseller_id: string;
 }

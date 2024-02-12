@@ -123,3 +123,7 @@ export interface IChatIdAdmin {
   user_id: ObjectId;
   chat_id: string;
 }
+
+export interface IBestseller {
+  bestseller_id: string;
+}

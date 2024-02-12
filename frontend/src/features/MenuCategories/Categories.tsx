@@ -32,7 +32,7 @@ const CategoryWrapper = styled.div`
 `;
 
 const CategoryItem = styled.div<{ $level: number }>`
-  border-bottom: 1px solid #ccc;
+  border-bottom: 2px solid #ccc;
   cursor: pointer;
   transition: background-color 0.4s ease;
   display: flex;

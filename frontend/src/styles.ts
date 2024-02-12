@@ -6,13 +6,15 @@ export const mainBlocksBorderStyles = {
 };
 
 export const ToolBarStyles = {
-  background: 'linear-gradient(270deg, rgb(47, 36, 36), rgb(204, 43, 43))',
+  // background: 'linear-gradient(270deg, rgb(47, 36, 36), rgb(204, 43, 43))', // красный
+  // #373493
+  background: 'rgba(55,52,147,0.82)',
   top: 0,
   py: 1.5,
 };
 
 export const FooterStyle = {
-  background: 'linear-gradient(270deg, rgb(47, 36, 36), rgb(204, 43, 43))',
+  background: 'rgba(55,52,147,0.82)',
 };
 
 export const HeaderStyles = {

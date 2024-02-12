@@ -40,6 +40,7 @@ import SearchPage from './components/UI/AppToolbar/NavigateTop/Components/Search
 import { selectOrderSuccess, setOrderSuccessNull } from './features/Order/orderSlice';
 import { createBasket, fetchBasket } from './features/Basket/basketThunks';
 import { v4 as uuidv4 } from 'uuid';
+import { selectBestsellerSuccess } from './features/Bestsellers/bestsellersSlice';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -52,6 +53,31 @@ function App() {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { i18n } = useTranslation();
+  const basketBestsellerSuccess = useAppSelector(selectBestsellerSuccess);
+
+  useEffect(() => {
+    if (basketBestsellerSuccess) {
+      if (i18n.language === 'en') {
+        enqueueSnackbar(basketBestsellerSuccess.message.en, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      } else {
+        if (basketBestsellerSuccess.message.ru === 'Товар успешно удален из хиты продаж!') {
+          enqueueSnackbar(basketBestsellerSuccess.message.ru, {
+            variant: 'error',
+            preventDuplicate: true,
+          });
+        } else {
+          enqueueSnackbar(basketBestsellerSuccess.message.ru, {
+            variant: 'success',
+            preventDuplicate: true,
+          });
+        }
+      }
+    }
+    dispatch(setProductSuccessNull());
+  }, [basketBestsellerSuccess, dispatch, enqueueSnackbar, i18n.language]);
 
   useEffect(() => {
     if (basketSuccess) {
