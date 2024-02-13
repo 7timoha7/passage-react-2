@@ -111,7 +111,6 @@ const Basket = () => {
                     <IconButton
                       disabled={addBasketLoading === item.product.goodID}
                       color="primary"
-                      style={{ color: 'red' }} // ваш цвет для кнопок +
                       onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}
                     >
                       {addBasketLoading === item.product.goodID ? (
@@ -156,7 +155,7 @@ const Basket = () => {
               loading={loadingBasket()}
               onClick={() => navigateToFullBasket()}
               variant="outlined"
-              color="error"
+              color="primary"
             >
               Перейти в корзину
             </LoadingButton>

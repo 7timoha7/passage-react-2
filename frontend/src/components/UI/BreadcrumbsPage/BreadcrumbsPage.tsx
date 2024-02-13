@@ -30,7 +30,7 @@ const BreadcrumbsPage = () => {
           <Link underline="hover" key="1" color="inherit" href="/">
             Главная
           </Link>,
-          <Link underline="hover" key="2" color="inherit" href={`/products/${categoryId}`}>
+          <Link fontWeight={'bold'} underline="hover" key="2" color="inherit" href={`/products/${categoryId}`}>
             {categoryPath ? categoryPath : 'Категория'}
           </Link>,
         ];
@@ -44,7 +44,86 @@ const BreadcrumbsPage = () => {
           <Link underline="hover" key="2" color="inherit" href={`/products/${productOne.ownerID}`}>
             {categoryPath ? categoryPath : 'Категория'}
           </Link>,
-          <span key="3">{productOne.name}</span>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            {productOne.name}
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'productsNews') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Новинки
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'delivery') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Доставка
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (location.pathname === '/') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'contacts') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Контакты
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'about') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            О нас
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'my-cabinet') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Личный кабинет
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'login') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Вход
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'register') {
+        const state = [
+          <Link underline="hover" key="1" color="inherit" href="/">
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Регистрация
+          </span>,
         ];
         setBreadcrumbs(state);
       } else {
@@ -54,17 +133,15 @@ const BreadcrumbsPage = () => {
     };
 
     generateBreadcrumbs();
-  }, [pathName, categoryId, categories, productOne]);
+  }, [pathName, categoryId, categories, productOne, location.pathname]);
 
   return (
     <>
-      {url !== '/' ? (
-        <Box sx={{ m: 1 }}>
-          <Breadcrumbs separator="›" aria-label="breadcrumb">
-            {breadcrumbs}
-          </Breadcrumbs>
-        </Box>
-      ) : null}
+      <Box sx={{ m: 1, mt: 2 }}>
+        <Breadcrumbs separator="›" aria-label="breadcrumb">
+          {breadcrumbs}
+        </Breadcrumbs>
+      </Box>
     </>
   );
 };

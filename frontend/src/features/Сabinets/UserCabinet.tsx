@@ -69,8 +69,8 @@ const UserCabinet: React.FC<Props> = ({ exist = initialState }) => {
                   selected={selectedIndex === index}
                   onClick={() => handleClickOption(option.option, index)}
                 >
-                  <ListItemIcon style={selectedIndex === index ? { color: '#c91b1b' } : {}}>{option.icon}</ListItemIcon>
-                  <ListItemText style={selectedIndex === index ? { color: '#c41e1e' } : {}} primary={option.text} />
+                  <ListItemIcon style={selectedIndex === index ? { color: '#00ccff' } : {}}>{option.icon}</ListItemIcon>
+                  <ListItemText style={selectedIndex === index ? { color: '#00ccff' } : {}} primary={option.text} />
                 </ListItemButton>
               ))}
             </List>

@@ -23,7 +23,6 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import { LoadingButton } from '@mui/lab';
 
 const BasketPage = () => {
-  // const [stateBasket, setStateBasket] = useState<BasketTypeOnServerMutation | null>(null);
   const basket = useAppSelector(selectBasket);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -68,14 +67,6 @@ const BasketPage = () => {
             <>
               <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
                 <Table>
-                  {/*<TableHead>*/}
-                  {/*  <TableRow>*/}
-                  {/*    <TableCell>Название</TableCell>*/}
-                  {/*    <TableCell align="center">Количество</TableCell>*/}
-                  {/*    <TableCell align="center">+/-</TableCell>*/}
-                  {/*    <TableCell align="center">Цена</TableCell>*/}
-                  {/*  </TableRow>*/}
-                  {/*</TableHead>*/}
                   <TableBody>
                     {basket.items.map((item, index) => (
                       <TableRow key={index}>
@@ -90,7 +81,7 @@ const BasketPage = () => {
                             {addBasketLoading === item.product.goodID ? (
                               <CircularProgress size={'20px'} color="error" />
                             ) : (
-                              <AddCircleOutlineIcon style={{ color: 'red' }} />
+                              <AddCircleOutlineIcon />
                             )}
                           </IconButton>
                           <IconButton
@@ -126,7 +117,7 @@ const BasketPage = () => {
                     disabled={basket?.items?.length === 0}
                     onClick={() => navigate('/order')}
                     variant="contained"
-                    color="error"
+                    color="primary"
                     sx={{ marginLeft: 2 }}
                   >
                     Оформить заказ

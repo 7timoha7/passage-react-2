@@ -52,7 +52,7 @@ const Login = () => {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: '#f7a0a0' }}>
+        <Avatar sx={{ m: 1, bgcolor: '#62b8ee' }}>
           <LockOpenIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -115,12 +115,12 @@ const Login = () => {
             </Grid>
           </Grid>
           <LoadingButton
-            color="error"
+            color="primary"
             type="submit"
             loading={loading}
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, background: '#691717' }}
+            sx={{ mt: 3, mb: 2 }}
           >
             {'Войти'}
           </LoadingButton>

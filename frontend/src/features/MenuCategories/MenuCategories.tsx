@@ -9,8 +9,10 @@ import { selectCategories } from './menuCategoriesSlice';
 import { fetchCategories } from './menuCategoriesThunks';
 import { Typography } from '@mui/material';
 import Categories from './Categories';
+import { menuCategoriesColor } from '../../styles';
+import NavigateTop from '../../components/UI/AppToolbar/NavigateTop/NavigateTop';
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const MenuCategories = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -54,7 +56,7 @@ const MenuCategories = () => {
         sx={{
           width: { lg: drawerWidth },
           flexShrink: { sm: 0 },
-          background: 'rgba(55,52,147,0.82)',
+          background: menuCategoriesColor,
           borderRadius: '10px',
         }}
         aria-label="mailbox folders"
@@ -71,7 +73,7 @@ const MenuCategories = () => {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              background: 'rgb(55,52,147)',
+              background: menuCategoriesColor,
             },
             '& .MuiDrawer-paperAnchorLeft': {
               width: drawerWidth,
@@ -80,8 +82,11 @@ const MenuCategories = () => {
         >
           <Box sx={{ m: 0, background: 'rgba(166,143,143,0.38)', pt: 1.5, pb: 1.5 }}>
             <Typography variant={'h6'} textAlign={'center'}>
-              Каталог товаров
+              Меню
             </Typography>
+          </Box>
+          <Box sx={{ borderBottom: '5px solid white' }}>
+            <NavigateTop />
           </Box>
           {drawer}
         </Drawer>
@@ -112,7 +117,7 @@ const MenuCategories = () => {
           flexGrow: 1,
           pl: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          background: 'rgba(180,118,238,0.32)',
+          background: 'rgba(29,105,208,0.78)',
           display: { lg: 'none' },
           borderRadius: '5px',
         }}
@@ -131,7 +136,7 @@ const MenuCategories = () => {
         >
           <MenuIcon fontSize={'large'} />
           <Typography variant={'h6'} textAlign={'center'} sx={{ ml: 1 }}>
-            Каталог товаров
+            Меню
           </Typography>
         </IconButton>
       </Box>

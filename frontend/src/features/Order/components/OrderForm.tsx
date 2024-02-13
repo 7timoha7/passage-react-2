@@ -225,7 +225,7 @@ const OrderForm = () => {
               loading={sendOrderLoading}
               disabled={formData.products.length <= 0}
               variant="contained"
-              color="error"
+              color="primary"
               type="submit"
             >
               Заказать

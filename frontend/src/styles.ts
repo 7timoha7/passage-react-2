@@ -1,21 +1,40 @@
-export const mainBlocksBorderStyles = {
-  marginTop: '20px',
-  border: '2px solid rgba(3,201,136, 0.7)',
-  padding: '10px',
-  borderRadius: '10px',
+import { useMediaQuery } from '@mui/material';
+
+export const ToolBarStylesTop = {
+  flexWrap: 'wrap',
+  background: '#2ca5ff',
+};
+
+export const ToolBarTopText = {
+  color: 'rgb(255,255,255)',
+  fontSize: '15px',
+  textDecoration: 'none',
+  marginRight: '50px',
+  ':hover': { color: 'rgb(0,0,0)' },
+};
+
+export const testColor = {
+  color: '#179ae3',
 };
 
 export const ToolBarStyles = {
-  // background: 'linear-gradient(270deg, rgb(47, 36, 36), rgb(204, 43, 43))', // красный
-  // #373493
-  background: 'rgba(55,52,147,0.82)',
+  background: 'linear-gradient(45deg, hsla(0, 0%, 100%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
+  top: 0,
+  py: 1.5,
+};
+export const ToolBarMobileStyles = {
+  background: 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
   top: 0,
   py: 1.5,
 };
 
+export const ProductsNewsBorderStyles = '5px solid #179ae3';
+
 export const FooterStyle = {
-  background: 'rgba(55,52,147,0.82)',
+  background: 'linear-gradient(45deg, hsla(210, 100%, 88%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
 };
+
+export const menuCategoriesColor = 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)';
 
 export const HeaderStyles = {
   color: '#00337C',
@@ -43,5 +62,5 @@ export const arrowStyleGallery = {
 };
 
 export const someStyle = {
-  boxShadow: '0px 5px 10px 2px rgba(180, 24, 24, 0.2);',
+  boxShadow: '0px 0px 5px 0px rgba(0, 144, 255, 1)',
 };

@@ -51,7 +51,7 @@ const UserMenu: React.FC<Props> = ({ user }) => {
           paper: {
             sx: {
               borderRadius: '8px',
-              background: 'linear-gradient(45deg, rgb(172, 172, 172), rgb(252, 140, 140))',
+              background: 'linear-gradient(270deg, hsla(201, 100%, 41%, 1) 0%, hsla(202, 100%, 82%, 1) 100%)',
             },
           },
         }}

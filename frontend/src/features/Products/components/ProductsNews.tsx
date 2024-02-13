@@ -9,17 +9,23 @@ import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import ProductCard from './ProductCard';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ProductsNewsBorderStyles } from '../../../styles';
 
 const ProductsNews = () => {
   const productsNews = useAppSelector(selectProductsNews);
   const productsNewsLoading = useAppSelector(selectProductsNewsLoading);
   const productsNewsPageInfo = useAppSelector(selectProductsNewsPageInfo);
   const basket = useAppSelector(selectBasket);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   useEffect(() => {
-    dispatch(productsFetchNews(1));
-  }, [dispatch]);
+    if (location.pathname === '/') {
+      dispatch(productsFetchNews(1));
+    }
+  }, [dispatch, location.pathname]);
 
   const indicator = (item: ProductType) => {
     if (basket && item) {
@@ -29,8 +35,11 @@ const ProductsNews = () => {
     }
   };
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
-    dispatch(productsFetchNews(page));
+  const handlePageChange = async (_event: React.ChangeEvent<unknown>, page: number) => {
+    await dispatch(productsFetchNews(page));
+    if (location.pathname === '/') {
+      navigate(`/productsNews`);
+    }
   };
 
   const renderPagination = () => {
@@ -60,9 +69,8 @@ const ProductsNews = () => {
   return (
     <Box
       sx={{
-        border: '5px solid rgba(55,52,147,0.82)',
+        border: ProductsNewsBorderStyles,
         borderRadius: '10px',
-        marginTop: '10px',
         pt: 2,
         pb: 3,
       }}

@@ -41,6 +41,8 @@ import { selectOrderSuccess, setOrderSuccessNull } from './features/Order/orderS
 import { createBasket, fetchBasket } from './features/Basket/basketThunks';
 import { v4 as uuidv4 } from 'uuid';
 import { selectBestsellerSuccess } from './features/Bestsellers/bestsellersSlice';
+import ProductsNews from './features/Products/components/ProductsNews';
+import Delivery from './components/UI/Delivery/Delivery';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -211,6 +213,8 @@ function App() {
         <Route path="/about/" element={<AboutPage />} />
         <Route path="/contacts/" element={<ContactsPage />} />
         <Route path="/search-results/:text" element={<SearchPage />} />
+        <Route path="/productsNews/" element={<ProductsNews />} />
+        <Route path="/delivery/" element={<Delivery />} />
         <Route
           path="/my-cabinet"
           element={

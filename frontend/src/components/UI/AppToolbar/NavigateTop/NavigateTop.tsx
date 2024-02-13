@@ -2,7 +2,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { FooterStyle } from '../../../../styles';
+import { ToolBarStylesTop, ToolBarTopText } from '../../../../styles';
+import { useMediaQuery } from '@mui/material';
 
 const NavigateTop = () => {
   const menu = [
@@ -11,12 +12,16 @@ const NavigateTop = () => {
       link: '/',
     },
     {
-      name: 'Контакты',
-      link: '/contacts',
+      name: 'Новинки',
+      link: '/productsNews',
     },
     {
-      name: 'Акции',
-      link: '/special-offers',
+      name: 'Доставка',
+      link: '/delivery',
+    },
+    {
+      name: 'Контакты',
+      link: '/contacts',
     },
     {
       name: 'О нас',
@@ -24,29 +29,12 @@ const NavigateTop = () => {
     },
   ];
 
+  const isMobile = useMediaQuery('(max-width:760px)');
+
   return (
-    <Box
-      display="flex"
-      justifyContent={'center'}
-      sx={{
-        flexWrap: 'wrap',
-        background: 'rgb(55,52,147)',
-      }}
-    >
+    <Box display="flex" justifyContent={!isMobile ? 'center' : 'start'} alignItems={'center'} sx={ToolBarStylesTop}>
       {menu.map((item) => (
-        <Button
-          component={Link}
-          to={item.link}
-          sx={{
-            color: 'black',
-            fontSize: '15px',
-            // fontWeight: 'bold',
-            textDecoration: 'none',
-            marginRight: '50px',
-            ':hover': { color: 'rgba(255,255,255,0.67)' },
-          }}
-          key={item.name}
-        >
+        <Button component={Link} to={item.link} sx={ToolBarTopText} key={item.name}>
           {item.name}
         </Button>
       ))}

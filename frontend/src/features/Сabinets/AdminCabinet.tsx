@@ -77,7 +77,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
   ];
 
   return (
-    <Box mt={3}>
+    <Box>
       <Card sx={{ minHeight: '600px' }}>
         <CardContent>
           <Grid container flexDirection="row" spacing={2} alignItems="self-start">
@@ -97,10 +97,10 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
                     selected={selectedIndex === index}
                     onClick={() => handleClickOption(option.option, index)}
                   >
-                    <ListItemIcon style={selectedIndex === index ? { color: '#03C988' } : {}}>
+                    <ListItemIcon style={selectedIndex === index ? { color: '#00ccff' } : {}}>
                       {option.icon}
                     </ListItemIcon>
-                    <ListItemText style={selectedIndex === index ? { color: '#03C988' } : {}} primary={option.text} />
+                    <ListItemText style={selectedIndex === index ? { color: '#00ccff' } : {}} primary={option.text} />
                   </ListItemButton>
                 ))}
               </List>

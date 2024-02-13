@@ -14,6 +14,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { ProductType } from '../../types';
 import { selectBasket } from '../Basket/basketSlice';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { ProductsNewsBorderStyles } from '../../styles';
 
 const Bestsellers: React.FC = () => {
   const bestsellersProduct = useAppSelector(selectBestsellers);
@@ -81,9 +82,10 @@ const Bestsellers: React.FC = () => {
   return (
     <div
       style={{
-        border: '5px solid rgba(55,52,147,0.82)',
+        border: ProductsNewsBorderStyles,
         borderRadius: '10px',
         marginTop: '10px',
+        marginBottom: '10px',
       }}
     >
       <style>
@@ -113,14 +115,14 @@ const Bestsellers: React.FC = () => {
         </Typography>
         <Grid item></Grid>
         <Grid item>
-          <Grid container spacing={2} sx={{ mr: 2 }}>
+          <Grid container spacing={2} sx={{ mr: 3, mt: 2 }}>
             <Grid item>
-              <IconButton sx={{ ':hover': { gra: 'rgba(101,38,168,0.67)' } }} size={'large'} onClick={handlePrev}>
+              <IconButton color={'primary'} size={'large'} onClick={handlePrev}>
                 <ArrowBackIosNewIcon />
               </IconButton>
             </Grid>
             <Grid item>
-              <IconButton size={'large'} onClick={handleNext}>
+              <IconButton color={'primary'} size={'large'} onClick={handleNext}>
                 <ArrowForwardIosIcon />
               </IconButton>
             </Grid>

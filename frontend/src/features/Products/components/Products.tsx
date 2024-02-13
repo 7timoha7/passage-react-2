@@ -77,7 +77,9 @@ const Products: React.FC<Props> = ({ categoryName }) => {
   return (
     <Box>
       <Box textAlign="center" mb={2}>
-        <Typography variant={'h2'}>{name}</Typography>
+        <Typography variant="h4" fontWeight={'bold'} style={{ marginLeft: '2%' }}>
+          {name}
+        </Typography>
       </Box>
 
       {renderPagination()}

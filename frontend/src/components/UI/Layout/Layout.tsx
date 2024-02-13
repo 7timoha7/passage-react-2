@@ -18,12 +18,14 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <AppToolbar />
       </header>
       <Container maxWidth={'xl'}>
+        <BreadcrumbsPage />
+      </Container>
+      <Container maxWidth={'xl'} sx={{ mb: 2 }}>
         <Box
           sx={{
             flex: 1,
             display: 'flex',
             flexDirection: isMobile ? 'column' : 'row',
-            mt: 4,
           }}
         >
           <Box sx={{ border: 'none' }}>
@@ -31,7 +33,6 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Box>
 
           <Box maxWidth={'100%'} component="main" sx={{ flex: 1, boxSizing: 'border-box' }}>
-            <BreadcrumbsPage />
             {children}
           </Box>
         </Box>
@@ -43,7 +44,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         )}
       </Container>
 
-      <footer style={{ flexShrink: 0, marginTop: '10px' }}>
+      <footer style={{ flexShrink: 0, marginTop: 'auto' }}>
         <Footer />
       </footer>
     </Box>

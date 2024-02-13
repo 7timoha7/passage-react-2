@@ -1,8 +1,8 @@
-import { AppBar, Box, Container, Grid, styled, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Container, Grid, styled, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../../features/users/usersSlice';
 import { NavLink } from 'react-router-dom';
-import { ToolBarStyles } from '../../../styles';
+import { ToolBarMobileStyles, ToolBarStyles } from '../../../styles';
 import NavigateTop from './NavigateTop/NavigateTop';
 import Search from './NavigateTop/Components/Search';
 import UserMenu from './UserMenu';
@@ -12,6 +12,7 @@ import Basket from '../../../features/Basket/Basket';
 
 const AppToolbar = () => {
   const user = useAppSelector(selectUser);
+  const isMobile = useMediaQuery('(max-width:760px)');
 
   const Link = styled(NavLink)({
     color: 'inherit',
@@ -22,8 +23,9 @@ const AppToolbar = () => {
   });
   return (
     <Box mb={3} sx={{ flexGrow: 1, margin: 0 }}>
-      <NavigateTop />
-      <AppBar position="sticky" sx={ToolBarStyles}>
+      {!isMobile && <NavigateTop />}
+
+      <AppBar position="sticky" sx={!isMobile ? ToolBarStyles : ToolBarMobileStyles}>
         <Toolbar>
           <Container maxWidth="xl">
             <Grid
@@ -35,7 +37,7 @@ const AppToolbar = () => {
             >
               <Grid item>
                 <Link to="/" style={{ margin: 'auto' }}>
-                  <img style={{ maxWidth: '100px' }} src="/logo.svg" alt="passage" />
+                  <img style={{ maxWidth: '150px' }} src="/logo.svg" alt="passage" />
                 </Link>
               </Grid>
 
