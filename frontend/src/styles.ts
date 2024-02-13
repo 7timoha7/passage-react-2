@@ -1,5 +1,3 @@
-import { useMediaQuery } from '@mui/material';
-
 export const ToolBarStylesTop = {
   flexWrap: 'wrap',
   background: '#2ca5ff',

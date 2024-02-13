@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid, styled, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Container, Grid, styled, Toolbar, useMediaQuery } from '@mui/material';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../../features/users/usersSlice';
 import { NavLink } from 'react-router-dom';
