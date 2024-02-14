@@ -28,7 +28,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
             flexDirection: isMobile ? 'column' : 'row',
           }}
         >
-          <Box sx={{ border: 'none' }}>
+          <Box sx={{ border: 'none', background: 'transparent' }}>
             <MenuCategories />
           </Box>
 

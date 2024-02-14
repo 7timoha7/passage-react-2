@@ -48,6 +48,7 @@ const MenuCategories = () => {
         '@media (min-width: 1200px)': {
           mr: 2,
         },
+        background: 'transparent',
       }}
     >
       <CssBaseline />
@@ -57,7 +58,7 @@ const MenuCategories = () => {
           width: { lg: drawerWidth },
           flexShrink: { sm: 0 },
           background: menuCategoriesColor,
-          borderRadius: '10px',
+          borderRadius: '20px',
         }}
         aria-label="mailbox folders"
       >
@@ -99,11 +100,12 @@ const MenuCategories = () => {
               width: drawerWidth,
               position: 'unset',
               background: 'rgba(47,36,36,0)',
+              borderRadius: '20px',
             },
           }}
           open
         >
-          <Box sx={{ m: 0, background: 'rgba(166,143,143,0.38)', pt: 2, pb: 2 }}>
+          <Box sx={{ m: 0, background: 'rgba(166,143,143,0)', pt: 2, pb: 2 }}>
             <Typography variant={'h5'} textAlign={'center'}>
               Каталог товаров
             </Typography>

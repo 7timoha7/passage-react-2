@@ -30,6 +30,7 @@ export const ProductsNewsBorderStyles = '5px solid #179ae3';
 
 export const FooterStyle = {
   background: 'linear-gradient(45deg, hsla(210, 100%, 88%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
+  color: 'black',
 };
 
 export const menuCategoriesColor = 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)';

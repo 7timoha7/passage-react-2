@@ -148,7 +148,7 @@ const CustomSearchBar: React.FC = () => {
           </ul>
           {searchResultsPreview.hasMore && (
             <Box display="flex" justifyContent="center">
-              <Button color="error" onClick={handleExtendedSearch}>
+              <Button color="primary" onClick={handleExtendedSearch}>
                 Все результаты
               </Button>
             </Box>

@@ -22,7 +22,7 @@ const ProductsNews = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' || location.pathname === '/productsNews') {
       dispatch(productsFetchNews(1));
     }
   }, [dispatch, location.pathname]);

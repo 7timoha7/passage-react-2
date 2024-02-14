@@ -150,7 +150,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
             width: '165px',
           },
           '@media (max-width:400px)': {
-            width: '100%',
+            width: '290px',
           },
         }}
       >
