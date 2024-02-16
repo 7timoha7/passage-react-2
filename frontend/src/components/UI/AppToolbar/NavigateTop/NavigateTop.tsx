@@ -5,7 +5,11 @@ import React from 'react';
 import { ToolBarStylesTop, ToolBarTopText } from '../../../../styles';
 import { useMediaQuery } from '@mui/material';
 
-const NavigateTop = () => {
+interface Props {
+  close?: () => void;
+}
+
+const NavigateTop: React.FC<Props> = ({ close }) => {
   const menu = [
     {
       name: 'Главная',
@@ -34,7 +38,7 @@ const NavigateTop = () => {
   return (
     <Box display="flex" justifyContent={!isMobile ? 'center' : 'start'} alignItems={'center'} sx={ToolBarStylesTop}>
       {menu.map((item) => (
-        <Button component={Link} to={item.link} sx={ToolBarTopText} key={item.name}>
+        <Button onClick={close} component={Link} to={item.link} sx={ToolBarTopText} key={item.name}>
           {item.name}
         </Button>
       ))}

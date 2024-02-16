@@ -127,3 +127,9 @@ export interface IChatIdAdmin {
 export interface IBestseller {
   bestseller_id: string;
 }
+
+export interface IBanner {
+  title: string;
+  desk: string;
+  image: string;
+}

@@ -17,3 +17,27 @@ const imageStorage = multer.diskStorage({
 });
 
 export const imagesUpload = multer({ storage: imageStorage });
+
+const bannersImageStorage = multer.diskStorage({
+  destination: async (_req, _file, cb) => {
+    const destDir = path.join(config.publicPath, 'images', 'banners');
+
+    // Проверяем существование директории images/banners
+    if (
+      !(await fs
+        .access(destDir)
+        .then(() => true)
+        .catch(() => false))
+    ) {
+      await fs.mkdir(destDir, { recursive: true });
+    }
+
+    cb(null, destDir);
+  },
+  filename: (_req, file, cb) => {
+    const extension = path.extname(file.originalname);
+    cb(null, randomUUID() + extension); // Убрано 'images/banners/' из filename
+  },
+});
+
+export const bannersImagesUpload = multer({ storage: bannersImageStorage });

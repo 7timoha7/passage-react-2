@@ -10,8 +10,8 @@ import productFromApiRouter from './routers/productsFromApi';
 import basketRouter from './routers/baskets';
 import ordersRouter from './routers/orders';
 import chatIdAdminRouter from './routers/chatIdAdmins';
-import bestseller from './models/Bestseller';
-import bestsellerRouter from './routers/Bestsellers';
+import bestsellerRouter from './routers/bestsellers';
+import bannersRouter from './routers/banners';
 
 const app = express();
 const port = 8000;
@@ -36,6 +36,7 @@ app.use('/basket', basketRouter);
 app.use('/orders', ordersRouter);
 app.use('/chatIdAdmins', chatIdAdminRouter);
 app.use('/bestsellers', bestsellerRouter);
+app.use('/banners', bannersRouter);
 
 const run = async () => {
   mongoose.set('strictQuery', false);

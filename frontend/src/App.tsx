@@ -43,6 +43,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { selectBestsellerSuccess } from './features/Bestsellers/bestsellersSlice';
 import ProductsNews from './features/Products/components/ProductsNews';
 import Delivery from './components/UI/Delivery/Delivery';
+import BannersForm from './features/Banners/BannersForm';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -258,6 +259,14 @@ function App() {
           element={
             <ProtectedRoute isAllowed={user && Boolean(user.role === 'admin' || user.role === 'director')}>
               <ProductEdit />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-banners/"
+          element={
+            <ProtectedRoute isAllowed={user && Boolean(user.role === 'admin')}>
+              <BannersForm />
             </ProtectedRoute>
           }
         />

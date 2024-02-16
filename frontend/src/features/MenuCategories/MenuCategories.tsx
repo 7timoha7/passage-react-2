@@ -87,7 +87,7 @@ const MenuCategories = () => {
             </Typography>
           </Box>
           <Box sx={{ borderBottom: '5px solid white' }}>
-            <NavigateTop />
+            <NavigateTop close={closeMenu} />
           </Box>
           {drawer}
         </Drawer>

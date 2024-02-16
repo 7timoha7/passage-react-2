@@ -1,6 +1,5 @@
 import React from 'react';
-import { AppBar, Box, Container, Divider, Grid, IconButton, Link, Toolbar, Typography } from '@mui/material';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { AppBar, Box, Container, Divider, Grid, Link, Typography } from '@mui/material';
 import CallIcon from '@mui/icons-material/Call';
 import EmailIcon from '@mui/icons-material/Email';
 import InstagramIcon from '@mui/icons-material/Instagram';

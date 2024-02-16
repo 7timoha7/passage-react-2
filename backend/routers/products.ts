@@ -1,10 +1,8 @@
 import express from 'express';
 import Product from '../models/Product';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import permit from '../middleware/permit';
-import { imagesUpload } from '../multer';
-import { IProduct } from '../types';
 import { promises as fs } from 'fs';
 
 const productRouter = express.Router();
@@ -141,56 +139,56 @@ productRouter.get('/get/favorites', auth, async (req, res, next) => {
   }
 });
 
-productRouter.patch('/:id', auth, permit('admin', 'director'), imagesUpload.array('images'), async (req, res, next) => {
-  try {
-    const product: HydratedDocument<IProduct> | null = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).send({ message: 'Not found product!' });
-    }
-
-    product.name = req.body.name;
-    product.article = req.body.article;
-    product.goodID = req.body.goodID;
-    product.measureCode = req.body.measureCode;
-    product.measureName = req.body.measureName;
-    product.ownerID = req.body.ownerID;
-    product.quantity = JSON.parse(req.body.quantity);
-    product.price = JSON.parse(req.body.price);
-
-    if (req.files) {
-      if (product.images) {
-        const uploadedImages = (req.files as Express.Multer.File[]).map((file) => file.filename);
-        product.images.push(...uploadedImages);
-      } else {
-        product.images = (req.files as Express.Multer.File[]).map((file) => file.filename);
-      }
-    }
-
-    await Product.findByIdAndUpdate(req.params.id, {
-      name: product.name,
-      article: product.article,
-      goodID: product.goodID,
-      measureCode: product.measureCode,
-      measureName: product.measureName,
-      ownerID: product.ownerID,
-      quantity: product.quantity,
-      price: product.price,
-      images: product.images,
-    });
-
-    return res.send({
-      message: {
-        en: 'Product updated successfully',
-        ru: 'Продукт успешно изменен',
-      },
-    });
-  } catch (error) {
-    if (error instanceof mongoose.Error.ValidationError) {
-      return res.status(400).send(error);
-    }
-    return next(error);
-  }
-});
+// productRouter.patch('/:id', auth, permit('admin', 'director'), imagesUpload.array('images'), async (req, res, next) => {
+//   try {
+//     const product: HydratedDocument<IProduct> | null = await Product.findById(req.params.id);
+//     if (!product) {
+//       return res.status(404).send({ message: 'Not found product!' });
+//     }
+//
+//     product.name = req.body.name;
+//     product.article = req.body.article;
+//     product.goodID = req.body.goodID;
+//     product.measureCode = req.body.measureCode;
+//     product.measureName = req.body.measureName;
+//     product.ownerID = req.body.ownerID;
+//     product.quantity = JSON.parse(req.body.quantity);
+//     product.price = JSON.parse(req.body.price);
+//
+//     if (req.files) {
+//       if (product.images) {
+//         const uploadedImages = (req.files as Express.Multer.File[]).map((file) => file.filename);
+//         product.images.push(...uploadedImages);
+//       } else {
+//         product.images = (req.files as Express.Multer.File[]).map((file) => file.filename);
+//       }
+//     }
+//
+//     await Product.findByIdAndUpdate(req.params.id, {
+//       name: product.name,
+//       article: product.article,
+//       goodID: product.goodID,
+//       measureCode: product.measureCode,
+//       measureName: product.measureName,
+//       ownerID: product.ownerID,
+//       quantity: product.quantity,
+//       price: product.price,
+//       images: product.images,
+//     });
+//
+//     return res.send({
+//       message: {
+//         en: 'Product updated successfully',
+//         ru: 'Продукт успешно изменен',
+//       },
+//     });
+//   } catch (error) {
+//     if (error instanceof mongoose.Error.ValidationError) {
+//       return res.status(400).send(error);
+//     }
+//     return next(error);
+//   }
+// });
 
 productRouter.delete('/:id/images/:index', auth, permit('admin', 'director'), async (req, res, next) => {
   try {

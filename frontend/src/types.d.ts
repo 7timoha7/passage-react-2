@@ -193,3 +193,16 @@ export interface BestsellerType {
   _id: string;
   bestseller_id: string;
 }
+
+export interface BannerType {
+  _id: string;
+  title: string;
+  desk: string;
+  image: string;
+}
+
+export interface BannerToServerType {
+  title: string;
+  desk: string;
+  image: File | null;
+}

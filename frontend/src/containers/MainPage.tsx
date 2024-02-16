@@ -1,6 +1,6 @@
 import React from 'react';
-import PorcelainStoneware from '../components/UI/Banners/PorcelainStoneware';
 import { Box } from '@mui/material';
+import Banners from '../features/Banners/Banners';
 
 const MainPage = () => {
   return (
@@ -12,7 +12,8 @@ const MainPage = () => {
           },
         }}
       >
-        <PorcelainStoneware />
+        {/*<PorcelainStoneware />*/}
+        <Banners />
       </Box>
     </>
   );
