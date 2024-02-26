@@ -1,37 +1,40 @@
 import React, { useEffect, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectFetchProductsForOneLoading, selectProductsForOne } from '../productsForSlice';
+import { fetchProductsForOne } from '../productsForThunks';
 import Slider, { Settings } from 'react-slick';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectBestsellers, selectFetchBestsellersLoading } from './bestsellersSlice';
-import { fetchBestsellers } from './bestsellersThunks';
-import ProductCard from '../Products/components/ProductCard';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { selectBasket } from '../../Basket/basketSlice';
+import { ProductType } from '../../../types';
+import { ProductsNewsBorderStyles } from '../../../styles';
 import { Box, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { ProductType } from '../../types';
-import { selectBasket } from '../Basket/basketSlice';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import { ProductsNewsBorderStyles } from '../../styles';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import ProductCard from '../../Products/components/ProductCard';
 
-const Bestsellers: React.FC = () => {
-  const bestsellersProduct = useAppSelector(selectBestsellers);
+interface Props {
+  categoriesID: string;
+}
+
+const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
+  const productsFor = useAppSelector(selectProductsForOne);
   const dispatch = useAppDispatch();
-  const sliderRef = useRef<Slider>(null);
-  const basket = useAppSelector(selectBasket);
-  const loadingBestsellers = useAppSelector(selectFetchBestsellersLoading);
 
   useEffect(() => {
-    dispatch(fetchBestsellers());
-  }, [dispatch]);
+    dispatch(fetchProductsForOne(categoriesID));
+  }, [categoriesID, dispatch]);
 
-  // Проверьте, что bestsellersProduct - это массив
-  if (!Array.isArray(bestsellersProduct)) {
-    // Обработайте случай, когда bestsellersProduct не является массивом
-    return null;
-  }
+  const sliderRef = useRef<Slider>(null);
+  const basket = useAppSelector(selectBasket);
+  const productsForOneLoading = useAppSelector(selectFetchProductsForOneLoading);
+
+  // // Проверьте, что bestsellersProduct - это массив
+  // if (!Array.isArray(productsFor)) {
+  //   // Обработайте случай, когда bestsellersProduct не является массивом
+  //   return null;
+  // }
 
   const sliderSettings: Settings = {
     dots: false, // Отключаем точки (индикаторы текущего слайда)
@@ -81,7 +84,7 @@ const Bestsellers: React.FC = () => {
 
   return (
     <>
-      {bestsellersProduct.length < 1 ? null : (
+      {(productsFor && productsFor.categoryForID.length < 1) || !productsFor ? null : (
         <div
           style={{
             border: ProductsNewsBorderStyles,
@@ -113,7 +116,7 @@ const Bestsellers: React.FC = () => {
 
           <Grid container justifyContent={'space-between'} alignItems={'center'} sx={{ mb: 3 }}>
             <Typography variant="h5" fontWeight={'bold'} style={{ marginLeft: '2%' }}>
-              Хиты продаж
+              Рекомендованные товары
             </Typography>
             <Grid item></Grid>
             <Grid item>
@@ -131,25 +134,26 @@ const Bestsellers: React.FC = () => {
               </Grid>
             </Grid>
           </Grid>
-          {loadingBestsellers ? (
+          {productsForOneLoading ? (
             <Spinner />
           ) : (
             <>
-              {bestsellersProduct.length < 2 ? (
+              {productsFor && productsFor.categoryForID.length < 2 ? (
                 <Box sx={{ p: 2 }}>
                   <ProductCard
                     newsSize={true}
-                    indicator={indicator(bestsellersProduct[0])}
-                    product={bestsellersProduct[0]}
+                    indicator={indicator(productsFor.categoryForID[0])}
+                    product={productsFor.categoryForID[0]}
                   />
                 </Box>
               ) : (
                 <Slider ref={sliderRef} {...sliderSettings}>
-                  {bestsellersProduct.map((item) => (
-                    <div key={item._id}>
-                      <ProductCard newsSize={true} indicator={indicator(item)} product={item} />
-                    </div>
-                  ))}
+                  {productsFor &&
+                    productsFor.categoryForID.map((item) => (
+                      <div key={item._id}>
+                        <ProductCard newsSize={true} indicator={indicator(item)} product={item} />
+                      </div>
+                    ))}
                 </Slider>
               )}
             </>
@@ -160,4 +164,4 @@ const Bestsellers: React.FC = () => {
   );
 };
 
-export default Bestsellers;
+export default ProductsFor;

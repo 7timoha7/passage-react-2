@@ -54,6 +54,7 @@ export interface CategoriesType {
   name: string;
   ID: string;
   ownerID?: string;
+  productsHave: boolean;
 }
 
 export interface ProductType {
@@ -205,4 +206,33 @@ export interface BannerToServerType {
   title: string;
   desk: string;
   image: File | null;
+}
+
+// export interface ProductForType {
+//   _id: string;
+//   category: CategoriesType;
+//   products: ProductType[];
+// }
+
+export interface ProductForType {
+  _id: string;
+  categoryID: CategoriesType;
+  categoryForID: CategoriesType[];
+}
+
+export interface ProductForOneType {
+  _id: string;
+  categoryID: CategoriesType;
+  categoryForID: ProductType[];
+}
+
+export interface ProductForOneCategoryType {
+  _id: string;
+  categoryID: CategoriesType;
+  categoryForID: CategoriesType[];
+}
+
+export interface ProductForToServer {
+  categoryID: string;
+  categoryForID: string[];
 }

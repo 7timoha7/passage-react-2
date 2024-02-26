@@ -19,6 +19,7 @@ export interface ICategory {
   name: string;
   ID: string;
   ownerID?: string;
+  productsHave: boolean;
 }
 
 export interface ICategoryFromApi {
@@ -132,4 +133,9 @@ export interface IBanner {
   title: string;
   desk: string;
   image: string;
+}
+
+export interface IProductFor {
+  categoryID: string;
+  categoryForID: string[];
 }

@@ -1,4 +1,4 @@
-import express from 'express';
+import  express from 'express';
 import Banner from '../models/Banner';
 import auth from '../middleware/auth';
 import permit from '../middleware/permit';
@@ -41,23 +41,6 @@ bannersRouter.get('/', async (_req, res, next) => {
     next(error);
   }
 });
-
-// PATCH запрос для частичного обновления баннера
-// bannersRouter.patch('/:id', auth, permit('admin'), upload.single('image'), async (req, res, next) => {
-//   try {
-//     const { title, desk } = req.body;
-//     const imagePath = req.file ? `/images/banners/${req.file.filename}` : '';
-//     await Banner.findByIdAndUpdate(req.params.id, { title, desk, image: imagePath }, { new: true });
-//     return res.send({
-//       message: {
-//         en: 'The banner has been successfully changed!',
-//         ru: 'Баннер успешно изменен!',
-//       },
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 // DELETE запрос для удаления баннера
 bannersRouter.delete('/:id', auth, permit('admin'), async (req, res, next) => {

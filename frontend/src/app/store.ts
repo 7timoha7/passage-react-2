@@ -9,6 +9,7 @@ import { basketReducer } from '../features/Basket/basketSlice';
 import { ordersReducer } from '../features/Order/orderSlice';
 import { bestsellersReducer } from '../features/Bestsellers/bestsellersSlice';
 import { bannersReducer } from '../features/Banners/bannersSlice';
+import { productsForReducer } from '../features/ProductsFor/productsForSlice';
 
 const usersPersistConfig = {
   key: 'passage:users',
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
   categories: persistReducer(usersPersistConfig, categoriesReducer),
   products: persistReducer(usersPersistConfig, productsReducer),
+  productsFor: persistReducer(usersPersistConfig, productsForReducer),
   basket: persistReducer(usersPersistConfig, basketReducer),
   orders: persistReducer(usersPersistConfig, ordersReducer),
   bestsellers: persistReducer(usersPersistConfig, bestsellersReducer),

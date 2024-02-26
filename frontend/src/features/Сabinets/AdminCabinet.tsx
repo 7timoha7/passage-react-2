@@ -26,6 +26,8 @@ import {
 } from '../Order/orderSlice';
 import BannersForm from '../Banners/BannersForm';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import CategoryIcon from '@mui/icons-material/Category';
+import ProductsForPage from '../ProductsFor/components/ProductsForPage';
 
 const initialState: CabinetState = {
   myInfo: true,
@@ -34,6 +36,7 @@ const initialState: CabinetState = {
   users: false,
   favorites: false,
   banners: false,
+  productsFor: false,
 };
 
 interface Props {
@@ -78,6 +81,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
     { option: 'banners', icon: <ViewCarouselIcon />, text: 'Баннер' },
     { option: 'myOrders', icon: <WorkIcon />, text: 'Мои заказы' },
     { option: 'unacceptedOrders', icon: <WorkspacesIcon />, text: 'Непринятые заказы' },
+    { option: 'productsFor', icon: <CategoryIcon />, text: 'Сопутствующие товары' },
   ];
 
   return (
@@ -119,9 +123,10 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
               {state.myOrders && adminPageInfo && user?._id && (
                 <OrderItems ordersItems={orders} adminPageInfo={adminPageInfo} id={user._id} />
               )}
-              {state.unacceptedOrders && orderPageInfo && (
+              {state.unaccepktedOrders && orderPageInfo && (
                 <OrderItems ordersPageInfo={orderPageInfo} ordersItems={unacceptedOrders} />
               )}
+              {state.productsFor && <ProductsForPage />}
             </Grid>
           </Grid>
         </CardContent>

@@ -16,6 +16,10 @@ const CategorySchema = new Schema<ICategory>({
   ownerID: {
     type: String,
   },
+  productsHave: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Category = mongoose.model('Category', CategorySchema);

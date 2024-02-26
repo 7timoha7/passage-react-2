@@ -69,22 +69,6 @@ const ProductEdit = () => {
     setState((prev) => ({ ...prev, [name]: value }));
   };
 
-  // const resizeFile = (file: File) =>
-  //   new Promise((resolve) => {
-  //     Resizer.imageFileResizer(
-  //       file,
-  //       1920,
-  //       1080,
-  //       'jpg',
-  //       80,
-  //       0,
-  //       (uri) => {
-  //         resolve(uri);
-  //       },
-  //       'file',
-  //     );
-  //   });
-
   const fileInputChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
 

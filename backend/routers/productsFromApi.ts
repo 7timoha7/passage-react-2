@@ -218,6 +218,7 @@ const createCategories = async (categoriesData: ICategoryFromApi[]): Promise<voi
           name: categoryData.name,
           ID: categoryData.ID,
           ownerID: categoryData.ownerID,
+          productsHave: true,
         });
         await newCategory.save();
       }

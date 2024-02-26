@@ -28,6 +28,7 @@ import {
   selectCreateBestsellersLoading,
   selectDeleteBestsellersLoading,
 } from '../../Bestsellers/bestsellersSlice';
+import { setProductsForID } from '../../ProductsFor/productsForSlice';
 
 interface Props {
   product: ProductType;
@@ -122,6 +123,11 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
     return flag;
   };
 
+  const onClickCard = () => {
+    // dispatch(setProductsForID(product.ownerID));
+    navigate('/product/' + product._id);
+  };
+
   return (
     <Box
       sx={{
@@ -129,7 +135,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
       }}
     >
       <Card
-        onClick={() => navigate('/product/' + product._id)}
+        onClick={() => onClickCard()}
         sx={{
           height: '100%',
           width: 300,

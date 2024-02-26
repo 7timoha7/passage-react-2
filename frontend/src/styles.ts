@@ -50,6 +50,20 @@ export const styleModalCover = {
   p: 4,
 };
 
+export const styleModalCoverNew = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  border: '2px solid black',
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  width: '90%',
+  maxHeight: '90vh', // Вы можете установить максимальную высоту в виде процента от высоты экрана
+  overflowY: 'auto', // Это свойство добавит вертикальную прокрутку при необходимости
+};
+
 export const arrowStyleGallery = {
   position: 'absolute',
   top: '50%',

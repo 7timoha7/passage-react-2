@@ -44,6 +44,7 @@ import { selectBestsellerSuccess } from './features/Bestsellers/bestsellersSlice
 import ProductsNews from './features/Products/components/ProductsNews';
 import Delivery from './components/UI/Delivery/Delivery';
 import BannersForm from './features/Banners/BannersForm';
+import ProductsForPage from './features/ProductsFor/components/ProductsForPage';
 
 function App() {
   const user = useAppSelector(selectUser);
