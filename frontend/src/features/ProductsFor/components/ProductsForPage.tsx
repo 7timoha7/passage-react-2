@@ -5,7 +5,7 @@ import { selectCreateProductsForLoading, selectFetchProductsForLoading, selectPr
 import { CategoriesType } from '../../../types';
 import { fetchCategories } from '../../MenuCategories/menuCategoriesThunks';
 import { createProductsFor, fetchProductsFor } from '../productsForThunks';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { openModalCover, selectModalCoverState } from '../../users/usersSlice';
 import ProductsForItem from './ProductsForItem';
 import ModalCoverNew from '../../../components/UI/ModalCover/ModalCoverNew';

@@ -1,4 +1,4 @@
-import  express from 'express';
+import express from 'express';
 import Banner from '../models/Banner';
 import auth from '../middleware/auth';
 import permit from '../middleware/permit';

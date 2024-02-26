@@ -33,7 +33,6 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import ProductGallery from './ProductGallery';
 import * as isoCountries from 'i18n-iso-countries';
 import CountryFlag from 'react-country-flag';
-import ProductsFor from '../../ProductsFor/components/ProductsFor';
 import { setProductsForID } from '../../ProductsFor/productsForSlice';
 
 interface Props {

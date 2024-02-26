@@ -1,20 +1,18 @@
 import React from 'react';
 import Modal from '@mui/material/Modal';
-import { useAppDispatch } from '../../../app/hooks';
-import { closeModalCover } from '../../../features/users/usersSlice';
 import { Box } from '@mui/material';
-import { styleModalCover, styleModalCoverNew } from '../../../styles';
+import { styleModalCoverNew } from '../../../styles';
 
 interface Props extends React.PropsWithChildren {
   state: boolean;
 }
 
 const ModalCoverNew: React.FC<Props> = ({ state, children }) => {
-  const dispatch = useAppDispatch();
-
-  const handleCloseModal = () => {
-    dispatch(closeModalCover());
-  };
+  // const dispatch = useAppDispatch();
+  //
+  // const handleCloseModal = () => {
+  //   dispatch(closeModalCover());
+  // };
 
   return (
     <Modal

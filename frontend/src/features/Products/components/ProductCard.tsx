@@ -28,7 +28,6 @@ import {
   selectCreateBestsellersLoading,
   selectDeleteBestsellersLoading,
 } from '../../Bestsellers/bestsellersSlice';
-import { setProductsForID } from '../../ProductsFor/productsForSlice';
 
 interface Props {
   product: ProductType;
