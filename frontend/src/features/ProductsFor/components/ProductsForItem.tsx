@@ -3,13 +3,15 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import {
   selectFetchProductsForOneCategoryLoading,
   selectProductsForOneCategory,
+  selectUpdateProductsForLoading,
   setProductsForOneCategoriesNull,
 } from '../productsForSlice';
 import { fetchProductsFor, fetchProductsForOneCategory, updateProductsFor } from '../productsForThunks';
 import { CategoriesType } from '../../../types';
-import { Box, Button, Checkbox, Grid, Typography } from '@mui/material';
+import { Box, Checkbox, Grid, Typography } from '@mui/material';
 import { closeModalCover } from '../../users/usersSlice';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import { LoadingButton } from '@mui/lab';
 
 interface Props {
   productsFoID: string;
@@ -19,6 +21,7 @@ interface Props {
 const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
   const productsForOneCategory = useAppSelector(selectProductsForOneCategory);
   const productsForOneCategoryLoading = useAppSelector(selectFetchProductsForOneCategoryLoading);
+  const updateLoading = useAppSelector(selectUpdateProductsForLoading);
   const dispatch = useAppDispatch();
 
   // Состояние для отслеживания выбранных чекбоксов
@@ -67,13 +70,17 @@ const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
     await dispatch(fetchProductsFor());
   };
 
+  const filterCategories = (currentCategoryID: string) => {
+    return categories.filter((category) => category.ID !== currentCategoryID);
+  };
+
   return (
     <>
       {productsForOneCategoryLoading ? (
         <Spinner />
       ) : (
         <Grid container spacing={2}>
-          {categories.map((item) => {
+          {filterCategories(productsFoID).map((item) => {
             const isChecked = checkedCategories.includes(item.ID);
             return (
               <Grid item key={item.ID}>
@@ -88,6 +95,7 @@ const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
                   </Grid>
                   <Grid>
                     <Checkbox
+                      disabled={updateLoading}
                       checked={isChecked}
                       onChange={() => handleCheckboxChange(item.ID)}
                       aria-label={`Select ${item.name}`}
@@ -101,9 +109,9 @@ const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
       )}
 
       <Box sx={{ mt: 2 }} justifyContent={'flex-end'} display={'flex'}>
-        <Button variant={'outlined'} onClick={() => onClickBtnCancel()}>
+        <LoadingButton loading={updateLoading} variant={'outlined'} onClick={() => onClickBtnCancel()}>
           Назад
-        </Button>
+        </LoadingButton>
       </Box>
     </>
   );
