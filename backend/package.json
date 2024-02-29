@@ -10,7 +10,9 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noemit",
     "dev": "nodemon index.ts",
-    "seed": "ts-node fixtures.ts"
+    "seed": "ts-node fixtures.ts",
+    "seed:test": "NODE_ENV=test ts-node fixtures.ts",
+    "start:test": "NODE_ENV=test ts-node index.ts"
   },
   "keywords": [],
   "author": "",
