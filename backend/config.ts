@@ -8,10 +8,9 @@ dotenv.config({ path: envFile });
 const rootPath = __dirname;
 
 const config = {
-  port: parseInt(process.env.PORT || '8000'),
   rootPath,
   publicPath: path.join(rootPath, 'public'),
-  db: process.env.MONGO_DB || 'mongodb://159.223.17.104/passage',
+  db: 'mongodb://localhost/passage',
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
