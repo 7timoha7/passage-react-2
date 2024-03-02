@@ -11,7 +11,7 @@ const config = {
   port: parseInt(process.env.PORT || '8000'),
   rootPath,
   publicPath: path.join(rootPath, 'public'),
-  db: process.env.MONGO_DB || 'mongodb://localhost/passage',
+  db: process.env.MONGO_DB || 'mongodb://159.223.17.104/passage',
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
