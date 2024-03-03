@@ -41,6 +41,7 @@ const fetchData = async (method: string) => {
           configName: 'AUTHORIZATION',
           configVersion: 'Basic Auth',
         },
+        timeout: 400000, // 5 минут в миллисекундах
       },
     );
 
