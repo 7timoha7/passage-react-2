@@ -2,18 +2,6 @@ import mongoose from 'mongoose';
 import config from './config';
 import crypto from 'crypto';
 import User from './models/User';
-import axios from 'axios';
-import {
-  ICategoryFromApi,
-  IProductFromApi,
-  IProductPriceFromApi,
-  IProductQuantityFromApi,
-  IProductQuantityStocksFromApi,
-} from './types';
-import path from 'path';
-import fs from 'fs';
-import Product from './models/Product';
-import Category from './models/Category';
 
 const run = async () => {
   mongoose.set('strictQuery', false);
