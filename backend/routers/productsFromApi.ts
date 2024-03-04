@@ -19,7 +19,7 @@ import permit from '../middleware/permit';
 const productFromApiRouter = express.Router();
 
 const fetchData = async (method: string) => {
-  const apiUrl = 'http://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
+  const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
   const username = 'AUTH_TOKEN';
   const password = 'jU5gujas';
 
@@ -41,7 +41,6 @@ const fetchData = async (method: string) => {
           configName: 'AUTHORIZATION',
           configVersion: 'Basic Auth',
         },
-
       },
     );
 
