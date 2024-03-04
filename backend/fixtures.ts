@@ -63,6 +63,7 @@ const run = async () => {
             configName: 'AUTHORIZATION',
             configVersion: 'Basic Auth',
           },
+          timeout: 300000, // Установите тайм-аут в 10 секунд
         },
       );
 
