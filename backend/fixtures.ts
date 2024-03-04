@@ -41,7 +41,7 @@ const run = async () => {
   });
 
   const fetchData = async (method: string) => {
-    const apiUrl = 'http://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
+    const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
     const username = 'AUTH_TOKEN';
     const password = 'jU5gujas';
 
