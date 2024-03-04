@@ -14,9 +14,6 @@ import path from 'path';
 import fs from 'fs';
 import Product from './models/Product';
 import Category from './models/Category';
-import auth from './middleware/auth';
-import permit from './middleware/permit';
-import productFromApiRouter from './routers/productsFromApi';
 
 const run = async () => {
   mongoose.set('strictQuery', false);
