@@ -10,7 +10,7 @@ const rootPath = __dirname;
 const config = {
   rootPath,
   publicPath: path.join(rootPath, 'public'),
-  db: 'mongodb://127.0.0.1:27017/passage',
+  db: process.env.MONGO_DB || 'mongodb://localhost/shop',
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
