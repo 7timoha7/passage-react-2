@@ -39,7 +39,7 @@ const fetchData = async (method: string) => {
           configName: 'AUTHORIZATION',
           configVersion: 'Basic Auth',
         },
-        timeout: 100000, // Увеличьте значение таймаута по необходимости
+        timeout: 200000, // Увеличьте значение таймаута по необходимости
       },
     );
 
