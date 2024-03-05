@@ -45,57 +45,45 @@ const fetchData = async (method: string) => {
     );
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Ошибка при выполнении запроса:', error);
+
+    if (error.response) {
+      console.error('Error details:', error.response.data);
+    } else {
+      console.error('Error details:', error.message);
+    }
+
     throw error;
   }
 };
 
-// Функция для обработки строки description и извлечения размера, толщины и описания
 const processDescription = (description: string): { size: string; thickness: string; description: string } => {
   const parts = description.split('\\\\').map((part) => part.trim());
 
   if (parts.length > 1) {
     return {
-      size: parts[0] || '', // Если size не указан, установите пустую строку
-      thickness: parts[1] || '', // Если thickness не указан, установите пустую строку
-      description: parts.slice(2).join('\\\\') || '', // Используем оставшуюся часть как description
+      size: parts[0] || '',
+      thickness: parts[1] || '',
+      description: parts.slice(2).join('\\\\') || '',
     };
   } else {
     return {
-      size: '', // Разделители отсутствуют, size пуст
-      thickness: '', // Разделители отсутствуют, thickness пуст
-      description: parts[0] || '', // Используем весь текст как description
+      size: '',
+      thickness: '',
+      description: parts[0] || '',
     };
   }
 };
 
-// Функция для расчета площади на основе размера
 const calculateArea = (size: string): number => {
   const [width, height] = size.split('*').map(Number);
-  return (width * height) / 1000000; // Переводим из мм² в м²
+  return (width * height) / 1000000;
 };
 
-// Функция для пересчета цены на квадратный метр
 const calculatePricePerSquareMeter = (price: number, area: number): number => {
-  return price * area; // Исправим на умножение
+  return price * area;
 };
-
-// const saveProductsToFile = (
-//   products: { [x: string]: any; imageBase64: any; imagesBase64: any }[],
-//   filePath: fs.PathOrFileDescriptor,
-// ) => {
-//   // Создаем массив данных для сохранения в файл, исключая ключи imageBase64 и imagesBase64
-//   const dataToSave = products.map(({ imageBase64, imagesBase64, ...rest }) => rest);
-//
-//   // Преобразуем данные в формат JSON
-//   const jsonData = JSON.stringify(dataToSave, null, 2);
-//
-//   // Сохраняем данные в файл
-//   fs.writeFileSync(filePath, jsonData);
-//
-//   console.log(`Данные сохранены в файл: ${filePath}`);
-// };
 
 const createProducts = async (
   products: IProductFromApi[],
@@ -109,28 +97,23 @@ const createProducts = async (
     for (const productData of products) {
       const quantityDataArray = quantities.filter((q) => q.goodID === productData.goodID);
 
-      // Проверка, что есть хотя бы один элемент в массиве и все элементы имеют положительное количество
       if (quantityDataArray.length === 0 || !quantityDataArray.every((q) => q.quantity > 0) || !productData.article) {
-        // Пропускаем продукты с нулевым количеством, отрицательным количеством или без артикула
         continue;
       }
 
       const priceData = prices.find((p) => p.goodID === productData.goodID);
       if (!priceData || !priceData.price) {
-        // Пропускаем продукты без цены
         continue;
       }
 
       const imageFolder = path.join(process.cwd(), 'public/images/imagesProduct', productData.goodID);
 
-      // Создаем папку только если у товара есть изображение
       if ((productData.imageBase64 || productData.imagesBase64.length > 0) && !fs.existsSync(imageFolder)) {
         fs.mkdirSync(imageFolder, { recursive: true });
       }
 
       const productImages = [];
 
-      // Обработаем изображения из imageBase64
       if (productData.imageBase64) {
         const mainImageName = 'image_main.jpg';
         const mainImagePath = path.join(imageFolder, mainImageName);
@@ -139,7 +122,6 @@ const createProducts = async (
         productImages.push(path.join('/images/imagesProduct', productData.goodID, mainImageName));
       }
 
-      // Обработаем изображения из imagesBase64
       if (productData.imagesBase64 && productData.imagesBase64.length > 0) {
         productData.imagesBase64.forEach((imageBase64, index) => {
           const imageName = `image${index + 1}.jpg`;
@@ -152,7 +134,6 @@ const createProducts = async (
 
       const { size, thickness, description } = processDescription(productData.description);
 
-      // Новая переменная для хранения пересчитанной цены
       let recalculatedPrice = priceData.price;
 
       if (
@@ -160,8 +141,7 @@ const createProducts = async (
         (productData.measureName.toLowerCase() === 'м2' || productData.measureName.toLowerCase() === 'm2') &&
         size
       ) {
-        // Если единица измерения - "м2" и размер присутствует, то производим расчет новой цены
-        const area = calculateArea(size); // Функция для расчета площади
+        const area = calculateArea(size);
         recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
       }
 
@@ -175,12 +155,12 @@ const createProducts = async (
         quantity: quantityDataArray.map((quantityData) => {
           const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
           return {
-            name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
+            name: stock ? stock.name : '',
             stockID: quantityData.stockID,
             quantity: quantityData.quantity,
           };
         }),
-        price: recalculatedPrice, // Используем пересчитанную цену
+        price: recalculatedPrice,
         images: productImages,
         size,
         thickness,
@@ -192,7 +172,6 @@ const createProducts = async (
       updatedProducts.push(product);
     }
 
-    // Обновляем все продукты одним запросом к базе данных
     await Product.bulkWrite(
       updatedProducts.map((product) => ({
         updateOne: {
@@ -210,7 +189,6 @@ const createProducts = async (
 
 const createCategories = async (categoriesData: ICategoryFromApi[]): Promise<void> => {
   try {
-    // Шаг 1: Создаем категории, в которых есть товары
     for (const categoryData of categoriesData) {
       const productsForCategory = await Product.find({ ownerID: categoryData.ID });
       if (productsForCategory.length > 0) {
@@ -224,12 +202,9 @@ const createCategories = async (categoriesData: ICategoryFromApi[]): Promise<voi
       }
     }
 
-    // Шаг 2: Создаем вышестоящие категории
     for (const categoryData of categoriesData) {
-      // Находим родительскую категорию
       const ownerCategory = categoriesData.find((item) => item.ID === categoryData.ownerID);
 
-      // Проверяем, есть ли такая родительская категория и создана ли она
       if (ownerCategory && !(await Category.exists({ ID: ownerCategory.ID }))) {
         const newCategory = new Category({
           name: ownerCategory.name,
@@ -249,7 +224,6 @@ const createCategories = async (categoriesData: ICategoryFromApi[]): Promise<voi
 const deleteFolderImagerProduct = async () => {
   const imageFolder = path.join(process.cwd(), 'public/images/imagesProduct');
 
-  // Удаление папки и её содержимого
   if (fs.existsSync(imageFolder)) {
     deleteFolderRecursive(imageFolder);
     console.log('Папка успешно удалена');
@@ -262,14 +236,11 @@ const deleteFolderImagerProduct = async () => {
       fs.readdirSync(folderPath).forEach((file) => {
         const curPath = path.join(folderPath, file);
         if (fs.lstatSync(curPath).isDirectory()) {
-          // Рекурсивно удалить подпапки
           deleteFolderRecursive(curPath);
         } else {
-          // Удалить файл
           fs.unlinkSync(curPath);
         }
       });
-      // Удалить саму папку
       fs.rmdirSync(folderPath);
     }
   }
@@ -281,39 +252,39 @@ productFromApiRouter.get('/', auth, permit('director'), async (req, res, next) =
   const db = mongoose.connection;
 
   try {
-    console.log('loading...');
+    console.log('Загрузка данных...');
     await deleteFolderImagerProduct();
     await db.dropCollection('categories');
     await db.dropCollection('products');
-    console.log('Delete collection');
+    console.log('Коллекции успешно удалены');
 
     const responseProducts = await fetchData('goods-get');
     const responseQuantity = await fetchData('goods-quantity-get');
     const responsePrice = await fetchData('goods-price-get');
 
     const products: IProductFromApi[] = responseProducts.result.goods;
-
     const quantity = responseQuantity.result;
     const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
     const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
-
     const price: IProductPriceFromApi[] = responsePrice.result.goods;
-
     const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
 
     await createProducts(products, price, quantityGoods, quantityStocks);
     await createCategories(categories);
 
-    console.log('loadingTRUE ! ! ! ');
+    console.log('Загрузка завершена успешно!');
 
     return res.send({
       message: {
         en: 'Updating the database from "1C" was successful!',
-        ru: 'Обновление базы данных с "1С" - прошло успешно !',
+        ru: 'Обновление базы данных с "1С" прошло успешно!',
       },
     });
   } catch (e) {
     return next(e);
+  } finally {
+    await mongoose.disconnect();
+    console.log('Отключение от базы данных.');
   }
 });
 
