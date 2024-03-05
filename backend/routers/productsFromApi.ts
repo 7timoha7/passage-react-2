@@ -13,8 +13,6 @@ import Product from '../models/Product';
 import Category from '../models/Category';
 import mongoose from 'mongoose';
 import config from '../config';
-import auth from '../middleware/auth';
-import permit from '../middleware/permit';
 
 const productFromApiRouter = express.Router();
 
@@ -41,12 +39,21 @@ const fetchData = async (method: string) => {
           configName: 'AUTHORIZATION',
           configVersion: 'Basic Auth',
         },
+        timeout: 30000, // Увеличьте значение таймаута по необходимости
       },
     );
 
     return response.data;
   } catch (error) {
-    console.error('Ошибка при выполнении запроса:', error);
+    if (axios.isAxiosError(error)) {
+      if (error.code === 'ETIMEDOUT') {
+        console.error('Превышен таймаут при выполнении запроса:', error);
+      } else {
+        console.error('Ошибка при выполнении запроса:', error.message, error.response?.data);
+      }
+    } else {
+      console.error('Не удалось выполнить запрос:', error);
+    }
     throw error;
   }
 };
@@ -275,7 +282,7 @@ const deleteFolderImagerProduct = async () => {
   }
 };
 
-productFromApiRouter.get('/', auth, permit('director'), async (req, res, next) => {
+productFromApiRouter.get('/', async (req, res, next) => {
   mongoose.set('strictQuery', false);
   await mongoose.connect(config.db);
   const db = mongoose.connection;
