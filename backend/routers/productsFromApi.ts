@@ -1,3 +1,4 @@
+import axios from 'axios';
 import express from 'express';
 import {
   ICategoryFromApi,
@@ -15,58 +16,79 @@ import config from '../config';
 
 const productFromApiRouter = express.Router();
 
-const axios = require('axios');
-const http = require('http');
-const https = require('https');
+import * as http from 'http';
+import * as https from 'https';
 
-const httpAgent = new http.Agent({
-  keepAlive: true,
-  timeout: 60000,
-  scheduling: 'fifo',
-});
+interface AuthData {
+  clientID: string;
+}
 
-const httpsAgent = new https.Agent({
-  keepAlive: true,
-  timeout: 60000,
-  scheduling: 'fifo',
-});
+interface GeneralData {
+  method: string;
+  deviceID: string;
+}
 
-const axiosInstance = axios.create({
-  httpAgent,
-  httpsAgent,
-});
+interface RequestData {
+  auth: AuthData;
+  general: GeneralData;
+}
 
-const fetchData = async (method: string) => {
+// Здесь вам нужно заменить any на реальный тип данных, которые возвращает ваш запрос
+interface ResponseData {
+  // Замените any на реальные типы данных
+}
+
+const fetchData = async (method: string): Promise<ResponseData> => {
   const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
   const username = 'AUTH_TOKEN';
   const password = 'jU5gujas';
 
-  try {
-    const response = await axiosInstance.post(
-      apiUrl,
-      {
-        auth: {
-          clientID: '422ba5da-2560-11ee-8135-005056b73475',
-        },
-        general: {
-          method,
-          deviceID: '00000001-0001-0001-0001-000000015941',
-        },
-      },
-      {
-        headers: {
-          Authorization: `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`,
-          configName: 'AUTHORIZATION',
-          configVersion: 'Basic Auth',
-        },
-        timeout: 600000,
-      },
-    );
+  const requestOptions: http.RequestOptions = {
+    hostname: 'fresh-test.1c-cloud.kg',
+    port: 443,
+    path: '/a/edoc/hs/ext_api/execute',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`,
+      configName: 'AUTHORIZATION',
+      configVersion: 'Basic Auth',
+    },
+    timeout: 600000, // Увеличьте значение таймаута по необходимости
+  };
 
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const postData: RequestData = {
+    auth: {
+      clientID: '422ba5da-2560-11ee-8135-005056b73475',
+    },
+    general: {
+      method,
+      deviceID: '00000001-0001-0001-0001-000000015941',
+    },
+  };
+
+  return new Promise((resolve, reject) => {
+    const protocol = apiUrl.startsWith('https') ? https : http;
+
+    const req = protocol.request(requestOptions, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        resolve(JSON.parse(data));
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.write(JSON.stringify(postData));
+    req.end();
+  });
 };
 
 // Функция для обработки строки description и извлечения размера, толщины и описания
@@ -309,18 +331,18 @@ productFromApiRouter.get('/', async (req, res, next) => {
     const responseQuantity = await fetchData('goods-quantity-get');
     const responsePrice = await fetchData('goods-price-get');
 
-    const products: IProductFromApi[] = responseProducts.result.goods;
-
-    const quantity = responseQuantity.result;
-    const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
-    const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
-
-    const price: IProductPriceFromApi[] = responsePrice.result.goods;
-
-    const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
-
-    await createProducts(products, price, quantityGoods, quantityStocks);
-    await createCategories(categories);
+    // // const products: IProductFromApi[] = responseProducts.result.goods;
+    // //
+    // // const quantity = responseQuantity.result;
+    // // const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
+    // // const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
+    // //
+    // // const price: IProductPriceFromApi[] = responsePrice.result.goods;
+    // //
+    // // const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
+    //
+    // await createProducts(products, price, quantityGoods, quantityStocks);
+    // await createCategories(categories);
 
     console.log('loadingTRUE ! ! ! ');
 
