@@ -1,4 +1,3 @@
-import axios from 'axios';
 import express from 'express';
 import {
   ICategoryFromApi,
@@ -16,13 +15,34 @@ import config from '../config';
 
 const productFromApiRouter = express.Router();
 
+const axios = require('axios');
+const http = require('http');
+const https = require('https');
+
+const httpAgent = new http.Agent({
+  keepAlive: true,
+  timeout: 60000,
+  scheduling: 'fifo',
+});
+
+const httpsAgent = new https.Agent({
+  keepAlive: true,
+  timeout: 60000,
+  scheduling: 'fifo',
+});
+
+const axiosInstance = axios.create({
+  httpAgent,
+  httpsAgent,
+});
+
 const fetchData = async (method: string) => {
   const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
   const username = 'AUTH_TOKEN';
   const password = 'jU5gujas';
 
   try {
-    const response = await axios.post(
+    const response = await axiosInstance.post(
       apiUrl,
       {
         auth: {
@@ -39,21 +59,12 @@ const fetchData = async (method: string) => {
           configName: 'AUTHORIZATION',
           configVersion: 'Basic Auth',
         },
-        timeout: 600000, // Увеличьте значение таймаута по необходимости
+        timeout: 600000,
       },
     );
 
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.code === 'ETIMEDOUT') {
-        console.error('Превышен таймаут при выполнении запроса:', error);
-      } else {
-        console.error('Ошибка при выполнении запроса:', error.message, error.response?.data);
-      }
-    } else {
-      console.error('Не удалось выполнить запрос:', error);
-    }
     throw error;
   }
 };
