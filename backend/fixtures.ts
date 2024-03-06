@@ -40,34 +40,34 @@ const run = async () => {
   });
 
   const axios = require('axios');
-  const http = require('http');
   const https = require('https');
 
-  const httpAgent = new http.Agent({
-    keepAlive: true,
-    timeout: 60000,
-    scheduling: 'fifo',
-  });
+  const domain = 'https://fresh-test.1c-cloud.kg';
+  let instance: any;
 
-  const httpsAgent = new https.Agent({
-    keepAlive: true,
-    timeout: 60000,
-    scheduling: 'fifo',
-  });
+  module.exports = function () {
+    if (!instance) {
+      //create axios instance
+      instance = axios.create({
+        baseURL: domain,
+        timeout: 60000, // optional
+        httpsAgent: new https.Agent({ keepAlive: true }),
+        headers: { 'Content-Type': 'application/xml' },
+      });
+    }
 
-  const axiosInstance = axios.create({
-    httpAgent,
-    httpsAgent,
-  });
+    return instance;
+  };
 
   const fetchData = async (method: string) => {
-    const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
+    const axiosInstance = require('./getAxios')(); // assuming getAxios.js is in the same directory
+
     const username = 'AUTH_TOKEN';
     const password = 'jU5gujas';
 
     try {
       const response = await axiosInstance.post(
-        apiUrl,
+        '/a/edoc/hs/ext_api/execute',
         {
           auth: {
             clientID: '422ba5da-2560-11ee-8135-005056b73475',
@@ -83,7 +83,6 @@ const run = async () => {
             configName: 'AUTHORIZATION',
             configVersion: 'Basic Auth',
           },
-          timeout: 600000,
         },
       );
 
