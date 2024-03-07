@@ -126,7 +126,7 @@ const createProducts = async (
         const mainImagePath = path.join(imageFolder, mainImageName);
 
         fs.writeFileSync(mainImagePath, productData.imageBase64, 'base64');
-        productImages.push(path.join('/images/imagesProduct', productData.goodID, mainImageName));
+        productImages.push(path.join('public/images/imagesProduct', productData.goodID, mainImageName));
       }
 
       // Обработаем изображения из imagesBase64
