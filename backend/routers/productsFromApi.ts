@@ -1,11 +1,10 @@
-import axios from 'axios';
 import express from 'express';
 import {
-  ICategoryFromApi,
-  IProductFromApi,
-  IProductPriceFromApi,
-  IProductQuantityFromApi,
-  IProductQuantityStocksFromApi,
+    ICategoryFromApi,
+    IProductFromApi,
+    IProductPriceFromApi,
+    IProductQuantityFromApi,
+    IProductQuantityStocksFromApi,
 } from '../types';
 import path from 'path';
 import * as fs from 'fs';
