@@ -16,80 +16,47 @@ import config from '../config';
 
 const productFromApiRouter = express.Router();
 
-import * as http from 'http';
-import * as https from 'https';
-
-interface AuthData {
-  clientID: string;
-}
-
-interface GeneralData {
-  method: string;
-  deviceID: string;
-}
-
-interface RequestData {
-  auth: AuthData;
-  general: GeneralData;
-}
-
-// Здесь вам нужно заменить any на реальный тип данных, которые возвращает ваш запрос
-interface ResponseData {
-  // Замените any на реальные типы данных
-}
-
-const fetchData = async (method: string): Promise<ResponseData> => {
-  const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
-  const username = 'AUTH_TOKEN';
-  const password = 'jU5gujas';
-
-  const requestOptions: http.RequestOptions = {
-    hostname: 'fresh-test.1c-cloud.kg',
-    port: 443,
-    path: '/a/edoc/hs/ext_api/execute',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`,
-      configName: 'AUTHORIZATION',
-      configVersion: 'Basic Auth',
-    },
-    timeout: 600000, // Увеличьте значение таймаута по необходимости
-  };
-
-  const postData: RequestData = {
-    auth: {
-      clientID: '422ba5da-2560-11ee-8135-005056b73475',
-    },
-    general: {
-      method,
-      deviceID: '00000001-0001-0001-0001-000000015941',
-    },
-  };
-
-  return new Promise((resolve, reject) => {
-    const protocol = apiUrl.startsWith('https') ? https : http;
-
-    const req = protocol.request(requestOptions, (res) => {
-      let data = '';
-
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        resolve(JSON.parse(data));
-      });
-    });
-
-    req.on('error', (error) => {
-      reject(error);
-    });
-
-    req.write(JSON.stringify(postData));
-    req.end();
-  });
-};
+// const fetchData = async (method: string) => {
+//     const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
+//     const username = 'AUTH_TOKEN';
+//     const password = 'jU5gujas';
+//
+//     try {
+//         const response = await axios.post(
+//             apiUrl,
+//             {
+//                 auth: {
+//                     clientID: '422ba5da-2560-11ee-8135-005056b73475',
+//                 },
+//                 general: {
+//                     method,
+//                     deviceID: '00000001-0001-0001-0001-000000015941',
+//                 },
+//             },
+//             {
+//                 timeout: 300000,
+//                 headers: {
+//                     Authorization: `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`,
+//                     configName: 'AUTHORIZATION',
+//                     configVersion: 'Basic Auth',
+//                 },
+//             },
+//         );
+//
+//         return response.data;
+//     } catch (error) {
+//         if (axios.isAxiosError(error)) {
+//             if (error.code === 'ETIMEDOUT') {
+//                 console.error('Превышен таймаут при выполнении запроса:', error);
+//             } else {
+//                 console.error('Ошибка при выполнении запроса:', error.message, error.response?.data);
+//             }
+//         } else {
+//             console.error('Не удалось выполнить запрос:', error);
+//         }
+//         throw error;
+//     }
+// };
 
 // Функция для обработки строки description и извлечения размера, толщины и описания
 const processDescription = (description: string): { size: string; thickness: string; description: string } => {
@@ -120,22 +87,6 @@ const calculateArea = (size: string): number => {
 const calculatePricePerSquareMeter = (price: number, area: number): number => {
   return price * area; // Исправим на умножение
 };
-
-// const saveProductsToFile = (
-//   products: { [x: string]: any; imageBase64: any; imagesBase64: any }[],
-//   filePath: fs.PathOrFileDescriptor,
-// ) => {
-//   // Создаем массив данных для сохранения в файл, исключая ключи imageBase64 и imagesBase64
-//   const dataToSave = products.map(({ imageBase64, imagesBase64, ...rest }) => rest);
-//
-//   // Преобразуем данные в формат JSON
-//   const jsonData = JSON.stringify(dataToSave, null, 2);
-//
-//   // Сохраняем данные в файл
-//   fs.writeFileSync(filePath, jsonData);
-//
-//   console.log(`Данные сохранены в файл: ${filePath}`);
-// };
 
 const createProducts = async (
   products: IProductFromApi[],
@@ -316,45 +267,64 @@ const deleteFolderImagerProduct = async () => {
 };
 
 productFromApiRouter.get('/', async (req, res, next) => {
-  mongoose.set('strictQuery', false);
-  await mongoose.connect(config.db);
-  const db = mongoose.connection;
+    mongoose.set('strictQuery', false);
+    await mongoose.connect(config.db);
+    const db = mongoose.connection;
 
-  try {
-    console.log('loading...');
-    await deleteFolderImagerProduct();
-    await db.dropCollection('categories');
-    await db.dropCollection('products');
-    console.log('Delete collection');
+    try {
+        console.log('loading...');
+        await deleteFolderImagerProduct();
+        await db.dropCollection('categories');
+        await db.dropCollection('products');
+        console.log('Delete collection');
 
-    const responseProducts = await fetchData('goods-get');
-    const responseQuantity = await fetchData('goods-quantity-get');
-    const responsePrice = await fetchData('goods-price-get');
+        // const responseProducts = await fetchData('goods-get');
+        // const responseQuantity = await fetchData('goods-quantity-get');
+        // const responsePrice = await fetchData('goods-price-get');
+        //
+        // const products: IProductFromApi[] = responseProducts.result.goods;
+        //
+        // const quantity = responseQuantity.result;
+        // const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
+        // const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
+        //
+        // const price: IProductPriceFromApi[] = responsePrice.result.goods;
+        //
+        // const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
+        //
+        // await createProducts(products, price, quantityGoods, quantityStocks);
+        // await createCategories(categories);
 
-    // // const products: IProductFromApi[] = responseProducts.result.goods;
-    // //
-    // // const quantity = responseQuantity.result;
-    // // const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
-    // // const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
-    // //
-    // // const price: IProductPriceFromApi[] = responsePrice.result.goods;
-    // //
-    // // const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
-    //
-    // await createProducts(products, price, quantityGoods, quantityStocks);
-    // await createCategories(categories);
 
-    console.log('loadingTRUE ! ! ! ');
+        const filePathProducts = 'productsData.json';
+        const filePathQuantity = 'quantityData.json';
+        const filePathPrice = 'priceData.json';
 
-    return res.send({
-      message: {
-        en: 'Updating the database from "1C" was successful!',
-        ru: 'Обновление базы данных с "1С" - прошло успешно !',
-      },
-    });
-  } catch (e) {
-    return next(e);
-  }
+        const productsData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'info', filePathProducts), 'utf-8'));
+        const quantityData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'info', filePathQuantity), 'utf-8'));
+        const priceData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'info', filePathPrice), 'utf-8'));
+
+        const products: IProductFromApi[] = productsData.result.goods; // Используем данные из файла
+        const quantityGoods: IProductQuantityFromApi[] = quantityData.result.goods; // Используем данные из файла
+        const quantityStocks: IProductQuantityStocksFromApi[] = quantityData.result.stocks; // Используем данные из файла
+        const price: IProductPriceFromApi[] = priceData.result.goods; // Используем данные из файла
+
+        const categories: ICategoryFromApi[] = productsData.result.goodsGroups; // Используем данные из файла
+
+        await createProducts(products, price, quantityGoods, quantityStocks);
+        await createCategories(categories);
+
+        console.log('loadingTRUE ! ! ! ');
+
+        return res.send({
+            message: {
+                en: 'Updating the database from "1C" was successful!',
+                ru: 'Обновление базы данных с "1С" - прошло успешно !',
+            },
+        });
+    } catch (e) {
+        return next(e);
+    }
 });
 
 export default productFromApiRouter;
