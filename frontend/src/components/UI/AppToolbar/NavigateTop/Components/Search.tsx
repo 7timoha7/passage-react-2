@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/system';
+import Button from '@mui/material/Button';
+import SearchIcon from '@mui/icons-material/Search';
 import { useAppDispatch, useAppSelector } from '../../../../../app/hooks';
 import { searchProductsPreview } from '../../../../../features/Products/productsThunks';
 import noImg from '../../../../../assets/images/no_image.jpg';
@@ -12,7 +14,6 @@ import {
   selectSearchLoadingPreview,
   selectSearchResultsPreview,
 } from '../../../../../features/Products/productsSlise';
-import { Button } from '@mui/material';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
@@ -81,7 +82,6 @@ const CustomSearchBar: React.FC = () => {
   return (
     <Box position="relative" width="100%">
       <TextField
-        // variant="outlined"
         size="small"
         label="Живой поиск"
         type="search"
@@ -90,8 +90,24 @@ const CustomSearchBar: React.FC = () => {
         fullWidth
         InputProps={{
           endAdornment: (
-            <React.Fragment>{searchLoadingPreview && <CircularProgress color="inherit" size={15} />}</React.Fragment>
+            <>
+              {searchLoadingPreview && <CircularProgress color="inherit" size={15} />}
+              <Button
+                variant="text"
+                size="small"
+                color="inherit"
+                onClick={handleExtendedSearch}
+                style={{ marginLeft: '8px' }}
+              >
+                <SearchIcon />
+              </Button>
+            </>
           ),
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleExtendedSearch();
+          }
         }}
         onFocus={() => dispatch(clearSearchResultsPreview())}
       />
@@ -119,8 +135,8 @@ const CustomSearchBar: React.FC = () => {
                 key={option._id}
                 style={{
                   padding: '8px',
-                  display: 'flex', // Добавлено свойство display: flex
-                  alignItems: 'center', // Добавлено свойство align-items: center
+                  display: 'flex',
+                  alignItems: 'center',
                   cursor: 'pointer',
                   borderBottom: '1px solid #ccc',
                   color: 'black',
@@ -129,7 +145,7 @@ const CustomSearchBar: React.FC = () => {
               >
                 <Box marginRight={2}>
                   <LazyLoadImage
-                    src={option.images[0] ? apiURL + option.images[0] : noImg}
+                    src={option.images[0] ? apiURL + '/' + option.images[0] : noImg}
                     alt={option.name}
                     width="35px"
                     height="35px"
@@ -140,7 +156,13 @@ const CustomSearchBar: React.FC = () => {
                 </Box>
 
                 <div>
-                  <div style={{ fontWeight: 'bold' }}>{option.name}</div>
+                  <div
+                    style={{
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {option.name}
+                  </div>
                   <div style={{ marginLeft: '8px' }}>Цена: {option.price}</div>
                 </div>
               </li>
