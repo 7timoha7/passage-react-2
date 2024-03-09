@@ -31,10 +31,10 @@ const Footer = () => {
                     display: 'flex',
                     alignItems: 'center',
                   }}
-                  onClick={() => handlePhoneClick('+996555555555')}
+                  onClick={() => handlePhoneClick('+996997100500')}
                 >
                   <CallIcon />
-                  +996 555 555555
+                  +996 997 100500
                 </Typography>
               </Grid>
               <Grid item sx={{ mt: 1 }}>
@@ -48,27 +48,10 @@ const Footer = () => {
                     display: 'flex',
                     alignItems: 'center',
                   }}
-                  onClick={() => handlePhoneClick('+99677777777')}
+                  onClick={() => handlePhoneClick('+996553100500')}
                 >
                   <CallIcon />
-                  +996 777 77777
-                </Typography>
-              </Grid>
-              <Grid item sx={{ mt: 1 }}>
-                <Typography
-                  variant="body1"
-                  component="div"
-                  sx={{
-                    color: 'black',
-                    '&:hover': { color: 'white' },
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  onClick={() => handlePhoneClick('+99650588888')}
-                >
-                  <CallIcon />
-                  +996 505 88888
+                  +996 553 100500
                 </Typography>
               </Grid>
             </Grid>
@@ -84,10 +67,10 @@ const Footer = () => {
                     display: 'flex',
                     alignItems: 'center',
                   }}
-                  onClick={() => handleEmailClick('passage@gmail.com')}
+                  onClick={() => handleEmailClick('passagerakcaramics@gmail.com')}
                 >
                   <EmailIcon />
-                  passage@gmail.com
+                  passagerakcaramics@gmail.com
                 </Typography>
               </Grid>
               <Grid item sx={{ mt: 1 }}>
