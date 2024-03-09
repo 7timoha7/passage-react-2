@@ -322,7 +322,7 @@ usersRouter.post('/getVerify', auth, async (req, res, next) => {
       secure: false,
       auth: {
         user: config.mail,
-        pass: 'jczr vpof kqyp qrtj',
+        pass: 'mljz rkug aduq fxqw',
       },
     });
     // const mailOptions = {
