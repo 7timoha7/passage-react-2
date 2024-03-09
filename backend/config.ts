@@ -17,7 +17,7 @@ const config = {
   },
   mail: 'passagerakcaramics@gmail.com',
   // site: process.env.WEBSITE_ADDRESS ? process.env.WEBSITE_ADDRESS : 'http://localhost:3000',
-  site: 'http://206.81.21.125',
+  site: 'http://passage.go.kg',
 };
 
 export default config;
