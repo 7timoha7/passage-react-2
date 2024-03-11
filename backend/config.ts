@@ -16,7 +16,7 @@ const config = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
   },
   mail: 'passagerakcaramics@gmail.com',
-  site: 'http://passage.go.kg',
+  site: 'http://localhost:3000',
   // site: process.env.WEBSITE_ADDRESS ? process.env.WEBSITE_ADDRESS : 'http://passage.go.kg',
 };
 
