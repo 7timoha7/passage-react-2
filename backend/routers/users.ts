@@ -8,6 +8,7 @@ import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import config from '../config';
 import Product from '../models/Product';
+import * as http from 'http';
 
 const usersRouter = express.Router();
 
@@ -333,7 +334,7 @@ usersRouter.post('/getVerify', auth, async (req, res, next) => {
     // };
 
     const htmlContent = `
-      <p>Please click the following to verify your email: <a href="${config.site}/verify/${user.verificationToken}">${config.site}/verify/${user.verificationToken}</a></p>
+      <p>Please click the following to verify your email: <a href="${passage.go.kg}/verify/${user.verificationToken}">${config.site}/verify/${user.verificationToken}</a></p>
     `;
 
     // Определите параметры электронной почты
