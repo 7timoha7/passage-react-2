@@ -27,9 +27,7 @@ root.render(
           <Suspense fallback={<CircularProgress />}>
             <ThemeProvider theme={theme}>
               <SnackbarProvider>
-                <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                  <App />
-                </GoogleOAuthProvider>
+                <App />
               </SnackbarProvider>
             </ThemeProvider>
           </Suspense>
