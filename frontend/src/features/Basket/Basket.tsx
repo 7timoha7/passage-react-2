@@ -78,9 +78,10 @@ const Basket = () => {
   return (
     <>
       <IconButton aria-label="Корзина" color="inherit" onClick={handlePopoverOpen}>
-        <Badge badgeContent={basket?.items?.length || 0} color="error">
-          <ShoppingCartIcon fontSize="large" />
-        </Badge>
+        {/*<Badge badgeContent={basket?.items?.length || 0} color="error">*/}
+        {/*  <ShoppingCartIcon fontSize="large" />*/}
+        {/*</Badge>*/}
+        <ShoppingCartIcon fontSize="large" />
       </IconButton>
       <Popover
         open={open}
