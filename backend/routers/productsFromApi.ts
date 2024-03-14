@@ -295,25 +295,6 @@ productFromApiRouter.get('/', async (req, res, next) => {
         await createProducts(products, price, quantityGoods, quantityStocks);
         await createCategories(categories);
 
-
-        // const filePathProducts = 'productsData.json';
-        // const filePathQuantity = 'quantityData.json';
-        // const filePathPrice = 'priceData.json';
-        //
-        // const productsData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'info', filePathProducts), 'utf-8'));
-        // const quantityData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'info', filePathQuantity), 'utf-8'));
-        // const priceData = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'info', filePathPrice), 'utf-8'));
-        //
-        // const products: IProductFromApi[] = productsData.result.goods; // Используем данные из файла
-        // const quantityGoods: IProductQuantityFromApi[] = quantityData.result.goods; // Используем данные из файла
-        // const quantityStocks: IProductQuantityStocksFromApi[] = quantityData.result.stocks; // Используем данные из файла
-        // const price: IProductPriceFromApi[] = priceData.result.goods; // Используем данные из файла
-        //
-        // const categories: ICategoryFromApi[] = productsData.result.goodsGroups; // Используем данные из файла
-        //
-        // await createProducts(products, price, quantityGoods, quantityStocks);
-        // await createCategories(categories);
-
         console.log('loadingTRUE ! ! ! ');
 
         return res.send({
