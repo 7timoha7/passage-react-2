@@ -70,7 +70,12 @@ const BasketPage = () => {
                   <TableBody>
                     {basket.items.map((item, index) => (
                       <TableRow key={index}>
-                        <TableCell>{item.product.name}</TableCell>
+                        <TableCell
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => navigate('/product/' + item.product._id)}
+                        >
+                          {item.product.name}
+                        </TableCell>
                         <TableCell align="center">{item.quantity}</TableCell>
                         <TableCell align="center">
                           <IconButton

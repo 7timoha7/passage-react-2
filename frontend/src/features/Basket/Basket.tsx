@@ -104,7 +104,13 @@ const Basket = () => {
               {basket?.items?.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell>
-                    <Typography variant="body1">{item.product.name}</Typography>
+                    <Typography
+                      variant="body1"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => navigate('/product/' + item.product._id)}
+                    >
+                      {item.product.name}
+                    </Typography>
                   </TableCell>
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell>
