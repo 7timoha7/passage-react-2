@@ -324,13 +324,10 @@ usersRouter.post('/getVerify', auth, async (req, res, next) => {
         user: config.mail,
         pass: 'mljz rkug aduq fxqw',
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
-    // const mailOptions = {
-    //   from: config.mail,
-    //   to: user.email,
-    //   subject: 'Email Verification',
-    //   text: `Please click the following link to verify your email: ${config.site}/verify/${user.verificationToken}`,
-    // };
 
     const htmlContent = `
       <p>Please click the following to verify your email: <a href="${config.site}/verify/${user.verificationToken}">${config.site}/verify/${user.verificationToken}</a></p>
