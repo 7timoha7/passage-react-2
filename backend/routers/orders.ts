@@ -28,6 +28,8 @@ ordersRouter.post('/', async (req, res, next) => {
     });
 
     order.totalPrice = await calculateTotalPrice(order.products);
+    console.log(req.body);
+    console.log(order);
     await order.save();
 
     const message = `Новый - Заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
