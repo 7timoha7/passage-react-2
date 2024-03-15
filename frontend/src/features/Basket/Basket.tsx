@@ -24,6 +24,7 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import { v4 as uuidv4 } from 'uuid';
 
 const Basket = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -75,6 +76,8 @@ const Basket = () => {
     setAnchorEl(null);
   };
 
+  const randomUUID = uuidv4();
+
   return (
     <>
       <IconButton aria-label="Корзина" color="inherit" onClick={handlePopoverOpen}>
@@ -102,7 +105,7 @@ const Basket = () => {
           <Table>
             <TableBody>
               {basket?.items?.map((item, index) => (
-                <TableRow key={index}>
+                <TableRow key={index + randomUUID}>
                   <TableCell>
                     <Typography
                       variant="body1"

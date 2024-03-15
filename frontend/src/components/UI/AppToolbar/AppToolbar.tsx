@@ -45,7 +45,9 @@ const AppToolbar = () => {
                 <Search />
               </Grid>
               <Grid item>{user ? <UserMenu user={user} /> : <AnonymousMenu />}</Grid>
-              <Grid item>{/*<Basket />*/}</Grid>
+              <Grid item>
+                <Basket />
+              </Grid>
             </Grid>
           </Container>
         </Toolbar>
