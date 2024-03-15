@@ -21,7 +21,6 @@ import { useNavigate } from 'react-router-dom';
 import { selectUser } from '../users/usersSlice';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { LoadingButton } from '@mui/lab';
-import { v4 as uuidv4 } from 'uuid';
 
 const BasketPage = () => {
   const basket = useAppSelector(selectBasket);
@@ -55,8 +54,6 @@ const BasketPage = () => {
     }
   };
 
-  const randomUUID = uuidv4();
-
   return (
     <Paper elevation={3} sx={{ m: 2, p: 2 }}>
       <Typography variant="h4" gutterBottom textAlign={'center'}>
@@ -71,8 +68,8 @@ const BasketPage = () => {
               <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
                 <Table>
                   <TableBody>
-                    {basket.items.map((item, index) => (
-                      <TableRow key={index + randomUUID}>
+                    {basket.items.map((item) => (
+                      <TableRow key={item._id}>
                         <TableCell
                           style={{ cursor: 'pointer' }}
                           onClick={() => navigate('/product/' + item.product._id)}
