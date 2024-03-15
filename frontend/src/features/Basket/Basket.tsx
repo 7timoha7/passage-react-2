@@ -82,103 +82,103 @@ const Basket = () => {
           <ShoppingCartIcon fontSize="large" />
         </Badge>
       </IconButton>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handlePopoverClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <IconButton aria-label="Закрыть" onClick={handlePopoverClose}>
-          <DisabledByDefaultIcon />
-        </IconButton>
-        <TableContainer>
-          <Table>
-            <TableBody>
-              {basket?.items?.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => navigate('/product/' + item.product._id)}
-                    >
-                      {item.product.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>
-                    <IconButton
-                      disabled={addBasketLoading === item.product.goodID}
-                      color="primary"
-                      onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}
-                    >
-                      {addBasketLoading === item.product.goodID ? (
-                        <CircularProgress size={'23px'} color="error" />
-                      ) : (
-                        <AddCircleOutlineIcon />
-                      )}
-                    </IconButton>
-                    <IconButton
-                      disabled={addBasketLoading === item.product.goodID}
-                      color="primary"
-                      style={{ color: 'black' }} // ваш цвет для кнопок -
-                      onClick={() =>
-                        item.quantity === 1
-                          ? handleUpdateBasket(item.product.goodID, 'remove')
-                          : handleUpdateBasket(item.product.goodID, 'decrease')
-                      }
-                    >
-                      {addBasketLoading === item.product.goodID ? (
-                        <CircularProgress size={'23px'} color="error" />
-                      ) : (
-                        <RemoveCircleOutlineIcon />
-                      )}
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body2">{`${(item.product.price * item.quantity).toFixed(2)} сом`}</Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Divider />
-        <ListItem>
-          <Typography variant="subtitle1">Общая сумма: {basket?.totalPrice} сом</Typography>
-        </ListItem>
-        <Divider />
-        <Grid container spacing={2} sx={{ p: 1 }}>
-          <Grid item>
-            <LoadingButton
-              loading={loadingBasket()}
-              onClick={() => navigateToFullBasket()}
-              variant="outlined"
-              color="primary"
-            >
-              Перейти в корзину
-            </LoadingButton>
-          </Grid>
-          <Grid item>
-            <LoadingButton
-              loading={loadingBasket()}
-              disabled={basket?.items?.length === 0}
-              onClick={() => clearBasket('clear')}
-              variant="text"
-              color="error"
-            >
-              Очистить корзину
-            </LoadingButton>
-          </Grid>
-        </Grid>
-      </Popover>
+      {/*<Popover*/}
+      {/*  open={open}*/}
+      {/*  anchorEl={anchorEl}*/}
+      {/*  onClose={handlePopoverClose}*/}
+      {/*  anchorOrigin={{*/}
+      {/*    vertical: 'bottom',*/}
+      {/*    horizontal: 'right',*/}
+      {/*  }}*/}
+      {/*  transformOrigin={{*/}
+      {/*    vertical: 'top',*/}
+      {/*    horizontal: 'right',*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <IconButton aria-label="Закрыть" onClick={handlePopoverClose}>*/}
+      {/*    <DisabledByDefaultIcon />*/}
+      {/*  </IconButton>*/}
+      {/*  <TableContainer>*/}
+      {/*    <Table>*/}
+      {/*      <TableBody>*/}
+      {/*        {basket?.items?.map((item, index) => (*/}
+      {/*          <TableRow key={index}>*/}
+      {/*            <TableCell>*/}
+      {/*              <Typography*/}
+      {/*                variant="body1"*/}
+      {/*                style={{ cursor: 'pointer' }}*/}
+      {/*                onClick={() => navigate('/product/' + item.product._id)}*/}
+      {/*              >*/}
+      {/*                {item.product.name}*/}
+      {/*              </Typography>*/}
+      {/*            </TableCell>*/}
+      {/*            <TableCell>{item.quantity}</TableCell>*/}
+      {/*            <TableCell>*/}
+      {/*              <IconButton*/}
+      {/*                disabled={addBasketLoading === item.product.goodID}*/}
+      {/*                color="primary"*/}
+      {/*                onClick={() => handleUpdateBasket(item.product.goodID, 'increase')}*/}
+      {/*              >*/}
+      {/*                {addBasketLoading === item.product.goodID ? (*/}
+      {/*                  <CircularProgress size={'23px'} color="error" />*/}
+      {/*                ) : (*/}
+      {/*                  <AddCircleOutlineIcon />*/}
+      {/*                )}*/}
+      {/*              </IconButton>*/}
+      {/*              <IconButton*/}
+      {/*                disabled={addBasketLoading === item.product.goodID}*/}
+      {/*                color="primary"*/}
+      {/*                style={{ color: 'black' }} // ваш цвет для кнопок -*/}
+      {/*                onClick={() =>*/}
+      {/*                  item.quantity === 1*/}
+      {/*                    ? handleUpdateBasket(item.product.goodID, 'remove')*/}
+      {/*                    : handleUpdateBasket(item.product.goodID, 'decrease')*/}
+      {/*                }*/}
+      {/*              >*/}
+      {/*                {addBasketLoading === item.product.goodID ? (*/}
+      {/*                  <CircularProgress size={'23px'} color="error" />*/}
+      {/*                ) : (*/}
+      {/*                  <RemoveCircleOutlineIcon />*/}
+      {/*                )}*/}
+      {/*              </IconButton>*/}
+      {/*            </TableCell>*/}
+      {/*            <TableCell>*/}
+      {/*              <Typography variant="body2">{`${(item.product.price * item.quantity).toFixed(2)} сом`}</Typography>*/}
+      {/*            </TableCell>*/}
+      {/*          </TableRow>*/}
+      {/*        ))}*/}
+      {/*      </TableBody>*/}
+      {/*    </Table>*/}
+      {/*  </TableContainer>*/}
+      {/*  <Divider />*/}
+      {/*  <ListItem>*/}
+      {/*    <Typography variant="subtitle1">Общая сумма: {basket?.totalPrice} сом</Typography>*/}
+      {/*  </ListItem>*/}
+      {/*  <Divider />*/}
+      {/*  <Grid container spacing={2} sx={{ p: 1 }}>*/}
+      {/*    <Grid item>*/}
+      {/*      <LoadingButton*/}
+      {/*        loading={loadingBasket()}*/}
+      {/*        onClick={() => navigateToFullBasket()}*/}
+      {/*        variant="outlined"*/}
+      {/*        color="primary"*/}
+      {/*      >*/}
+      {/*        Перейти в корзину*/}
+      {/*      </LoadingButton>*/}
+      {/*    </Grid>*/}
+      {/*    <Grid item>*/}
+      {/*      <LoadingButton*/}
+      {/*        loading={loadingBasket()}*/}
+      {/*        disabled={basket?.items?.length === 0}*/}
+      {/*        onClick={() => clearBasket('clear')}*/}
+      {/*        variant="text"*/}
+      {/*        color="error"*/}
+      {/*      >*/}
+      {/*        Очистить корзину*/}
+      {/*      </LoadingButton>*/}
+      {/*    </Grid>*/}
+      {/*  </Grid>*/}
+      {/*</Popover>*/}
     </>
   );
 };
