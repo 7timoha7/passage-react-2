@@ -24,7 +24,6 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
-import CssBaseline from "@mui/material/CssBaseline";
 
 const Basket = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -78,7 +77,6 @@ const Basket = () => {
 
   return (
     <>
-      <CssBaseline />
       <IconButton aria-label="Корзина" color="inherit" onClick={handlePopoverOpen}>
         <Badge badgeContent={basket?.items?.length || 0} color="error">
           <ShoppingCartIcon fontSize="large" />
