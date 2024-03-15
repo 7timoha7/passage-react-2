@@ -151,8 +151,7 @@ basketRouter.patch('/', auth, async (req, res, next) => {
       await basket.save();
 
       return res.send({
-        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' },
-        total: basket.totalPrice,
+        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' }
       });
     }
     // Если идентификатор товара или действие отсутствуют, возвращаем ошибку
@@ -175,7 +174,6 @@ basketRouter.patch('/', auth, async (req, res, next) => {
 
       return res.send({
         message: { en: 'Product successfully added to cart', ru: 'Товар успешно добавлен в корзину' },
-        total: newBasket.totalPrice,
       });
     }
 
@@ -217,7 +215,6 @@ basketRouter.patch('/', auth, async (req, res, next) => {
 
     return res.send({
       message: { en: 'Product successfully updated in cart', ru: 'Товар успешно обновлен в корзине' },
-      total: basket.totalPrice,
     });
   } catch (error) {
     return next(error);
@@ -243,8 +240,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
       await basket.save();
 
       return res.send({
-        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' },
-        total: basket.totalPrice,
+        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' }
       });
     }
 
@@ -267,8 +263,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
       await newBasket.save();
 
       return res.send({
-        message: { en: 'Product successfully added to cart', ru: 'Товар успешно добавлен в корзину' },
-        total: newBasket.totalPrice,
+        message: { en: 'Product successfully added to cart', ru: 'Товар успешно добавлен в корзину' }
       });
     }
 
@@ -309,8 +304,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
     await basket.save();
 
     return res.send({
-      message: { en: 'Product successfully updated in cart', ru: 'Товар успешно обновлен в корзине' },
-      total: basket.totalPrice,
+      message: { en: 'Product successfully updated in cart', ru: 'Товар успешно обновлен в корзине' }
     });
   } catch (error) {
     return next(error);
