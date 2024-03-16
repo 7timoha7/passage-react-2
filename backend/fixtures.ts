@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 import config from './config';
-import crypto from 'crypto';
-import User from './models/User';
 
 const run = async () => {
   mongoose.set('strictQuery', false);
@@ -13,20 +11,19 @@ const run = async () => {
     // await db.dropCollection('baskets');
     // await db.dropCollection('orders');
     // await db.dropCollection('chatidadmins');
-
-    await db.dropCollection('categories');
-    await db.dropCollection('products');
+    // await db.dropCollection('categories');
+    // await db.dropCollection('products');
   } catch (e) {
     console.log('Collections were not present, skipping drop...');
   }
 
   // await User.create({
-  //   email: 'director@gmail.com',
-  //   firstName: 'Director',
-  //   lastName: 'Directorovich',
+  //   email: '7timoha7@mail.ru',
+  //   firstName: 'tima',
+  //   lastName: 'tima',
   //   password: '123',
   //   token: crypto.randomUUID(),
-  //   role: 'director',
+  //   role: 'admin',
   //   phoneNumber: '0555 888888',
   //   isVerified: true,
   // });

@@ -26,6 +26,8 @@ const OrderItems: React.FC<Props> = ({ ordersItems, ordersPageInfo, adminPageInf
       dispatch(getForAdminHisOrders({ page: page, id: id }));
     }
   };
+  console.log('!!!!!!!');
+  console.log(ordersPageInfo);
 
   const renderPagination = () => {
     if (ordersPageInfo && ordersPageInfo.totalPages > 1) {

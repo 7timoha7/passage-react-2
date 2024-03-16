@@ -123,7 +123,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
               {state.myOrders && adminPageInfo && user?._id && (
                 <OrderItems ordersItems={orders} adminPageInfo={adminPageInfo} id={user._id} />
               )}
-              {state.unaccepktedOrders && orderPageInfo && (
+              {state.unacceptedOrders && orderPageInfo && (
                 <OrderItems ordersPageInfo={orderPageInfo} ordersItems={unacceptedOrders} />
               )}
               {state.productsFor && <ProductsForPage />}
