@@ -20,9 +20,13 @@ const ProductsNews = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const page = queryParams.get('page');
 
   useEffect(() => {
-    if (location.pathname === '/' || location.pathname === '/productsNews') {
+    if (page) {
+      dispatch(productsFetchNews(Number(page)));
+    } else if (location.pathname === '/' || location.pathname === '/productsNews') {
       dispatch(productsFetchNews(1));
     }
   }, [dispatch, location.pathname]);
@@ -38,7 +42,9 @@ const ProductsNews = () => {
   const handlePageChange = async (_event: React.ChangeEvent<unknown>, page: number) => {
     await dispatch(productsFetchNews(page));
     if (location.pathname === '/') {
-      navigate(`/productsNews`);
+      const newPath = `/productsNews?page=${page}`;
+      await dispatch(productsFetchNews(page));
+      navigate(newPath);
     }
   };
 

@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid, styled, Toolbar, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Container, Grid, styled, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUser } from '../../../features/users/usersSlice';
 import { NavLink } from 'react-router-dom';
@@ -35,10 +35,19 @@ const AppToolbar = () => {
               spacing={2}
               sx={{ '@media (max-width: 550px)': { justifyContent: 'center' } }}
             >
-              <Grid item>
+              <Grid item textAlign={'center'}>
                 <Link to="/" style={{ margin: 'auto' }}>
-                  <img style={{ maxWidth: '150px' }} src="/logo.svg" alt="passage" />
+                  <img style={{ maxWidth: '170px' }} src="/logo.svg" alt="passage" />
                 </Link>
+                <Typography variant={'inherit'} sx={{ color: '#000000', fontWeight: 'bold', fontSize: '12px' }}>
+                  дизайнерские решения
+                </Typography>
+                <Typography
+                  variant={'inherit'}
+                  sx={{ color: '#000000', fontWeight: 'bold', fontSize: '12px', marginTop: '-5px' }}
+                >
+                  отделочные материалы
+                </Typography>
               </Grid>
 
               <Grid item sx={{ flexGrow: 1, minWidth: 0 }}>
