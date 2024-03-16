@@ -101,8 +101,8 @@ const Basket = () => {
         <TableContainer>
           <Table>
             <TableBody>
-              {basket?.items?.map((item) => (
-                <TableRow key={item._id}>
+              {basket?.items?.map((item, index) => (
+                <TableRow key={item.product.goodID + index}>
                   <TableCell>
                     <Typography
                       variant="body1"

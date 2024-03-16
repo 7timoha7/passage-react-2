@@ -41,7 +41,7 @@ productsForRouter.post('/', auth, permit('admin'), async (req, res, next) => {
   }
 });
 
-productsForRouter.get('/:categoryID', auth, async (req, res, next) => {
+productsForRouter.get('/:categoryID', async (req, res, next) => {
   try {
     const { categoryID } = req.params;
     // Находим соответствующую запись в ProductFor по categoryID

@@ -28,8 +28,6 @@ ordersRouter.post('/', async (req, res, next) => {
     });
 
     order.totalPrice = await calculateTotalPrice(order.products);
-    console.log(req.body);
-    console.log(order);
     await order.save();
 
     const message = `Новый - Заказ №: ${order.orderArt.toUpperCase()} Ожидает обработки!`;
@@ -245,7 +243,7 @@ ordersRouter.patch('/:id', auth, permit('admin'), async (req, res, next) => {
     }
 
     if (req.body.status === 'closed') {
-      const orderOwner = await User.findById(order.user_id);
+      const orderOwner = await User.findById(order.admin_id);
       if (!orderOwner) {
         return res.status(403).send({
           message: {

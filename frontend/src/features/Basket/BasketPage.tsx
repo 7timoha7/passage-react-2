@@ -68,8 +68,8 @@ const BasketPage = () => {
               <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
                 <Table>
                   <TableBody>
-                    {basket.items.map((item) => (
-                      <TableRow key={item._id}>
+                    {basket.items.map((item, index) => (
+                      <TableRow key={item.product.goodID + index}>
                         <TableCell
                           style={{ cursor: 'pointer' }}
                           onClick={() => navigate('/product/' + item.product._id)}

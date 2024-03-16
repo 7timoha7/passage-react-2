@@ -30,12 +30,6 @@ const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
   const basket = useAppSelector(selectBasket);
   const productsForOneLoading = useAppSelector(selectFetchProductsForOneLoading);
 
-  // // Проверьте, что bestsellersProduct - это массив
-  // if (!Array.isArray(productsFor)) {
-  //   // Обработайте случай, когда bestsellersProduct не является массивом
-  //   return null;
-  // }
-
   const sliderSettings: Settings = {
     dots: false, // Отключаем точки (индикаторы текущего слайда)
     arrows: false, // Отключаем стандартные стрелки
