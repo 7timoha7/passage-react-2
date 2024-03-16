@@ -9,24 +9,27 @@ const run = async () => {
   const db = mongoose.connection;
 
   try {
-    await db.dropCollection('users');
-    await db.dropCollection('baskets');
-    await db.dropCollection('orders');
-    await db.dropCollection('chatidadmins');
+    // await db.dropCollection('users');
+    // await db.dropCollection('baskets');
+    // await db.dropCollection('orders');
+    // await db.dropCollection('chatidadmins');
+
+    await db.dropCollection('categories');
+    await db.dropCollection('products');
   } catch (e) {
     console.log('Collections were not present, skipping drop...');
   }
 
-  await User.create({
-    email: 'director@gmail.com',
-    firstName: 'Director',
-    lastName: 'Directorovich',
-    password: '123',
-    token: crypto.randomUUID(),
-    role: 'director',
-    phoneNumber: '0555 888888',
-    isVerified: true,
-  });
+  // await User.create({
+  //   email: 'director@gmail.com',
+  //   firstName: 'Director',
+  //   lastName: 'Directorovich',
+  //   password: '123',
+  //   token: crypto.randomUUID(),
+  //   role: 'director',
+  //   phoneNumber: '0555 888888',
+  //   isVerified: true,
+  // });
 
   await db.close();
 };
