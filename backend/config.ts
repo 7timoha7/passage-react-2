@@ -16,7 +16,7 @@ const config = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
   },
   mail: 'passagerakcaramics@gmail.com',
-  site: process.env.WEBSITE_ADDRESS ? process.env.WEBSITE_ADDRESS : 'http://176.126.166.251',
+  site: process.env.WEBSITE_ADDRESS ? process.env.WEBSITE_ADDRESS : 'passage.go.kg',
 };
 
 export default config;
