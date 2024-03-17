@@ -24,6 +24,14 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
+import { styled } from '@mui/system';
+
+const FixedBasketContainer = styled('div')({
+  position: 'fixed',
+  top: '20px',
+  right: '20px',
+  zIndex: 9999,
+});
 
 const Basket = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -51,11 +59,9 @@ const Basket = () => {
   const handleUpdateBasket = async (product_id: string, action: 'increase' | 'decrease' | 'remove') => {
     if (user) {
       await dispatch(updateBasket({ sessionKey: user._id, product_id, action }));
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Добавляем задержку в 500 миллисекунд (0.5 секунды)
       await dispatch(fetchBasket(user._id));
     } else if (basket?.session_key) {
       await dispatch(updateBasket({ sessionKey: basket.session_key, product_id, action }));
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Добавляем задержку в 500 миллисекунд (0.5 секунды)
       await dispatch(fetchBasket(basket.session_key));
     }
   };
@@ -78,7 +84,7 @@ const Basket = () => {
   };
 
   return (
-    <>
+    <FixedBasketContainer>
       <IconButton aria-label="Корзина" color="inherit" onClick={handlePopoverOpen}>
         <Badge badgeContent={basket?.items?.length || 0} color="error">
           <ShoppingCartIcon fontSize="large" />
@@ -181,7 +187,7 @@ const Basket = () => {
           </Grid>
         </Grid>
       </Popover>
-    </>
+    </FixedBasketContainer>
   );
 };
 
