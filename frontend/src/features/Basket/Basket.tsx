@@ -51,9 +51,11 @@ const Basket = () => {
   const handleUpdateBasket = async (product_id: string, action: 'increase' | 'decrease' | 'remove') => {
     if (user) {
       await dispatch(updateBasket({ sessionKey: user._id, product_id, action }));
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Добавляем задержку в 500 миллисекунд (0.5 секунды)
       await dispatch(fetchBasket(user._id));
     } else if (basket?.session_key) {
       await dispatch(updateBasket({ sessionKey: basket.session_key, product_id, action }));
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Добавляем задержку в 500 миллисекунд (0.5 секунды)
       await dispatch(fetchBasket(basket.session_key));
     }
   };
