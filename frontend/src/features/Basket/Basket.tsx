@@ -75,6 +75,24 @@ const Basket = () => {
     setAnchorEl(null);
   };
 
+  // const isAddButtonDisabled = (goodID: string) => {
+  //   // Проверяем, существует ли корзина и есть ли в ней товары
+  //   if (!basket || !basket.items) {
+  //     return false; // Возвращаем false, чтобы активировать кнопку
+  //   }
+  //
+  //   // Ищем товар в корзине по его goodID
+  //   const item = basket.items.find((item) => item.product.goodID === goodID);
+  //
+  //   // Если товар не найден, возвращаем false, чтобы активировать кнопку
+  //   if (!item) {
+  //     return false;
+  //   }
+  //
+  //   // Если товар найден, возвращаем true, чтобы отключить кнопку
+  //   return true;
+  // };
+
   return (
     <>
       <IconButton aria-label="Корзина" color="inherit" onClick={handlePopoverOpen}>

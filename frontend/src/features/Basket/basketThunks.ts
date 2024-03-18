@@ -18,10 +18,11 @@ export const createBasket = createAsyncThunk<
   try {
     const user = getState().users.user;
     if (user) {
-      const response = await axiosApi.post('/basket/user', basketData);
+      const response = await axiosApi.post('/basket/user');
       return response.data;
     } else if (basketData.sessionKey) {
       const response = await axiosApi.post('/basket', basketData);
+      console.log(response.data);
       return response.data;
     }
   } catch (e) {

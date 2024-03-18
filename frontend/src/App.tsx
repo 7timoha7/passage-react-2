@@ -189,16 +189,25 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchBasket('1'));
+      dispatch(createBasket({}));
     }
     let storedBasketId = localStorage.getItem('sessionKey');
-    if (storedBasketId) {
-      dispatch(createBasket({ sessionKey: storedBasketId }));
-      dispatch(fetchBasket(storedBasketId));
-    } else {
+
+    if (!storedBasketId) {
       storedBasketId = uuidv4();
       localStorage.setItem('sessionKey', storedBasketId);
+      dispatch(createBasket({ sessionKey: storedBasketId }));
+    } else if (storedBasketId) {
+      dispatch(fetchBasket(storedBasketId));
     }
+
+    // if (storedBasketId) {
+    //   dispatch(createBasket({ sessionKey: storedBasketId }));
+    //   dispatch(fetchBasket(storedBasketId));
+    // } else {
+    //   storedBasketId = uuidv4();
+    //   localStorage.setItem('sessionKey', storedBasketId);
+    // }
   }, [user, dispatch]);
 
   return (
