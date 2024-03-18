@@ -38,8 +38,6 @@ import {
 import { selectBasketSuccess, setBasketSuccessNull } from './features/Basket/basketSlice';
 import SearchPage from './components/UI/AppToolbar/NavigateTop/Components/SearchPage';
 import { selectOrderSuccess, setOrderSuccessNull } from './features/Order/orderSlice';
-import { createBasket, fetchBasket } from './features/Basket/basketThunks';
-import { v4 as uuidv4 } from 'uuid';
 import { selectBestsellerSuccess } from './features/Bestsellers/bestsellersSlice';
 import ProductsNews from './features/Products/components/ProductsNews';
 import Delivery from './components/UI/Delivery/Delivery';
@@ -186,29 +184,6 @@ function App() {
     }
     dispatch(setOrderSuccessNull());
   }, [orderSuccess, i18n.language, dispatch, enqueueSnackbar]);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(createBasket({}));
-    }
-    let storedBasketId = localStorage.getItem('sessionKey');
-
-    if (!storedBasketId) {
-      storedBasketId = uuidv4();
-      localStorage.setItem('sessionKey', storedBasketId);
-      dispatch(createBasket({ sessionKey: storedBasketId }));
-    } else if (storedBasketId) {
-      dispatch(fetchBasket(storedBasketId));
-    }
-
-    // if (storedBasketId) {
-    //   dispatch(createBasket({ sessionKey: storedBasketId }));
-    //   dispatch(fetchBasket(storedBasketId));
-    // } else {
-    //   storedBasketId = uuidv4();
-    //   localStorage.setItem('sessionKey', storedBasketId);
-    // }
-  }, [user, dispatch]);
 
   return (
     <Routes>
