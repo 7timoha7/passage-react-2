@@ -8,6 +8,7 @@ import Search from './NavigateTop/Components/Search';
 import UserMenu from './UserMenu';
 import AnonymousMenu from './AnonymousMenu';
 import React from 'react';
+import Basket from '../../../features/Basket/Basket';
 
 const AppToolbar = () => {
   const user = useAppSelector(selectUser);
@@ -53,6 +54,9 @@ const AppToolbar = () => {
                 <Search />
               </Grid>
               <Grid item>{user ? <UserMenu user={user} /> : <AnonymousMenu />}</Grid>
+              <Grid item>
+                <Basket />
+              </Grid>
             </Grid>
           </Container>
         </Toolbar>
