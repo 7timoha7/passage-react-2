@@ -262,16 +262,25 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                     </TableCell>
                   </TableRow>
                 )}
+
                 <TableRow>
                   <TableCell component="th" scope="row">
                     Наличие:
                   </TableCell>
                   <TableCell>
-                    {product.quantity.map((stock, index) => (
-                      <Typography key={stock.stockID + index} variant={'caption'}>
-                        {stock.name}: {stock.quantity}
+                    {user && (user.role === 'admin' || user.role === 'director') ? (
+                      <>
+                        {product.quantity.map((stock, index) => (
+                          <Typography key={stock.stockID + index} variant={'caption'}>
+                            {stock.name}: {stock.quantity}
+                          </Typography>
+                        ))}
+                      </>
+                    ) : (
+                      <Typography variant={'caption'} color={'green'}>
+                        В наличии
                       </Typography>
-                    ))}
+                    )}
                   </TableCell>
                 </TableRow>
                 {product.originCountry && (
