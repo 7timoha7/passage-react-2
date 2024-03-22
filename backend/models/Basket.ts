@@ -33,6 +33,11 @@ const BasketSchema = new Schema<IBasket>({
           required: true,
           default: 1,
         },
+        quantityToOrder: {
+          type: Number,
+          required: true,
+          default: 0,
+        },
       },
     ],
     default: [],

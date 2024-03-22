@@ -125,6 +125,7 @@ export interface BasketTypeOnServerMutation {
     _id: string;
     product: ProductType;
     quantity: number;
+    quantityToOrder: number;
   }[];
   totalPrice: number;
 }
@@ -132,7 +133,7 @@ export interface BasketTypeOnServerMutation {
 export interface BasketUpdateRequest {
   sessionKey?: string;
   product_id?: string;
-  action: 'increase' | 'decrease' | 'remove' | 'clear';
+  action: 'increaseToOrder' | 'decreaseToOrder' | 'increase' | 'decrease' | 'remove' | 'removeToOrder' | 'clear';
 }
 
 export interface PageInfo {
@@ -159,6 +160,7 @@ export interface OrderSendType {
   products: {
     product: string;
     quantity: number;
+    quantityToOrder: number;
   }[];
 }
 
@@ -181,6 +183,7 @@ export interface OrderFromServerType {
   products: {
     product: ProductType;
     quantity: number;
+    quantityToOrder: number;
   }[];
 }
 

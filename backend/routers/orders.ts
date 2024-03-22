@@ -158,6 +158,7 @@ ordersRouter.get('/', auth, async (req, res, next) => {
             return {
               product: product,
               quantity: productData.quantity,
+              quantityToOrder: productData.quantityToOrder,
             };
           }),
         );

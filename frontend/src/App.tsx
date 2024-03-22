@@ -24,7 +24,7 @@ import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute';
 import NoFoundPage from './components/UI/NoFoundPage/NoFoundPage';
 import ProductsPage from './features/Products/components/ProductsPage';
 import ProductFullPage from './features/Products/components/ProductFullPage';
-import BasketPage from './features/Basket/BasketPage';
+import BasketPageOld from './features/Basket/BasketPageOld';
 import OrderForm from './features/Order/components/OrderForm';
 import AboutPage from './components/UI/AboutPage/AboutPage';
 import ContactsPage from './components/UI/СontactsPage/СontactsPage';
@@ -42,6 +42,7 @@ import { selectBestsellerSuccess } from './features/Bestsellers/bestsellersSlice
 import ProductsNews from './features/Products/components/ProductsNews';
 import Delivery from './components/UI/Delivery/Delivery';
 import BannersForm from './features/Banners/BannersForm';
+import BasketPage from './features/Basket/BasketPage';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -193,6 +194,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/products/:id" element={<ProductsPage />} />
         <Route path="/product/:id" element={<ProductFullPage />} />
+        {/*<Route path="/basket/" element={<BasketPageOld />} />*/}
         <Route path="/basket/" element={<BasketPage />} />
         <Route path="/order/" element={<OrderForm />} />
         <Route path="/about/" element={<AboutPage />} />

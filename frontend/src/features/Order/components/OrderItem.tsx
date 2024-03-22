@@ -32,7 +32,7 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
   const buttonLoading = useAppSelector(selectOrderChangeStatusLoading);
   const deleteOrderLoading = useAppSelector(selectOrderDeleteLoading);
   const [openDelete, setOpenDelete] = useState(false);
-
+  console.log(prop.products[0].quantityToOrder);
   // const background = prop.status === 'open' ? '#FFEAE9' : prop.status === 'in progress' ? 'lightyellow' : '#CCFFCD';
   const backgroundOrder = () => {
     if (prop.status === 'open') {
@@ -199,6 +199,11 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
                     <Typography>
                       Количество: <span style={{ fontWeight: 'bold' }}>{item.quantity}</span>
                     </Typography>
+                    {item.quantityToOrder > 0 && (
+                      <Typography color={'#e50f0f'}>
+                        Количество под заказ: <span style={{ fontWeight: 'bold' }}>{item.quantityToOrder}</span>
+                      </Typography>
+                    )}
                   </Grid>
                   <Grid item xs={12} sm={12} lg={6} xl={3}>
                     <Typography>

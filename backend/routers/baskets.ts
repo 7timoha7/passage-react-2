@@ -80,6 +80,7 @@ basketRouter.get('/', auth, async (req, res, next) => {
             return {
               product: productInfo, // Здесь будет полная информация о товаре
               quantity: item.quantity,
+              quantityToOrder: item.quantityToOrder,
             };
           }),
           totalPrice: basket.totalPrice,
@@ -118,6 +119,7 @@ basketRouter.get('/:sessionKey', async (req, res, next) => {
             return {
               product: productInfo, // Здесь будет полная информация о товаре
               quantity: item.quantity,
+              quantityToOrder: item.quantityToOrder,
             };
           }),
           totalPrice: basket.totalPrice,
@@ -151,7 +153,7 @@ basketRouter.patch('/', auth, async (req, res, next) => {
       await basket.save();
 
       return res.send({
-        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' }
+        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' },
       });
     }
     // Если идентификатор товара или действие отсутствуют, возвращаем ошибку
@@ -185,10 +187,19 @@ basketRouter.patch('/', auth, async (req, res, next) => {
       basket.items.push({
         product: product_id,
         quantity: 1,
+        quantityToOrder: 0,
       });
     } else {
       // В зависимости от значения action выполните соответствующее действие
       switch (action) {
+        case 'increaseToOrder':
+          existingItem.quantityToOrder += 1;
+          break;
+        case 'decreaseToOrder':
+          if (existingItem.quantityToOrder >= 0) {
+            existingItem.quantityToOrder -= 1;
+          }
+          break;
         case 'increase':
           existingItem.quantity += 1;
           break;
@@ -201,6 +212,10 @@ basketRouter.patch('/', auth, async (req, res, next) => {
         case 'remove':
           // Удалите товар из корзины
           basket.items = basket.items.filter((item) => item.product.toString() !== product_id.toString());
+          break;
+        case 'removeToOrder':
+          // Удалите товар из корзины
+          existingItem.quantityToOrder = 0;
           break;
         default:
           return res.status(400).send({ message: 'Invalid action' });
@@ -240,7 +255,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
       await basket.save();
 
       return res.send({
-        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' }
+        message: { en: 'Basket successfully cleared', ru: 'Корзина успешно очищена' },
       });
     }
 
@@ -263,7 +278,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
       await newBasket.save();
 
       return res.send({
-        message: { en: 'Product successfully added to cart', ru: 'Товар успешно добавлен в корзину' }
+        message: { en: 'Product successfully added to cart', ru: 'Товар успешно добавлен в корзину' },
       });
     }
 
@@ -275,10 +290,19 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
       basket.items.push({
         product: product_id,
         quantity: 1,
+        quantityToOrder: 0,
       });
     } else {
       // В зависимости от значения action выполните соответствующее действие
       switch (action) {
+        case 'increaseToOrder':
+          existingItem.quantityToOrder += 1;
+          break;
+        case 'decreaseToOrder':
+          if (existingItem.quantityToOrder >= 0) {
+            existingItem.quantityToOrder -= 1;
+          }
+          break;
         case 'increase':
           existingItem.quantity += 1;
           break;
@@ -292,6 +316,10 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
           // Удалите товар из корзины
           basket.items = basket.items.filter((item) => item.product.toString() !== product_id.toString());
           break;
+        case 'removeToOrder':
+          // Удалите товар из корзины
+          existingItem.quantityToOrder = 0;
+          break;
         default:
           return res.status(400).send({ message: 'Invalid action' });
       }
@@ -304,7 +332,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
     await basket.save();
 
     return res.send({
-      message: { en: 'Product successfully updated in cart', ru: 'Товар успешно обновлен в корзине' }
+      message: { en: 'Product successfully updated in cart', ru: 'Товар успешно обновлен в корзине' },
     });
   } catch (error) {
     return next(error);

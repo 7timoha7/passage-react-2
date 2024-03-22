@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Paper, Grid, Typography, Divider } from '@mui/material';
 import { BasketTypeOnServerMutation } from '../../../types';
 
 interface Props {
@@ -8,38 +8,44 @@ interface Props {
 
 const ProductTable: React.FC<Props> = ({ basket }) => {
   return (
-    <TableContainer component={Paper} style={{ marginBottom: '20px' }}>
-      <Typography variant="h6" textAlign={'center'}>
+    <Paper style={{ padding: '20px', marginBottom: '20px' }}>
+      <Typography variant="h6" textAlign="center" gutterBottom>
         Товары в корзине
       </Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Название товара</TableCell>
-            <TableCell align="right">Количество</TableCell>
-            <TableCell align="right">Итого</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {basket.items.map((product, index) => (
-            <TableRow key={`${product._id}-${index}`}>
-              <TableCell>{product.product.name}</TableCell>
-              <TableCell align="center">{product.quantity}</TableCell>
-              <TableCell align="right">{product.product.price * product.quantity} сом</TableCell>
-            </TableRow>
-          ))}
-          <TableRow>
-            <TableCell>
-              {basket && (
-                <Typography variant="h6" gutterBottom>
-                  Итоговая стоимость: {basket.totalPrice} сом
+      {basket.items.map((product, index) => (
+        <div
+          key={`${product._id}-${index}`}
+          style={{
+            marginBottom: '20px',
+            borderBottom: index !== basket.items.length - 1 ? '1px solid black' : 'none',
+            paddingBottom: '15px',
+          }}
+        >
+          <Typography variant="body1" gutterBottom>
+            Название товара: {product.product.name}
+          </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body1">Количество: {product.quantity}</Typography>
+            </Grid>
+            {product.quantityToOrder > 0 && (
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body1" pb={0}>
+                  Количество под заказ: {product.quantityToOrder}
+                  <br />
+                  <span style={{ fontSize: '10px', color: 'red' }}>Рассчитывается отдельно</span>
                 </Typography>
-              )}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+              </Grid>
+            )}
+          </Grid>
+          <Typography variant="body1">Сумма: {product.product.price * product.quantity} сом</Typography>
+        </div>
+      ))}
+      <Divider />
+      <Typography variant="h6" gutterBottom>
+        Итоговая стоимость: {basket.totalPrice} сом
+      </Typography>
+    </Paper>
   );
 };
 

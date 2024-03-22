@@ -95,6 +95,7 @@ export interface IBasket {
   items: {
     product: string;
     quantity: number;
+    quantityToOrder: number;
   }[];
   totalPrice: number;
 }
@@ -117,6 +118,7 @@ export interface IOrder {
   products: {
     product: string;
     quantity: number;
+    quantityToOrder: number;
   }[];
 }
 

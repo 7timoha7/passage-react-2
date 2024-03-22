@@ -62,7 +62,11 @@ const OrderForm = () => {
     if (basket && basket.items) {
       setFormData((prevData) => ({
         ...prevData,
-        products: basket.items.map((item) => ({ product: item.product.goodID, quantity: item.quantity })),
+        products: basket.items.map((item) => ({
+          product: item.product.goodID,
+          quantity: item.quantity,
+          quantityToOrder: item.quantityToOrder,
+        })),
       }));
     }
   }, [basket]);
