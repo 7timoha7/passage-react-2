@@ -24,7 +24,6 @@ import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute';
 import NoFoundPage from './components/UI/NoFoundPage/NoFoundPage';
 import ProductsPage from './features/Products/components/ProductsPage';
 import ProductFullPage from './features/Products/components/ProductFullPage';
-import BasketPageOld from './features/Basket/BasketPageOld';
 import OrderForm from './features/Order/components/OrderForm';
 import AboutPage from './components/UI/AboutPage/AboutPage';
 import ContactsPage from './components/UI/СontactsPage/СontactsPage';

@@ -65,10 +65,10 @@ const BasketPageOld = () => {
     setShowOrderField(true);
   };
 
-  const handleHideOrderField = () => {
-    setSelectedProductID('');
-    setShowOrderField(false);
-  };
+  // const handleHideOrderField = () => {
+  //   setSelectedProductID('');
+  //   setShowOrderField(false);
+  // };
 
   const isAddButtonDisabled = (goodID: string) => {
     if (!basket || !basket.items || basket.items.length === 0) {
