@@ -51,6 +51,7 @@ const Bestsellers: React.FC = () => {
     focusOnSelect: true, // Слайд будет центрироваться при клике
     draggable: true, // Включает/отключает перетаскивание слайдов мышью (для десктопа)
     responsive: [
+      { breakpoint: 3000, settings: { variableWidth: false, slidesToShow: 4, centerMode: false } },
       { breakpoint: 1800, settings: { variableWidth: false, slidesToShow: 4, centerMode: false } },
       { breakpoint: 1300, settings: { variableWidth: false, slidesToShow: 3, centerMode: false } },
       { breakpoint: 1080, settings: { variableWidth: false, slidesToShow: 2, centerMode: false } },
