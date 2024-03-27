@@ -139,6 +139,7 @@ basketRouter.patch('/', auth, async (req, res, next) => {
   try {
     const { product_id, action } = req.body;
     const user = (req as RequestWithUser).user;
+
     // Если идентификатор товара и действие равны 'clear', просто очистите корзину
     if (action === 'clear' && product_id === 'clear') {
       const basket = await Basket.findOne({ user_id: user._id });
@@ -206,6 +207,7 @@ basketRouter.patch('/', auth, async (req, res, next) => {
         case 'decrease':
           if (existingItem.quantity > 1) {
             existingItem.quantity -= 1;
+            existingItem.quantityToOrder = 0;
           }
           // Не удалять товар, если количество равно 1
           break;
@@ -240,7 +242,6 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
   try {
     const { sessionKey } = req.params;
     const { product_id, action } = req.body;
-
     // Если идентификатор товара и действие равны 'clear', просто очистите корзину
     if (action === 'clear' && product_id === 'clear') {
       const basket = await Basket.findOne({ session_key: sessionKey });
@@ -309,6 +310,7 @@ basketRouter.patch('/:sessionKey', async (req, res, next) => {
         case 'decrease':
           if (existingItem.quantity > 1) {
             existingItem.quantity -= 1;
+            existingItem.quantityToOrder = 0;
           }
           // Не удалять товар, если количество равно 1
           break;

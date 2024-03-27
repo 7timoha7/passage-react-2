@@ -29,10 +29,10 @@ const ProductsNews = () => {
     } else if (location.pathname === '/' || location.pathname === '/productsNews') {
       dispatch(productsFetchNews(1));
     }
-  }, [dispatch, location.pathname]);
+  }, [dispatch, location.pathname, page]);
 
   const indicator = (item: ProductType) => {
-    if (basket && item) {
+    if (basket && basket.items.length && item) {
       return basket.items.some((itemBasket) => itemBasket.product.goodID === item.goodID);
     } else {
       return false;
@@ -93,11 +93,12 @@ const ProductsNews = () => {
         <Spinner />
       ) : (
         <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={2} mb={3} justifyContent={'center'}>
-          {productsNews.map((item) => (
-            <Grid item key={item._id}>
-              <ProductCard product={item} indicator={indicator(item)} />
-            </Grid>
-          ))}
+          {productsNews.length &&
+            productsNews.map((item) => (
+              <Grid item key={item._id}>
+                <ProductCard product={item} indicator={indicator(item)} />
+              </Grid>
+            ))}
         </Grid>
       )}
 

@@ -46,7 +46,6 @@ const BasketPage = () => {
       await dispatch(updateBasket({ sessionKey: basket.session_key, product_id, action }));
       await dispatch(fetchBasket(basket.session_key));
     }
-    await nullToOrder(product_id);
   };
 
   const clearBasket = async (action: 'clear') => {
@@ -73,21 +72,23 @@ const BasketPage = () => {
     const stockQuantities = item.product.quantity.map((quantityItem) => quantityItem.quantity);
     const totalStockQuantity = stockQuantities.reduce((total, quantity) => total + quantity, 0);
 
-    return item.quantity >= totalStockQuantity;
+    if (item.product.size) {
+      const quantityMeters = calculateSquareAreaInSquareMeters(item.product.size) * item.quantity;
+      return quantityMeters >= totalStockQuantity;
+    } else {
+      return item.quantity >= totalStockQuantity;
+    }
   };
 
-  const nullToOrder = async (goodID: string) => {
-    const product_id = goodID;
-    const action = 'removeToOrder';
-    if (!isAddButtonDisabled(goodID)) {
-      if (user) {
-        await dispatch(updateBasket({ sessionKey: user._id, product_id, action }));
-        await dispatch(fetchBasket(user._id));
-      } else if (basket?.session_key) {
-        await dispatch(updateBasket({ sessionKey: basket.session_key, product_id, action }));
-        await dispatch(fetchBasket(basket.session_key));
-      }
-    }
+  const calculateSquareAreaInSquareMeters = (sizeString: string): number => {
+    const [lengthStr, widthStr] = sizeString.split('*');
+    const lengthInMillimeters: number = parseInt(lengthStr);
+    const widthInMillimeters: number = parseInt(widthStr);
+    return (lengthInMillimeters * widthInMillimeters) / (1000 * 1000);
+  };
+
+  const textMeters = (quantity: number, metersOne: number) => {
+    return (quantity * metersOne).toFixed(2);
   };
 
   return (
@@ -164,6 +165,20 @@ const BasketPage = () => {
                                   </Box>
                                 </TableCell>
                               </TableRow>
+                              {item.product.size && (
+                                <TableRow>
+                                  <TableCell
+                                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                                    colSpan={2} // объединяем ячейки в одну строку
+                                  >
+                                    М²:
+                                    <Typography fontSize={'14px'} fontWeight={'bold'}>
+                                      {textMeters(item.quantity, calculateSquareAreaInSquareMeters(item.product.size))}
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              )}
+
                               {isAddButtonDisabled(item.product.goodID) && (
                                 <TableRow>
                                   <TableCell sx={{ border: '1px solid black' }}>
@@ -218,6 +233,26 @@ const BasketPage = () => {
                                         </IconButton>
                                       </Box>
                                     </Box>
+                                    {item.product.size && item.quantityToOrder > 0 && (
+                                      <Box
+                                        sx={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'space-between',
+                                        }}
+                                        borderTop={'1px solid rgba(224, 224, 224, 1)'}
+                                        pt={0.5}
+                                        mt={0.5}
+                                      >
+                                        <Typography fontSize={'0.875rem'}> М²:</Typography>
+                                        <Typography fontSize={'14px'} fontWeight={'bold'}>
+                                          {textMeters(
+                                            item.quantityToOrder,
+                                            calculateSquareAreaInSquareMeters(item.product.size),
+                                          )}
+                                        </Typography>
+                                      </Box>
+                                    )}
                                   </TableCell>
                                 </TableRow>
                               )}
