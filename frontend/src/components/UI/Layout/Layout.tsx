@@ -68,17 +68,6 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         </Box>
       </Container>
 
-      <Container maxWidth={'xl'} sx={{ mb: 2 }}>
-        {location.pathname.includes('/product/') && (
-          <>{productsForID && <ProductsFor categoriesID={productsForID} />}</>
-        )}
-        {location.pathname === '/' && (
-          <>
-            <Bestsellers />
-          </>
-        )}
-      </Container>
-
       {location.pathname === '/' && (
         <Box
         // sx={{
