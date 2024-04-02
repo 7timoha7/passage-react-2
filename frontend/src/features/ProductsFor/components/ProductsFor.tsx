@@ -82,8 +82,8 @@ const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
       {(productsFor && productsFor.categoryForID.length < 1) || !productsFor ? null : (
         <div
           style={{
-            border: ProductsNewsBorderStyles,
-            borderRadius: '10px',
+            // border: ProductsNewsBorderStyles,
+            // borderRadius: '10px',
             marginTop: '10px',
             marginBottom: '10px',
           }}
