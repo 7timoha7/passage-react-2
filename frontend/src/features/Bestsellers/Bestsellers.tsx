@@ -14,7 +14,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { ProductType } from '../../types';
 import { selectBasket } from '../Basket/basketSlice';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { ProductsNewsBorderStyles } from '../../styles';
 
 const Bestsellers: React.FC = () => {
   const bestsellersProduct = useAppSelector(selectBestsellers);
@@ -85,7 +84,7 @@ const Bestsellers: React.FC = () => {
       {bestsellersProduct.length < 1 ? null : (
         <div
           style={{
-            border: ProductsNewsBorderStyles,
+            // border: ProductsNewsBorderStyles,
             borderRadius: '10px',
             marginTop: '10px',
             marginBottom: '10px',
@@ -120,13 +119,29 @@ const Bestsellers: React.FC = () => {
             <Grid item>
               <Grid container spacing={2} sx={{ mr: 3, mt: 2 }}>
                 <Grid item>
-                  <IconButton color={'primary'} size={'large'} onClick={handlePrev}>
-                    <ArrowBackIosNewIcon />
+                  <IconButton
+                    sx={{
+                      color: '#efb748', // Цвет кнопки
+                      '&:hover': {
+                        color: '#ab944d', // Цвет кнопки при наведении
+                      },
+                    }}
+                    onClick={handlePrev}
+                  >
+                    <ArrowBackIosNewIcon fontSize={'large'} />
                   </IconButton>
                 </Grid>
                 <Grid item>
-                  <IconButton color={'primary'} size={'large'} onClick={handleNext}>
-                    <ArrowForwardIosIcon />
+                  <IconButton
+                    sx={{
+                      color: '#efb748', // Цвет кнопки
+                      '&:hover': {
+                        color: '#ab944d', // Цвет кнопки при наведении
+                      },
+                    }}
+                    onClick={handleNext}
+                  >
+                    <ArrowForwardIosIcon fontSize={'large'} />
                   </IconButton>
                 </Grid>
               </Grid>

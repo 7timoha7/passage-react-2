@@ -1,15 +1,16 @@
 import React from 'react';
-import { Box, Typography, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { CheckCircleOutline, CancelOutlined, DirectionsCar, AccessTime, MonetizationOn } from '@mui/icons-material';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Paper, Typography } from '@mui/material';
+import { AccessTime, CheckCircleOutline, DirectionsCar, DoorFront, MonetizationOn } from '@mui/icons-material';
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 
 const Delivery = () => {
   return (
     <>
-      <Box
+      <Paper
         sx={{
-          border: '5px solid rgba(55,52,147,0.82)',
-          borderRadius: '10px',
           p: 3,
+          mt: 2,
+          mb: 2,
         }}
       >
         <Typography variant="h5" fontWeight="bold" mb={2}>
@@ -18,42 +19,49 @@ const Delivery = () => {
         <Divider />
 
         <List>
-          <ListItem>
+          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
             <ListItemIcon>
-              <CheckCircleOutline />
+              <CheckCircleOutline sx={{ '&:hover': { color: '#ddbe86' } }} />
             </ListItemIcon>
             <ListItemText primary="Бесплатная доставка в пределах города" />
           </ListItem>
 
-          <ListItem>
+          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
             <ListItemIcon>
-              <MonetizationOn />
+              <MonetizationOn sx={{ '&:hover': { color: '#ddbe86' } }} />
             </ListItemIcon>
-            <ListItemText primary="Доставка за городской чертой - 50 сом за километр" />
+            <ListItemText primary="Доставка за городской чертой - 40 сом за километр" />
           </ListItem>
 
-          <ListItem>
+          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
             <ListItemIcon>
-              <DirectionsCar />
+              <DirectionsCar sx={{ '&:hover': { color: '#ddbe86' } }} />
             </ListItemIcon>
             <ListItemText primary="Доставка с понедельника по субботу" />
           </ListItem>
 
-          <ListItem>
+          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
             <ListItemIcon>
-              <CancelOutlined />
+              <DoorFront sx={{ '&:hover': { color: '#ddbe86' } }} />
             </ListItemIcon>
-            <ListItemText primary="Доставка не осуществляется в воскресенье" />
+            <ListItemText primary="Доставка осуществляется только до подезда или до ворот" />
           </ListItem>
 
-          <ListItem>
+          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
             <ListItemIcon>
-              <AccessTime />
+              <AccessTime sx={{ '&:hover': { color: '#ddbe86' } }} />
             </ListItemIcon>
-            <ListItemText primary="Прием заказов на доставку до 16:00" />
+            <ListItemText primary="Прием заказов на доставку до 15:00, если позже то переносится на следующий рабочий день" />
+          </ListItem>
+
+          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
+            <ListItemIcon>
+              <AccessibilityNewIcon sx={{ '&:hover': { color: '#ddbe86' } }} />{' '}
+            </ListItemIcon>
+            <ListItemText primary="Клиенту нужно заранее позаботится о грузчиках. Водитель не занимается выгрузкой" />
           </ListItem>
         </List>
-      </Box>
+      </Paper>
     </>
   );
 };

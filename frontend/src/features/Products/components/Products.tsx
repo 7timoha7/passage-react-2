@@ -75,7 +75,7 @@ const Products: React.FC<Props> = ({ categoryName }) => {
   const isSmallScreen = useMediaQuery('(max-width: 600px)');
 
   return (
-    <Box>
+    <Box mt={2}>
       <Box textAlign="center" mb={2}>
         <Typography variant="h4" fontWeight={'bold'} style={{ marginLeft: '2%' }}>
           {name}

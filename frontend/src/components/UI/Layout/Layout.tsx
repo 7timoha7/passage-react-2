@@ -10,6 +10,8 @@ import ProductsNews from '../../../features/Products/components/ProductsNews';
 import ProductsFor from '../../../features/ProductsFor/components/ProductsFor';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectProductsForID, setProductsForID } from '../../../features/ProductsFor/productsForSlice';
+import PorcelainStoneware from '../Banners/PorcelainStoneware';
+import PorcelainStoneware2 from '../Banners/PorcelainStoneware2';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isMobile = useMediaQuery('(max-width:1200px)');
@@ -28,9 +30,28 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <header>
         <AppToolbar />
       </header>
-      <Container maxWidth={'xl'}>
-        <BreadcrumbsPage />
-      </Container>
+
+      <Box sx={{ background: '#404040' }}>
+        <Container maxWidth={'xl'} sx={{ color: '#ffffff' }}>
+          <BreadcrumbsPage />
+        </Container>
+      </Box>
+      <MenuCategories />
+
+      {location.pathname === '/' && (
+        <Box
+        // sx={{
+        //   '@media (max-width:800px)': {
+        //     display: 'none',
+        //   },
+        // }}
+        >
+          {/*<PorcelainStoneware />*/}
+
+          <PorcelainStoneware />
+        </Box>
+      )}
+
       <Container maxWidth={'xl'} sx={{ mb: 2 }}>
         <Box
           sx={{
@@ -39,20 +60,45 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
             flexDirection: isMobile ? 'column' : 'row',
           }}
         >
-          <Box sx={{ border: 'none', background: 'transparent' }}>
-            <MenuCategories />
-          </Box>
+          {/*<Box sx={{ border: 'none', background: 'transparent' }}></Box>*/}
 
           <Box maxWidth={'100%'} component="main" sx={{ flex: 1, boxSizing: 'border-box' }}>
             {children}
           </Box>
         </Box>
+      </Container>
+
+      <Container maxWidth={'xl'} sx={{ mb: 2 }}>
         {location.pathname.includes('/product/') && (
           <>{productsForID && <ProductsFor categoriesID={productsForID} />}</>
         )}
         {location.pathname === '/' && (
           <>
             <Bestsellers />
+          </>
+        )}
+      </Container>
+
+      {location.pathname === '/' && (
+        <Box
+        // sx={{
+        //   '@media (max-width:800px)': {
+        //     display: 'none',
+        //   },
+        // }}
+        >
+          {/*<PorcelainStoneware />*/}
+
+          <PorcelainStoneware2 />
+        </Box>
+      )}
+
+      <Container maxWidth={'xl'} sx={{ mb: 2 }}>
+        {location.pathname.includes('/product/') && (
+          <>{productsForID && <ProductsFor categoriesID={productsForID} />}</>
+        )}
+        {location.pathname === '/' && (
+          <>
             <ProductsNews />
           </>
         )}

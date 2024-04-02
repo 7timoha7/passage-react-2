@@ -193,7 +193,6 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/products/:id" element={<ProductsPage />} />
         <Route path="/product/:id" element={<ProductFullPage />} />
-        {/*<Route path="/basket/" element={<BasketPageOld />} />*/}
         <Route path="/basket/" element={<BasketPage />} />
         <Route path="/order/" element={<OrderForm />} />
         <Route path="/about/" element={<AboutPage />} />

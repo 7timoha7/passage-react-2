@@ -59,7 +59,6 @@ const ProductsForPage = () => {
     <div>
       <Box
         sx={{
-          border: '5px solid rgba(55,52,147,0.82)',
           borderRadius: '10px',
           p: 3,
         }}
@@ -73,7 +72,7 @@ const ProductsForPage = () => {
           <>
             {state.map((item) => {
               return (
-                <Box key={item.ID} sx={{ background: 'rgba(103,204,255,0.55)', mb: 1, borderRadius: '10px', p: 2 }}>
+                <Box key={item.ID} sx={{ background: 'rgba(253,229,171,0.55)', mb: 1, borderRadius: '10px', p: 2 }}>
                   <Grid
                     justifyContent={'space-between'}
                     alignItems={'center'}
@@ -89,6 +88,12 @@ const ProductsForPage = () => {
                         size={'small'}
                         onClick={() => onClickButton(item.ID)}
                         variant={'contained'}
+                        sx={{
+                          backgroundColor: '#fac058', // Цвет кнопки
+                          '&:hover': {
+                            backgroundColor: '#ab944d', // Цвет кнопки при наведении
+                          },
+                        }}
                       >
                         Изменить
                       </LoadingButton>
@@ -106,7 +111,7 @@ const ProductsForPage = () => {
                                     <span
                                       style={{
                                         fontSize: '12px',
-                                        background: '#65ffd5',
+                                        background: 'rgba(255,128,0,0.84)',
                                         margin: '3px',
                                         borderRadius: '5px',
                                         padding: '3px',

@@ -7,6 +7,16 @@ interface Props {
 }
 
 const ProductTable: React.FC<Props> = ({ basket }) => {
+  const calculateSquareAreaInSquareMeters = (sizeString: string): number => {
+    const [lengthStr, widthStr] = sizeString.split('*');
+    const lengthInMillimeters: number = parseInt(lengthStr);
+    const widthInMillimeters: number = parseInt(widthStr);
+    return (lengthInMillimeters * widthInMillimeters) / (1000 * 1000);
+  };
+
+  const textMeters = (quantity: number, metersOne: number) => {
+    return (quantity * metersOne).toFixed(2);
+  };
   return (
     <Paper style={{ padding: '20px', marginBottom: '20px' }}>
       <Typography variant="h6" textAlign="center" gutterBottom>
@@ -27,6 +37,11 @@ const ProductTable: React.FC<Props> = ({ basket }) => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Typography variant="body1">Количество: {product.quantity}</Typography>
+              {product.product.size && (
+                <Typography variant="body1">
+                  М²: {textMeters(product.quantity, calculateSquareAreaInSquareMeters(product.product.size))}
+                </Typography>
+              )}
             </Grid>
             {product.quantityToOrder > 0 && (
               <Grid item xs={12} sm={6}>

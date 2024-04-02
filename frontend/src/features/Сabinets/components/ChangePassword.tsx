@@ -60,7 +60,18 @@ const ChangePassword = () => {
 
   return (
     <Box>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button
+        sx={{
+          borderColor: '#e3a230',
+          color: '#e3a230',
+          '&:hover': {
+            borderColor: '#ab944d',
+            color: '#ab944d',
+          },
+        }}
+        variant="outlined"
+        onClick={handleClickOpen}
+      >
         {'Изменить пароль'}
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -98,11 +109,26 @@ const ChangePassword = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>{'Назад'}</Button>
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: '#e3a230',
+              '&:hover': {
+                color: '#ab944d',
+              },
+            }}
+          >
+            {'Назад'}
+          </Button>
           <Button
             disabled={password.password1.length < 3 || password.password2.length < 3}
             onClick={handleConfirmOpen}
-            color="success"
+            sx={{
+              color: '#e3a230',
+              '&:hover': {
+                color: '#ab944d',
+              },
+            }}
           >
             {'Изменить пароль'}
           </Button>

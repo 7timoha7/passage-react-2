@@ -34,7 +34,20 @@ const VerifyPage = () => {
             <Typography sx={{ display: 'inline-block' }} variant="body1" textAlign="center">
               {'Вы не подтвердили свой email'}, {'для получения письма подтверждения нажмите на кнопку'}
             </Typography>
-            <Button variant="outlined" onClick={onButtonClick} disabled={active}>
+            <Button
+              sx={{
+                borderColor: '#fac058', // Цвет кнопки
+                color: '#fac058',
+                '&:hover': {
+                  borderColor: '#ab944d', // Цвет кнопки при наведении
+                  color: '#ab944d',
+                },
+                m: 1,
+              }}
+              variant="outlined"
+              onClick={onButtonClick}
+              disabled={active}
+            >
               {'Отправить письмо'}
             </Button>
             <Collapse in={active}>
@@ -50,7 +63,15 @@ const VerifyPage = () => {
               variant="contained"
               color="success"
               size="small"
-              style={{ margin: '10px auto', display: 'block', background: '#dc0b0b', marginTop: '10px' }}
+              sx={{
+                margin: '10px auto',
+                display: 'block',
+                marginTop: '10px',
+                backgroundColor: '#fac058', // Цвет кнопки
+                '&:hover': {
+                  backgroundColor: '#ab944d', // Цвет кнопки при наведении
+                },
+              }}
               onClick={goBack}
             >
               {'Назад'}

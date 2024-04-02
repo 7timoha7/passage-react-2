@@ -130,14 +130,14 @@ const OrderForm = () => {
         margin: 'auto',
         marginTop: '10px',
         padding: '20px',
-        backgroundColor: '#dfdfdf',
+        background: 'rgba(0,0,0,0.57)',
         borderRadius: '8px',
         boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
       }}
     >
       {basket ? <ProductTable basket={basket} /> : null}
 
-      <Typography variant="h6" gutterBottom>
+      <Typography color={'white'} variant="h6" gutterBottom>
         Заполните данные
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column' }} component="form" onSubmit={(event) => handleSubmit(event)}>
@@ -229,14 +229,30 @@ const OrderForm = () => {
               loading={sendOrderLoading}
               disabled={formData.products.length <= 0}
               variant="contained"
-              color="primary"
               type="submit"
+              sx={{
+                backgroundColor: '#ddbe86', // Цвет кнопки
+                '&:hover': {
+                  backgroundColor: '#ab944d', // Цвет кнопки при наведении
+                },
+              }}
             >
               Заказать
             </LoadingButton>
           </Grid>
           <Grid item>
-            <Button variant="outlined" color="error" onClick={() => navigate(-1)}>
+            <Button
+              sx={{
+                borderColor: '#ddbe86', // Цвет кнопки
+                color: '#ddbe86',
+                '&:hover': {
+                  borderColor: '#ab944d', // Цвет кнопки при наведении
+                  color: '#ab944d', // Цвет кнопки при наведении
+                },
+              }}
+              variant="outlined"
+              onClick={() => navigate(-1)}
+            >
               Назад
             </Button>
           </Grid>

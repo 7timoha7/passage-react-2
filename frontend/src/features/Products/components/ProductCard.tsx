@@ -143,7 +143,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
           position: 'relative',
           transition: 'box-shadow 0.3s',
           '&:hover': {
-            boxShadow: indicator ? 'none' : '0px 0px 3px 3px rgba(0,200,255,1)',
+            boxShadow: indicator ? 'none' : '0px 0px 3px 3px rgb(64,64,64)',
           },
           '@media (max-width:600px)': {
             width: '200px',
@@ -209,7 +209,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
             </Typography>
           </Box>
 
-          <Typography color="red">{product.price + ' сом'}</Typography>
+          <Typography sx={{ color: '#e79d15' }}>{product.price + ' сом'}</Typography>
           <Box
             sx={{
               marginTop: 'auto',

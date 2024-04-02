@@ -12,15 +12,15 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputLabel-root': {
-            color: '#000000', // цвет текста лейбла
+            color: '#ffffff', // цвет текста лейбла
           },
           '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-            color: '#000000', // цвет текста лейбла при сжатии
+            color: '#ffffff', // цвет текста лейбла при сжатии
           },
           '& .MuiOutlinedInput-root': {
             borderRadius: '10px',
             '& fieldset': {
-              borderColor: '#000000', // цвет рамки текстового поля
+              borderColor: '#8a8a8a', // цвет рамки текстового поля
             },
             '&:hover fieldset': {
               borderColor: '#ffffff', // цвет рамки текстового поля при наведении
@@ -32,7 +32,7 @@ const theme = createTheme({
               color: '#ffffff', // цвет текста лейбла при фокусировке
             },
             '& .MuiOutlinedInput-input': {
-              color: '#000000', // цвет текста внутри текстового поля
+              color: '#ffffff', // цвет текста внутри текстового поля
             },
           },
         },
@@ -85,7 +85,7 @@ const theme = createTheme({
           // '&:not([multiple]) option, &:not([multiple]) optgroup': {
           //   backgroundColor: 'rgba(255, 255, 255, 0.7)', // цвет фона для опций
           // },
-          color: '#000000', // цвет текста в селекте
+          color: '#ffffff', // цвет текста в селекте
         },
       },
     },
@@ -102,10 +102,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputLabel-root': {
-            color: '#000000', // цвет текста лейбла для MuiSelect
+            color: '#ffffff', // цвет текста лейбла для MuiSelect
           },
           '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-            color: '#000000', // цвет текста лейбла при сжатии
+            color: '#ffffff', // цвет текста лейбла при сжатии
           },
           '& .MuiOutlinedInput-root': {
             borderRadius: '10px',

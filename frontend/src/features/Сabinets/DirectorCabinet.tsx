@@ -54,7 +54,7 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
 
   const options = [
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
-    { option: 'update', icon: <AutorenewIcon color={'success'} />, text: 'Обновление базы с 1С' },
+    { option: 'update', icon: <AutorenewIcon />, text: 'Обновление базы с 1С' },
     { option: 'simpleUsers', icon: <GroupIcon />, text: 'Пользователи' },
     { option: 'admins', icon: <WcIcon />, text: 'Админы' },
     { option: 'reportsAdmins', icon: <AssignmentIcon />, text: 'Отчеты админов' },
@@ -89,10 +89,10 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
                     selected={selectedIndex === index}
                     onClick={() => handleClickOption(option.option, index)}
                   >
-                    <ListItemIcon style={selectedIndex === index ? { color: '#00ccff' } : {}}>
+                    <ListItemIcon style={selectedIndex === index ? { color: '#e8b86d' } : {}}>
                       {option.icon}
                     </ListItemIcon>
-                    <ListItemText style={selectedIndex === index ? { color: '#00ccff' } : {}} primary={option.text} />
+                    <ListItemText style={selectedIndex === index ? { color: '#e8b86d' } : {}} primary={option.text} />
                   </ListItemButton>
                 ))}
               </List>

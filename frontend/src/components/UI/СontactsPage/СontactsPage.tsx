@@ -1,7 +1,5 @@
 import { Box, Grid, Paper, Typography, useTheme } from '@mui/material';
-import { useEffect } from 'react';
-import React from 'react';
-import { ProductsNewsBorderStyles } from '../../../styles';
+import React, { useEffect } from 'react';
 
 const ContactsPage = () => {
   const theme = useTheme();
@@ -68,8 +66,6 @@ const ContactsPage = () => {
   return (
     <Box
       sx={{
-        border: ProductsNewsBorderStyles,
-        borderRadius: '10px',
         p: 2,
       }}
     >
@@ -87,7 +83,7 @@ const ContactsPage = () => {
             }}
           >
             <Typography variant="h4" gutterBottom>
-              Passage - Матросова, 1/2
+              <span style={{ fontWeight: 'bold' }}>Passage</span> - Матросова, 1/2
             </Typography>
             <Paper id="map1" sx={{ width: '100%', height: ['250px', '400px'] }}></Paper>
             <Typography variant="body2" sx={{ marginTop: theme.spacing(2) }}>
@@ -114,7 +110,7 @@ const ContactsPage = () => {
             }}
           >
             <Typography variant="h4" gutterBottom>
-              Passage - Кулатова, 8 — 2 этаж
+              <span style={{ fontWeight: 'bold' }}>Passage</span> - Кулатова, 8 — 2 этаж
             </Typography>
             <Paper id="map2" sx={{ width: '100%', height: ['250px', '400px'] }}></Paper>
             <Typography variant="body2" sx={{ marginTop: theme.spacing(2) }}>

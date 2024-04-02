@@ -27,10 +27,29 @@ const BreadcrumbsPage = () => {
       if (pathName === 'products' && categoryId) {
         const categoryPath = getCategoryPath(categoryId);
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
-          <Link fontWeight={'bold'} underline="hover" key="2" color="inherit" href={`/products/${categoryId}`}>
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            fontWeight={'bold'}
+            key="2"
+            href={`/products/${categoryId}`}
+          >
             {categoryPath ? categoryPath : 'Категория'}
           </Link>,
         ];
@@ -38,10 +57,28 @@ const BreadcrumbsPage = () => {
       } else if (pathName === 'product' && productOne) {
         const categoryPath = getCategoryPath(productOne.ownerID);
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
-          <Link underline="hover" key="2" color="inherit" href={`/products/${productOne.ownerID}`}>
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="2"
+            href={`/products/${productOne.ownerID}`}
+          >
             {categoryPath ? categoryPath : 'Категория'}
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
@@ -51,7 +88,16 @@ const BreadcrumbsPage = () => {
         setBreadcrumbs(state);
       } else if (pathName === 'productsNews') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
@@ -61,7 +107,16 @@ const BreadcrumbsPage = () => {
         setBreadcrumbs(state);
       } else if (pathName === 'delivery') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
@@ -71,14 +126,32 @@ const BreadcrumbsPage = () => {
         setBreadcrumbs(state);
       } else if (location.pathname === '/') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
         ];
         setBreadcrumbs(state);
       } else if (pathName === 'contacts') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
@@ -88,7 +161,16 @@ const BreadcrumbsPage = () => {
         setBreadcrumbs(state);
       } else if (pathName === 'about') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
@@ -98,7 +180,16 @@ const BreadcrumbsPage = () => {
         setBreadcrumbs(state);
       } else if (pathName === 'my-cabinet') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
@@ -108,7 +199,16 @@ const BreadcrumbsPage = () => {
         setBreadcrumbs(state);
       } else if (pathName === 'login') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
@@ -118,11 +218,89 @@ const BreadcrumbsPage = () => {
         setBreadcrumbs(state);
       } else if (pathName === 'register') {
         const state = [
-          <Link underline="hover" key="1" color="inherit" href="/">
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
             Главная
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
             Регистрация
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'search-results') {
+        const state = [
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Результат поиска:
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'basket') {
+        const state = [
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
+            Главная
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Корзина
+          </span>,
+        ];
+        setBreadcrumbs(state);
+      } else if (pathName === 'order') {
+        const state = [
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
+            Главная
+          </Link>,
+          <Link
+            sx={{
+              '&:hover': {
+                color: '#f6c011', // Цвет кнопки при наведении
+              },
+              textDecoration: 'none',
+            }}
+            key="2"
+            href="/basket"
+          >
+            Корзина
+          </Link>,
+          <span key="3" style={{ fontWeight: 'bold' }}>
+            Оформление заказа
           </span>,
         ];
         setBreadcrumbs(state);
@@ -137,9 +315,13 @@ const BreadcrumbsPage = () => {
 
   return (
     <>
-      <Box sx={{ m: 1, mt: 2 }}>
-        <Breadcrumbs separator="›" aria-label="breadcrumb">
-          {breadcrumbs}
+      <Box sx={{ m: 1 }}>
+        <Breadcrumbs sx={{ color: '#9f885f' }} separator="›" aria-label="breadcrumb">
+          {breadcrumbs.map((breadcrumb, index) =>
+            // Добавляем свойство color к компоненту Link
+            React.cloneElement(breadcrumb, { key: index, color: '#ddbe86' }),
+          )}
+          {/*{breadcrumbs}*/}
         </Breadcrumbs>
       </Box>
     </>

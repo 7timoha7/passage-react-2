@@ -1,6 +1,8 @@
+import img1 from '../../frontend/src/assets/images/2.jpeg';
+
 export const ToolBarStylesTop = {
   flexWrap: 'wrap',
-  background: '#2ca5ff',
+  background: '#404040',
 };
 
 export const ToolBarTopText = {
@@ -8,20 +10,25 @@ export const ToolBarTopText = {
   fontSize: '15px',
   textDecoration: 'none',
   marginRight: '50px',
-  ':hover': { color: 'rgb(0,0,0)' },
+  ':hover': { color: '#ddbe86' },
 };
 
-export const testColor = {
-  color: '#179ae3',
-};
+// export const testColor = {
+//   color: '#179ae3',
+// };
 
 export const ToolBarStyles = {
-  background: 'linear-gradient(45deg, hsla(0, 0%, 100%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
+  // background: 'linear-gradient(45deg, hsla(0, 0%, 100%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
+  // background: '#ffffff',
+  backgroundImage: `url(${img1})`,
+  backgroundSize: 'repeat',
   top: 0,
-  py: 1.5,
+  py: 2.5,
 };
 export const ToolBarMobileStyles = {
-  background: 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
+  // background: 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
+  backgroundImage: `url(${img1})`,
+  backgroundSize: 'repeat',
   top: 0,
   py: 1.5,
 };
@@ -29,8 +36,9 @@ export const ToolBarMobileStyles = {
 export const ProductsNewsBorderStyles = '5px solid #179ae3';
 
 export const FooterStyle = {
-  background: 'linear-gradient(45deg, hsla(210, 100%, 88%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
-  color: 'black',
+  // background: 'linear-gradient(45deg, hsla(210, 100%, 88%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)',
+  backgroundImage: `url(${img1})`,
+  backgroundSize: 'repeat',
 };
 
 export const menuCategoriesColor = 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)';
@@ -75,5 +83,5 @@ export const arrowStyleGallery = {
 };
 
 export const someStyle = {
-  boxShadow: '0px 0px 5px 0px rgba(0, 144, 255, 1)',
+  boxShadow: '0px 0px 5px 0px rgb(64,64,64)',
 };

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import { selectFetchAllCategoriesLoading } from './menuCategoriesSlice';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { Box } from '@mui/material';
 
 interface Category {
   _id: string;
@@ -32,13 +33,13 @@ const CategoryWrapper = styled.div`
 `;
 
 const CategoryItem = styled.div<{ $level: number }>`
-  border-bottom: 2px solid #ccc;
+  border-bottom: 2px solid #0a0a0a;
   cursor: pointer;
   transition: background-color 0.4s ease;
   display: flex;
   align-items: center;
   padding: 5px 5px 5px ${(props) => props.$level * 10}px;
-  color: #ffffff;
+  color: #0c0c0c;
 
   &:hover {
     background: rgba(145, 145, 145, 0.58);
@@ -122,7 +123,7 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
         {loading ? (
           <Spinner />
         ) : (
-          <>
+          <Box sx={{ background: 'rgba(227,227,227,0.85)' }}>
             {categories.map((category) => (
               <div key={category.ID}>
                 {category.subCategories && category.subCategories.length > 0 ? (
@@ -143,7 +144,7 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
                 )}
               </div>
             ))}
-          </>
+          </Box>
         )}
       </CategoryWrapper>
     );

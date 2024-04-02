@@ -80,7 +80,7 @@ const CustomSearchBar: React.FC = () => {
   }, [handleClickOutside]);
 
   return (
-    <Box position="relative" width="100%">
+    <Box position="relative" width="100%" sx={{ background: 'rgba(100,100,100,0.7)', p: 0.5 }}>
       <TextField
         size="small"
         label="Живой поиск"

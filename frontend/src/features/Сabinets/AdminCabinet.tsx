@@ -105,10 +105,10 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
                     selected={selectedIndex === index}
                     onClick={() => handleClickOption(option.option, index)}
                   >
-                    <ListItemIcon style={selectedIndex === index ? { color: '#00ccff' } : {}}>
+                    <ListItemIcon style={selectedIndex === index ? { color: '#e8b86d' } : {}}>
                       {option.icon}
                     </ListItemIcon>
-                    <ListItemText style={selectedIndex === index ? { color: '#00ccff' } : {}} primary={option.text} />
+                    <ListItemText style={selectedIndex === index ? { color: '#e8b86d' } : {}} primary={option.text} />
                   </ListItemButton>
                 ))}
               </List>

@@ -11,6 +11,7 @@ import { Typography } from '@mui/material';
 import Categories from './Categories';
 import { menuCategoriesColor } from '../../styles';
 import NavigateTop from '../../components/UI/AppToolbar/NavigateTop/NavigateTop';
+import img1 from '../../assets/images/2.jpeg';
 
 const drawerWidth = 250;
 
@@ -42,9 +43,9 @@ const MenuCategories = () => {
       sx={{
         display: 'flex',
 
-        '@media (max-width: 1200px)': {
-          mb: 1,
-        },
+        // '@media (max-width: 1200px)': {
+        //   mb: 1,
+        // },
         '@media (min-width: 1200px)': {
           mr: 2,
         },
@@ -59,6 +60,7 @@ const MenuCategories = () => {
           flexShrink: { sm: 0 },
           background: menuCategoriesColor,
           borderRadius: '20px',
+          display: { lg: 'none' },
         }}
         aria-label="mailbox folders"
       >
@@ -74,41 +76,21 @@ const MenuCategories = () => {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              background: menuCategoriesColor,
+              backgroundImage: `url(${img1})`,
+              backgroundSize: 'repeat',
             },
             '& .MuiDrawer-paperAnchorLeft': {
               width: drawerWidth,
             },
           }}
         >
-          <Box sx={{ m: 0, background: 'rgba(166,143,143,0.38)', pt: 1.5, pb: 1.5 }}>
-            <Typography variant={'h6'} textAlign={'center'}>
+          <Box sx={{ m: 0, pt: 1.5, pb: 1.5 }}>
+            <Typography variant={'h6'} textAlign={'center'} sx={{ color: '#e8b86d' }}>
               Меню
             </Typography>
           </Box>
-          <Box sx={{ borderBottom: '5px solid white' }}>
+          <Box>
             <NavigateTop close={closeMenu} />
-          </Box>
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', lg: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              position: 'unset',
-              background: 'rgba(47,36,36,0)',
-              borderRadius: '20px',
-            },
-          }}
-          open
-        >
-          <Box sx={{ m: 0, background: 'rgba(166,143,143,0)', pt: 2, pb: 2 }}>
-            <Typography variant={'h5'} textAlign={'center'}>
-              Каталог товаров
-            </Typography>
           </Box>
           {drawer}
         </Drawer>
@@ -119,9 +101,10 @@ const MenuCategories = () => {
           flexGrow: 1,
           pl: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          background: 'rgba(29,105,208,0.78)',
+          background: '#404040',
           display: { lg: 'none' },
-          borderRadius: '5px',
+          borderTop: '1.5px solid black',
+          // borderRadius: '5px',
         }}
       >
         <IconButton
@@ -131,13 +114,20 @@ const MenuCategories = () => {
           onClick={handleDrawerToggle}
           sx={{
             borderRadius: 0,
+            color: 'white',
             '&:hover': {
-              color: '#ffffff',
+              color: '#e8b86d',
             },
           }}
         >
           <MenuIcon fontSize={'large'} />
-          <Typography variant={'h6'} textAlign={'center'} sx={{ ml: 1 }}>
+          <Typography
+            variant={'h6'}
+            textAlign={'center'}
+            sx={{
+              ml: 1,
+            }}
+          >
             Меню
           </Typography>
         </IconButton>

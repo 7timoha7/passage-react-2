@@ -1,20 +1,22 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import Banners from '../features/Banners/Banners';
+import MenuCategoriesTop from '../features/MenuCategories/MenuCategoriesTop';
 
 const MainPage = () => {
   return (
     <>
-      <Box
-        sx={{
-          '@media (max-width:800px)': {
-            display: 'none',
-          },
-        }}
-      >
-        {/*<PorcelainStoneware />*/}
-        <Banners />
-      </Box>
+      {/*<Box*/}
+      {/*  sx={{*/}
+      {/*    '@media (max-width:800px)': {*/}
+      {/*      display: 'none',*/}
+      {/*    },*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  /!*<PorcelainStoneware />*!/*/}
+
+      {/*  <Banners />*/}
+      {/*</Box>*/}
     </>
   );
 };

@@ -43,19 +43,22 @@ const Login = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="md">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: '25px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          background: 'rgba(0,0,0,0.57)',
+          borderRadius: '10px',
+          padding: '20px',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: '#62b8ee' }}>
+        <Avatar sx={{ m: 1, bgcolor: '#ddbe86' }}>
           <LockOpenIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography color={'white'} component="h1" variant="h5">
           Войти
         </Typography>
         <Box sx={{ pt: 2 }}>
@@ -120,13 +123,31 @@ const Login = () => {
             loading={loading}
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              backgroundColor: '#ddbe86', // Цвет кнопки
+              '&:hover': {
+                backgroundColor: '#ab944d', // Цвет кнопки при наведении
+              },
+            }}
           >
             {'Войти'}
           </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link component={RouterLink} to="/register" variant="body2">
+              <Link
+                sx={{
+                  color: '#ddbe86',
+                  '&:hover': {
+                    color: '#ab944d', // Цвет кнопки при наведении
+                  },
+                  textDecoration: 'none',
+                }}
+                component={RouterLink}
+                to="/register"
+                variant="body2"
+              >
                 {'Регистрация'}
               </Link>
             </Grid>

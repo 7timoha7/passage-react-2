@@ -88,13 +88,14 @@ const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
                   spacing={1}
                   justifyContent={'space-between'}
                   container
-                  sx={{ background: 'rgba(103,255,237,0.89)', borderRadius: '10px' }}
+                  sx={{ background: 'rgba(253,203,92,0.62)', borderRadius: '10px' }}
                 >
                   <Grid item>
                     <Typography>{item.name}</Typography>
                   </Grid>
                   <Grid>
                     <Checkbox
+                      color={'warning'}
                       disabled={updateLoading}
                       checked={isChecked}
                       onChange={() => handleCheckboxChange(item.ID)}
@@ -109,7 +110,19 @@ const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
       )}
 
       <Box sx={{ mt: 2 }} justifyContent={'flex-end'} display={'flex'}>
-        <LoadingButton loading={updateLoading} variant={'outlined'} onClick={() => onClickBtnCancel()}>
+        <LoadingButton
+          sx={{
+            borderColor: '#fac058', // Цвет кнопки
+            color: '#fac058',
+            '&:hover': {
+              borderColor: '#ab944d', // Цвет кнопки при наведении
+              color: '#ab944d',
+            },
+          }}
+          loading={updateLoading}
+          variant={'outlined'}
+          onClick={() => onClickBtnCancel()}
+        >
           Назад
         </LoadingButton>
       </Box>

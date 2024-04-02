@@ -107,7 +107,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
   }, [dispatch, product.ownerID]);
 
   return (
-    <Box>
+    <Box sx={{ mt: 2 }}>
       <Paper elevation={3} sx={{ maxWidth: '100%', margin: 'auto', position: 'relative', padding: '16px' }}>
         <Box
           sx={{
@@ -211,7 +211,14 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                         disabled={indicator(product)}
                         variant="outlined"
                         endIcon={<AddShoppingCartIcon />}
-                        color="error"
+                        sx={{
+                          color: '#e39912', // Цвет контура кнопки
+                          borderColor: '#e39912', // Цвет контура кнопки
+                          '&:hover': {
+                            color: '#756433', // Цвет контура кнопки при наведении
+                            borderColor: '#756433', // Цвет контура кнопки при наведении
+                          },
+                        }}
                         loading={addBasketLoading === product.goodID}
                       >
                         {indicator(product) ? 'В корзине' : 'Добавить в корзину'}
@@ -220,7 +227,18 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                   </Tooltip>
                 </Grid>
                 <Grid item>
-                  <Button onClick={() => navigate('/basket')} variant="outlined" color="error">
+                  <Button
+                    sx={{
+                      color: '#e39912', // Цвет контура кнопки
+                      borderColor: '#e39912', // Цвет контура кнопки
+                      '&:hover': {
+                        color: '#756433', // Цвет контура кнопки при наведении
+                        borderColor: '#756433', // Цвет контура кнопки при наведении
+                      },
+                    }}
+                    onClick={() => navigate('/basket')}
+                    variant="outlined"
+                  >
                     Перейти в корзину
                   </Button>
                 </Grid>

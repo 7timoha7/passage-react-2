@@ -6,7 +6,7 @@ import React from 'react';
 
 const AboutPage = () => {
   return (
-    <Paper sx={{ p: 4 }}>
+    <Paper sx={{ p: 4, mt: 2 }}>
       <Typography variant="h4" gutterBottom>
         О нас
       </Typography>

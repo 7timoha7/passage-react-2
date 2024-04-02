@@ -19,33 +19,47 @@ const AnonymousMenu = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container>
-          <Grid item mr={1} mb={1} alignItems="center">
+        <Grid container alignItems={'center'}>
+          <Grid
+            item
+            mr={1}
+            sx={{
+              '@media (max-width: 1200px)': {
+                mb: 1,
+              },
+            }}
+            alignItems="center"
+          >
             <Button
+              size={'small'}
               component={NavLink}
               to="/register"
               variant="outlined"
               startIcon={<AccountCircle />}
               color="secondary"
-              sx={{ ':hover': { color: 'rgba(0,0,0,0.72)' } }}
+              sx={{ ':hover': { color: '#ddbe86' } }}
             >
-              <Typography mt={0.5} fontWeight="bold">
-                Регистрация
-              </Typography>
+              <Typography fontSize={'12px'}>Регистрация</Typography>
             </Button>
           </Grid>
-          <Grid item>
+          <Grid
+            item
+            sx={{
+              '@media (max-width: 1200px)': {
+                mb: 1,
+              },
+            }}
+          >
             <Button
-              sx={{ ':hover': { color: 'rgba(0,0,0,0.72)' } }}
+              size={'small'}
+              sx={{ ':hover': { color: '#ddbe86' } }}
               component={NavLink}
               to="/login"
               variant="outlined"
               startIcon={<LockOutlined />}
               color="secondary"
             >
-              <Typography mt={0.5} fontWeight="bold">
-                Вход
-              </Typography>
+              <Typography fontSize={'12px'}>Вход</Typography>
             </Button>
           </Grid>
         </Grid>

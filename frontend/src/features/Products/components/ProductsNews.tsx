@@ -75,7 +75,7 @@ const ProductsNews = () => {
   return (
     <Box
       sx={{
-        border: ProductsNewsBorderStyles,
+        // border: ProductsNewsBorderStyles,
         borderRadius: '10px',
         pt: 2,
         pb: 3,

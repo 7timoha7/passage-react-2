@@ -8,6 +8,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import MenuIcon from '@mui/icons-material/Menu';
 
 interface Props {
   user: User;
@@ -38,8 +39,11 @@ const UserMenu: React.FC<Props> = ({ user }) => {
   return (
     <>
       <Grid container>
-        <Button onClick={handleClick} color="inherit">
-          <Typography fontWeight="bold">{`Здравствуйте, ${user.firstName} ${user.lastName}`}</Typography>
+        <Button onClick={handleClick} color="inherit" sx={{ color: 'white' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography sx={{ mr: 1 }} fontWeight="bold">{`${user.firstName} ${user.lastName}`}</Typography>
+            <MenuIcon fontSize={'large'} />
+          </div>
         </Button>
       </Grid>
       <Menu
@@ -51,22 +55,22 @@ const UserMenu: React.FC<Props> = ({ user }) => {
           paper: {
             sx: {
               borderRadius: '8px',
-              background: 'linear-gradient(270deg, hsla(201, 100%, 41%, 1) 0%, hsla(202, 100%, 82%, 1) 100%)',
+              background: 'linear-gradient(90deg, rgba(64,64,64,1) 0%, rgba(159,159,159,1) 100%)',
             },
           },
         }}
       >
         <div>
-          <MenuItem onClick={() => onMenuItemClick('/my-cabinet')}>
+          <MenuItem onClick={() => onMenuItemClick('/my-cabinet')} sx={{ color: 'white' }}>
             <ListItemIcon>
-              <PersonIcon />
+              <PersonIcon sx={{ color: 'white' }} />
             </ListItemIcon>
             Мой профиль
           </MenuItem>
           <Divider />
-          <MenuItem onClick={handleLogout}>
+          <MenuItem onClick={handleLogout} sx={{ color: 'white' }}>
             <ListItemIcon>
-              <ExitToAppIcon />
+              <ExitToAppIcon sx={{ color: 'white' }} />
             </ListItemIcon>
             Выйти
           </MenuItem>

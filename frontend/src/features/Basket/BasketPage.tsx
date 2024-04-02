@@ -107,14 +107,14 @@ const BasketPage = () => {
                   <TableBody>
                     {basket.items.map((item, index) => (
                       <TableRow key={item.product.goodID + index}>
-                        <TableCell sx={{ border: '3px solid rgb(35, 225, 255)' }}>
+                        <TableCell sx={{ borderBottom: '4px solid #404040', borderTop: '4px solid #404040' }}>
                           <Typography
                             onClick={() => navigate('/product/' + item.product._id)}
                             style={{ cursor: 'pointer' }}
                             variant="body1"
                             gutterBottom
                           >
-                            {item.product.name}
+                            Наименование: <span style={{ fontWeight: 'bold' }}>{item.product.name}</span>
                           </Typography>
                           <Table size="small">
                             <TableBody>
@@ -131,7 +131,14 @@ const BasketPage = () => {
                                     }}
                                   >
                                     <IconButton
-                                      sx={{ p: 0.5 }}
+                                      sx={{
+                                        p: 0.5,
+                                        color: '#e39912', // Цвет контура кнопки
+
+                                        '&:hover': {
+                                          color: '#756433', // Цвет контура кнопки при наведении
+                                        },
+                                      }}
                                       disabled={
                                         addBasketLoading === item.product.goodID ||
                                         isAddButtonDisabled(item.product.goodID)
@@ -203,7 +210,14 @@ const BasketPage = () => {
                                         }}
                                       >
                                         <IconButton
-                                          sx={{ p: 0.5 }}
+                                          sx={{
+                                            p: 0.5,
+                                            color: '#e39912', // Цвет контура кнопки
+
+                                            '&:hover': {
+                                              color: '#756433', // Цвет контура кнопки при наведении
+                                            },
+                                          }}
                                           disabled={addBasketLoading === item.product.goodID}
                                           onClick={() => handleUpdateBasket(item.product.goodID, 'increaseToOrder')}
                                           color="success"
@@ -280,8 +294,15 @@ const BasketPage = () => {
                     disabled={basket?.items?.length === 0}
                     onClick={() => navigate('/order')}
                     variant="contained"
-                    color="primary"
-                    sx={{ marginLeft: 2 }}
+                    // color="primary"
+                    // sx={{ marginLeft: 2 }}
+                    sx={{
+                      marginLeft: 2,
+                      backgroundColor: '#e39912',
+                      '&:hover': {
+                        backgroundColor: '#756433', // Цвет контура кнопки при наведении
+                      },
+                    }}
                   >
                     Оформить заказ
                   </LoadingButton>
@@ -291,8 +312,17 @@ const BasketPage = () => {
                     loading={loadingBasket()}
                     disabled={basket?.items?.length === 0}
                     variant="outlined"
-                    color="error"
                     onClick={() => clearBasket('clear')}
+                    sx={{
+                      marginLeft: 2,
+                      color: '#e39912', // Цвет контура кнопки
+                      borderColor: '#e39912', // Цвет контура кнопки
+
+                      '&:hover': {
+                        borderColor: '#756433', // Цвет контура кнопки при наведении
+                        color: '#756433', // Цвет контура кнопки
+                      },
+                    }}
                   >
                     Очистить корзину
                   </LoadingButton>

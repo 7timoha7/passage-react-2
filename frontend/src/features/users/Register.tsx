@@ -51,19 +51,22 @@ const Register = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="md">
       <Box
         style={{
-          marginTop: 8,
+          marginTop: '25px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          background: 'rgba(0,0,0,0.57)',
+          borderRadius: '10px',
+          padding: '20px',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: '#62b8ee' }}>
+        <Avatar sx={{ m: 1, bgcolor: '#ddbe86' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography color={'white'} component="h1" variant="h5">
           {'Регистрация'}
         </Typography>
         <Box component="form" onSubmit={submitFormHandler} sx={{ mt: 3 }}>
@@ -127,18 +130,34 @@ const Register = () => {
             </Grid>
           </Grid>
           <LoadingButton
-            color="primary"
             type="submit"
             loading={loading}
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 2,
+              backgroundColor: '#ddbe86', // Цвет кнопки
+              '&:hover': {
+                backgroundColor: '#ab944d', // Цвет кнопки при наведении
+              },
+            }}
           >
             {'Регистрация'}
           </LoadingButton>
-          <Grid container justifyContent="flex-end">
+          <Grid container justifyContent="flex-end" mt={2}>
             <Grid item>
-              <Link component={RouterLink} to="/login" variant="body2">
+              <Link
+                sx={{
+                  textDecoration: 'none',
+                  color: '#ddbe86',
+                  '&:hover': {
+                    color: '#ab944d', // Цвет кнопки при наведении
+                  },
+                }}
+                component={RouterLink}
+                to="/login"
+                variant="body2"
+              >
                 {'Войти'}
               </Link>
             </Grid>
