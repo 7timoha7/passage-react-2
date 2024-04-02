@@ -5,7 +5,6 @@ import { fetchProductsForOne } from '../productsForThunks';
 import Slider, { Settings } from 'react-slick';
 import { selectBasket } from '../../Basket/basketSlice';
 import { ProductType } from '../../../types';
-import { ProductsNewsBorderStyles } from '../../../styles';
 import { Box, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -117,12 +116,30 @@ const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
             <Grid item>
               <Grid container spacing={2} sx={{ mr: 3, mt: 2 }}>
                 <Grid item>
-                  <IconButton color={'primary'} size={'large'} onClick={handlePrev}>
+                  <IconButton
+                    sx={{
+                      color: '#efb748', // Цвет кнопки
+                      '&:hover': {
+                        color: '#ab944d', // Цвет кнопки при наведении
+                      },
+                    }}
+                    size={'large'}
+                    onClick={handlePrev}
+                  >
                     <ArrowBackIosNewIcon />
                   </IconButton>
                 </Grid>
                 <Grid item>
-                  <IconButton color={'primary'} size={'large'} onClick={handleNext}>
+                  <IconButton
+                    sx={{
+                      color: '#efb748', // Цвет кнопки
+                      '&:hover': {
+                        color: '#ab944d', // Цвет кнопки при наведении
+                      },
+                    }}
+                    size={'large'}
+                    onClick={handleNext}
+                  >
                     <ArrowForwardIosIcon />
                   </IconButton>
                 </Grid>
