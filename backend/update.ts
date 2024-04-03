@@ -19,7 +19,7 @@ const run = async () => {
   const db = mongoose.connection;
 
   const fetchData = async (method: string) => {
-    const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
+    const apiUrl = 'http://95.215.244.110/edo/hs/ext_api/execute';
     const username = 'AUTH_TOKEN';
     const password = 'jU5gujas';
 

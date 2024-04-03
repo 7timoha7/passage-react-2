@@ -1,10 +1,10 @@
 import express from 'express';
 import {
-    ICategoryFromApi,
-    IProductFromApi,
-    IProductPriceFromApi,
-    IProductQuantityFromApi,
-    IProductQuantityStocksFromApi,
+  ICategoryFromApi,
+  IProductFromApi,
+  IProductPriceFromApi,
+  IProductQuantityFromApi,
+  IProductQuantityStocksFromApi,
 } from '../types';
 import path from 'path';
 import * as fs from 'fs';
@@ -17,45 +17,45 @@ import axios from 'axios';
 const productFromApiRouter = express.Router();
 
 const fetchData = async (method: string) => {
-    const apiUrl = 'https://fresh-test.1c-cloud.kg/a/edoc/hs/ext_api/execute';
-    const username = 'AUTH_TOKEN';
-    const password = 'jU5gujas';
+  const apiUrl = 'http://95.215.244.110/edo/hs/ext_api/execute';
+  const username = 'AUTH_TOKEN';
+  const password = 'jU5gujas';
 
-    try {
-        const response = await axios.post(
-            apiUrl,
-            {
-                auth: {
-                    clientID: '422ba5da-2560-11ee-8135-005056b73475',
-                },
-                general: {
-                    method,
-                    deviceID: '00000001-0001-0001-0001-000000015941',
-                },
-            },
-            {
-                timeout: 300000,
-                headers: {
-                    Authorization: `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`,
-                    configName: 'AUTHORIZATION',
-                    configVersion: 'Basic Auth',
-                },
-            },
-        );
+  try {
+    const response = await axios.post(
+      apiUrl,
+      {
+        auth: {
+          clientID: '422ba5da-2560-11ee-8135-005056b73475',
+        },
+        general: {
+          method,
+          deviceID: '00000001-0001-0001-0001-000000015941',
+        },
+      },
+      {
+        timeout: 300000,
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${username}:${password}`, 'utf-8').toString('base64')}`,
+          configName: 'AUTHORIZATION',
+          configVersion: 'Basic Auth',
+        },
+      },
+    );
 
-        return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            if (error.code === 'ETIMEDOUT') {
-                console.error('Превышен таймаут при выполнении запроса:', error);
-            } else {
-                console.error('Ошибка при выполнении запроса:', error.message, error.response?.data);
-            }
-        } else {
-            console.error('Не удалось выполнить запрос:', error);
-        }
-        throw error;
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.code === 'ETIMEDOUT') {
+        console.error('Превышен таймаут при выполнении запроса:', error);
+      } else {
+        console.error('Ошибка при выполнении запроса:', error.message, error.response?.data);
+      }
+    } else {
+      console.error('Не удалось выполнить запрос:', error);
     }
+    throw error;
+  }
 };
 
 // Функция для обработки строки description и извлечения размера, толщины и описания
@@ -267,45 +267,45 @@ const deleteFolderImagerProduct = async () => {
 };
 
 productFromApiRouter.get('/', async (req, res, next) => {
-    mongoose.set('strictQuery', false);
-    await mongoose.connect(config.db);
-    const db = mongoose.connection;
+  mongoose.set('strictQuery', false);
+  await mongoose.connect(config.db);
+  const db = mongoose.connection;
 
-    try {
-        console.log('loading...');
-        await deleteFolderImagerProduct();
-        await db.dropCollection('categories');
-        await db.dropCollection('products');
-        console.log('Delete collection');
+  try {
+    console.log('loading...');
+    await deleteFolderImagerProduct();
+    await db.dropCollection('categories');
+    await db.dropCollection('products');
+    console.log('Delete collection');
 
-        const responseProducts = await fetchData('goods-get');
-        const responseQuantity = await fetchData('goods-quantity-get');
-        const responsePrice = await fetchData('goods-price-get');
+    const responseProducts = await fetchData('goods-get');
+    const responseQuantity = await fetchData('goods-quantity-get');
+    const responsePrice = await fetchData('goods-price-get');
 
-        const products: IProductFromApi[] = responseProducts.result.goods;
+    const products: IProductFromApi[] = responseProducts.result.goods;
 
-        const quantity = responseQuantity.result;
-        const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
-        const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
+    const quantity = responseQuantity.result;
+    const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
+    const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
 
-        const price: IProductPriceFromApi[] = responsePrice.result.goods;
+    const price: IProductPriceFromApi[] = responsePrice.result.goods;
 
-        const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
+    const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
 
-        await createProducts(products, price, quantityGoods, quantityStocks);
-        await createCategories(categories);
+    await createProducts(products, price, quantityGoods, quantityStocks);
+    await createCategories(categories);
 
-        console.log('loadingTRUE ! ! ! ');
+    console.log('loadingTRUE ! ! ! ');
 
-        return res.send({
-            message: {
-                en: 'Updating the database from "1C" was successful!',
-                ru: 'Обновление базы данных с "1С" - прошло успешно !',
-            },
-        });
-    } catch (e) {
-        return next(e);
-    }
+    return res.send({
+      message: {
+        en: 'Updating the database from "1C" was successful!',
+        ru: 'Обновление базы данных с "1С" - прошло успешно !',
+      },
+    });
+  } catch (e) {
+    return next(e);
+  }
 });
 
 export default productFromApiRouter;
