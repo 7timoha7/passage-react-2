@@ -5,13 +5,28 @@ import img3 from '../../../assets/images/banner1/3.jpg';
 import img4 from '../../../assets/images/banner1/4.jpg';
 import img5 from '../../../assets/images/banner1/5.jpg';
 import img6 from '../../../assets/images/banner1/6.jpg';
-import { MDBCarousel, MDBCarouselItem, MDBCarouselCaption } from 'mdb-react-ui-kit';
+import { MDBCarousel, MDBCarouselCaption, MDBCarouselItem } from 'mdb-react-ui-kit';
 import { Typography } from '@mui/material';
 
 const PorcelainStoneware = () => {
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     const nextButton = document.querySelector('.carousel-control-next') as HTMLElement;
+  //     if (nextButton) {
+  //       nextButton.click();
+  //     }
+  //   }, 39000); // 39 секунд в миллисекундах
+  //
+  //   return () => clearTimeout(timer);
+  // }, []);
+
   return (
     <>
       <MDBCarousel showIndicators showControls fade style={{ margin: 0 }}>
+        {/*<MDBCarouselItem itemId={1}>*/}
+        {/*  <VideoYouTube />*/}
+        {/*</MDBCarouselItem>*/}
+
         <MDBCarouselItem itemId={1}>
           <img src={img1} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
@@ -109,6 +124,8 @@ const PorcelainStoneware = () => {
             {/*</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
+
+        {/* Добавьте остальные элементы CarouselItem здесь */}
       </MDBCarousel>
     </>
   );

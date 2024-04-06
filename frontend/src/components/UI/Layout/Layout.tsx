@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectProductsForID, setProductsForID } from '../../../features/ProductsFor/productsForSlice';
 import PorcelainStoneware from '../Banners/PorcelainStoneware';
 import PorcelainStoneware2 from '../Banners/PorcelainStoneware2';
+import PorcelainStoneware3 from '../Banners/PorcelainStoneware3';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isMobile = useMediaQuery('(max-width:1200px)');
@@ -100,6 +101,20 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </>
         )}
       </Container>
+
+      {location.pathname === '/' && (
+        <Box
+        // sx={{
+        //   '@media (max-width:800px)': {
+        //     display: 'none',
+        //   },
+        // }}
+        >
+          {/*<PorcelainStoneware />*/}
+
+          <PorcelainStoneware3 />
+        </Box>
+      )}
 
       <footer style={{ flexShrink: 0, marginTop: 'auto' }}>
         <Footer />
