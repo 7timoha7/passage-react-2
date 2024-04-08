@@ -28,7 +28,7 @@ const run = async () => {
         apiUrl,
         {
           auth: {
-            clientID: '422ba5da-2560-11ee-8135-005056b73475',
+            clientID: 'c02c593e-4c90-11ee-813c-005056b73475',
           },
           general: {
             method,
@@ -276,12 +276,16 @@ const run = async () => {
   const responseQuantity = await fetchData('goods-quantity-get');
   const responsePrice = await fetchData('goods-price-get');
 
-  const products: IProductFromApi[] = responseProducts.result.goods;
-  const quantity = responseQuantity.result;
-  const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
-  const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
-  const price: IProductPriceFromApi[] = responsePrice.result.goods;
-  const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
+  // console.log('Товары : ' + JSON.stringify(responseProducts));
+  console.log('количество : ' + JSON.stringify(responseQuantity));
+  // console.log('цены : ' + JSON.stringify(responsePrice));
+
+  // const products: IProductFromApi[] = responseProducts.result.goods;
+  // const quantity = responseQuantity.result;
+  // const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
+  // const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
+  // const price: IProductPriceFromApi[] = responsePrice.result.goods;
+  // const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
   console.log('finish - loading data...');
 
   try {
@@ -294,8 +298,8 @@ const run = async () => {
     console.log('Collections were not present, skipping drop...');
   }
 
-  await createProducts(products, price, quantityGoods, quantityStocks);
-  await createCategories(categories);
+  // await createProducts(products, price, quantityGoods, quantityStocks);
+  // await createCategories(categories);
 
   console.log('loading --- TRUE ! ! ! ');
 

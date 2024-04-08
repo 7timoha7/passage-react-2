@@ -7,12 +7,24 @@ import img4 from '../../../assets/images/banner3/4.png';
 import img5 from '../../../assets/images/banner3/5.jpeg';
 import img6 from '../../../assets/images/banner3/6.jpeg';
 
+import img1mini from '../../../assets/images/banner3/mini/1.jpeg';
+import img2mini from '../../../assets/images/banner3/mini/2.jpeg';
+import img3mini from '../../../assets/images/banner3/mini/3.jpeg';
+import img4mini from '../../../assets/images/banner3/mini/4.png';
+import img5mini from '../../../assets/images/banner3/mini/5.jpeg';
+import img6mini from '../../../assets/images/banner3/mini/6.jpeg';
+import { useMediaQuery } from '@mui/material';
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
+
 const PorcelainStoneware3 = () => {
+  const isMobile = useMediaQuery('@media (min-width: 650px)');
+
   return (
     <>
       <MDBCarousel showIndicators showControls fade style={{ margin: 0 }}>
         <MDBCarouselItem itemId={1}>
-          <img src={img1} className="d-block w-100" alt="..." />
+          <img src={isMobile ? img1 : img1mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>FUSION</h5>
             {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
@@ -20,7 +32,7 @@ const PorcelainStoneware3 = () => {
         </MDBCarouselItem>
 
         <MDBCarouselItem itemId={2}>
-          <img src={img2} className="d-block w-100" alt="..." />
+          <img src={isMobile ? img2 : img2mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>OPULENCE</h5>
             {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
@@ -28,7 +40,7 @@ const PorcelainStoneware3 = () => {
         </MDBCarouselItem>
 
         <MDBCarouselItem itemId={3}>
-          <img src={img3} className="d-block w-100" alt="..." />
+          <img src={isMobile ? img3 : img3mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>IVORIS</h5>
             {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
@@ -36,7 +48,7 @@ const PorcelainStoneware3 = () => {
         </MDBCarouselItem>
 
         <MDBCarouselItem itemId={4}>
-          <img src={img4} className="d-block w-100" alt="..." />
+          <img src={isMobile ? img4 : img4mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>POLARIS</h5>
             {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
@@ -44,7 +56,7 @@ const PorcelainStoneware3 = () => {
         </MDBCarouselItem>
 
         <MDBCarouselItem itemId={5}>
-          <img src={img5} className="d-block w-100" alt="..." />
+          <img src={isMobile ? img5 : img5mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>CUTLERY</h5>
             {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
@@ -52,7 +64,7 @@ const PorcelainStoneware3 = () => {
         </MDBCarouselItem>
 
         <MDBCarouselItem itemId={6}>
-          <img src={img6} className="d-block w-100" alt="..." />
+          <img src={isMobile ? img6 : img6mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>SUGGESTIONS</h5>
             {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
