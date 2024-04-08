@@ -26,11 +26,11 @@ const fetchData = async (method: string) => {
       apiUrl,
       {
         auth: {
-          clientID: '422ba5da-2560-11ee-8135-005056b73475',
+          clientID: 'c02c593e-4c90-11ee-813c-005056b73475',
         },
         general: {
           method,
-          deviceID: '00000001-0001-0001-0001-000000015941',
+          deviceID: '00000001-0001-0001-0001-000000015945',
         },
       },
       {

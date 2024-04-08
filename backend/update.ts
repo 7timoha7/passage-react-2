@@ -32,7 +32,7 @@ const run = async () => {
           },
           general: {
             method,
-            deviceID: '00000001-0001-0001-0001-000000015941',
+            deviceID: '00000001-0001-0001-0001-000000015945',
           },
         },
         {
@@ -277,15 +277,15 @@ const run = async () => {
   const responsePrice = await fetchData('goods-price-get');
 
   // console.log('Товары : ' + JSON.stringify(responseProducts));
-  console.log('количество : ' + JSON.stringify(responseQuantity));
+  // console.log('количество : ' + JSON.stringify(responseQuantity));
   // console.log('цены : ' + JSON.stringify(responsePrice));
 
-  // const products: IProductFromApi[] = responseProducts.result.goods;
-  // const quantity = responseQuantity.result;
-  // const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
-  // const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
-  // const price: IProductPriceFromApi[] = responsePrice.result.goods;
-  // const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
+  const products: IProductFromApi[] = responseProducts.result.goods;
+  const quantity = responseQuantity.result;
+  const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
+  const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
+  const price: IProductPriceFromApi[] = responsePrice.result.goods;
+  const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
   console.log('finish - loading data...');
 
   try {
@@ -298,8 +298,8 @@ const run = async () => {
     console.log('Collections were not present, skipping drop...');
   }
 
-  // await createProducts(products, price, quantityGoods, quantityStocks);
-  // await createCategories(categories);
+  await createProducts(products, price, quantityGoods, quantityStocks);
+  await createCategories(categories);
 
   console.log('loading --- TRUE ! ! ! ');
 
