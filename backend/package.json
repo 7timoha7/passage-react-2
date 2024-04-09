@@ -12,6 +12,7 @@
     "dev": "nodemon index.ts",
     "seed": "ts-node fixtures.ts",
     "update": "ts-node update.ts",
+    "delete": "ts-node delete.ts",
     "seed:test": "NODE_ENV=test ts-node fixtures.ts",
     "start:test": "NODE_ENV=test ts-node index.ts"
   },
