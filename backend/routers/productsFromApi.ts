@@ -98,64 +98,65 @@ const createProducts = async (
     const updatedProducts = [];
 
     for (const productData of products) {
+      // Получаем массив данных о количестве товаров по goodID текущего продукта
       const quantityDataArray = quantities.filter((q) => q.goodID === productData.goodID);
 
-      // Проверка, что есть хотя бы один элемент в массиве и все элементы имеют положительное количество
-      if (quantityDataArray.length === 0 || !quantityDataArray.every((q) => q.quantity > 0) || !productData.article) {
-        // Пропускаем продукты с нулевым количеством, отрицательным количеством или без артикула
+      // Проверяем наличие артикула и положительного количества товара
+      if (
+        !productData.article || // Если нет артикула
+        quantityDataArray.length === 0 || // или отсутствуют данные о количестве
+        !quantityDataArray.some((q) => q.quantity > 0)
+      ) {
+        // или нет положительного количества товара
+        // Пропускаем текущий продукт и переходим к следующему
         continue;
       }
 
+      // Получаем данные о цене для текущего продукта
       const priceData = prices.find((p) => p.goodID === productData.goodID);
       if (!priceData || !priceData.price) {
         // Пропускаем продукты без цены
         continue;
       }
 
+      // Создаем папку для изображений товара, если они есть
       const imageFolder = path.join(process.cwd(), 'public/images/imagesProduct', productData.goodID);
-
-      // Создаем папку только если у товара есть изображение
       if ((productData.imageBase64 || productData.imagesBase64.length > 0) && !fs.existsSync(imageFolder)) {
         fs.mkdirSync(imageFolder, { recursive: true });
       }
 
+      // Обрабатываем изображения товара
       const productImages = [];
-
-      // Обработаем изображения из imageBase64
       if (productData.imageBase64) {
         const mainImageName = 'image_main.jpg';
         const mainImagePath = path.join(imageFolder, mainImageName);
-
         fs.writeFileSync(mainImagePath, productData.imageBase64, 'base64');
         productImages.push(path.join('public/images/imagesProduct', productData.goodID, mainImageName));
       }
-
-      // Обработаем изображения из imagesBase64
       if (productData.imagesBase64 && productData.imagesBase64.length > 0) {
         productData.imagesBase64.forEach((imageBase64, index) => {
           const imageName = `image${index + 1}.jpg`;
           const imagePath = path.join(imageFolder, imageName);
-
           fs.writeFileSync(imagePath, imageBase64, 'base64');
           productImages.push(path.join('/images/imagesProduct', productData.goodID, imageName));
         });
       }
 
+      // Обрабатываем размеры и описание товара
       const { size, thickness, description } = processDescription(productData.description);
 
-      // Новая переменная для хранения пересчитанной цены
+      // Пересчитываем цену, если это необходимо
       let recalculatedPrice = priceData.price;
-
       if (
         productData.measureName &&
         (productData.measureName.toLowerCase() === 'м2' || productData.measureName.toLowerCase() === 'm2') &&
         size
       ) {
-        // Если единица измерения - "м2" и размер присутствует, то производим расчет новой цены
-        const area = calculateArea(size); // Функция для расчета площади
+        const area = calculateArea(size);
         recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
       }
 
+      // Формируем объект продукта
       const product = new Product({
         name: productData.name,
         article: productData.article,
@@ -163,14 +164,16 @@ const createProducts = async (
         measureCode: productData.measureCode,
         measureName: productData.measureName,
         ownerID: productData.ownerID,
-        quantity: quantityDataArray.map((quantityData) => {
-          const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
-          return {
-            name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
-            stockID: quantityData.stockID,
-            quantity: quantityData.quantity,
-          };
-        }),
+        quantity: quantityDataArray
+          .filter((quantityData) => quantityData.quantity > 0) // Отфильтровать только элементы с положительным количеством
+          .map((quantityData) => {
+            const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
+            return {
+              name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
+              stockID: quantityData.stockID,
+              quantity: quantityData.quantity,
+            };
+          }),
         price: recalculatedPrice, // Используем пересчитанную цену
         images: productImages,
         size,
@@ -179,11 +182,12 @@ const createProducts = async (
         originCountry: productData.originCountry,
       });
 
+      // Сохраняем продукт в базу данных
       await product.save();
       updatedProducts.push(product);
     }
 
-    // Обновляем все продукты одним запросом к базе данных
+    // Обновляем изображения всех продуктов одним запросом к базе данных
     await Product.bulkWrite(
       updatedProducts.map((product) => ({
         updateOne: {
@@ -193,8 +197,10 @@ const createProducts = async (
       })),
     );
 
+    // Выводим сообщение об успешном завершении операции
     console.log('Товары успешно созданы и обновлены в базе данных.');
   } catch (error) {
+    // Выводим сообщение об ошибке, если что-то пошло не так
     console.error('Ошибка при создании товаров:', error);
   }
 };

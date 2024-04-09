@@ -289,9 +289,11 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                     {user && (user.role === 'admin' || user.role === 'director') ? (
                       <>
                         {product.quantity.map((stock, index) => (
-                          <Typography key={stock.stockID + index} variant={'caption'}>
-                            {stock.name}: {stock.quantity}
-                          </Typography>
+                          <Box key={stock.stockID + index}>
+                            <Typography variant={'caption'}>
+                              {stock.name}: <span style={{ fontWeight: 'bold' }}>{stock.quantity}</span>
+                            </Typography>
+                          </Box>
                         ))}
                       </>
                     ) : (
@@ -318,8 +320,8 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                                 width: '100%',
                                 maxWidth: '35px',
                                 height: 'auto',
-                                border: '2px solid rgba(70,69,69,0.98)',
-                                borderRadius: '5px',
+                                // border: '2px solid rgba(70,69,69,0.98)',
+                                borderRadius: '3px',
                               }}
                             />
                           )}
