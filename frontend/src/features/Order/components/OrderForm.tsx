@@ -170,7 +170,6 @@ const OrderForm = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          required
           style={{ marginBottom: '15px' }}
           type={'email'}
         />

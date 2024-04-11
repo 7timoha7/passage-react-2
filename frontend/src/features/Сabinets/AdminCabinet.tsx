@@ -24,8 +24,6 @@ import {
   selectOrders,
   selectOrdersPageInfo,
 } from '../Order/orderSlice';
-import BannersForm from '../Banners/BannersForm';
-import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import CategoryIcon from '@mui/icons-material/Category';
 import ProductsForPage from '../ProductsFor/components/ProductsForPage';
 
@@ -78,7 +76,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
     { option: 'users', icon: <GroupIcon />, text: 'Пользователи' },
     { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
-    { option: 'banners', icon: <ViewCarouselIcon />, text: 'Баннер' },
+    // { option: 'banners', icon: <ViewCarouselIcon />, text: 'Баннер' },
     { option: 'myOrders', icon: <WorkIcon />, text: 'Мои заказы' },
     { option: 'unacceptedOrders', icon: <WorkspacesIcon />, text: 'Непринятые заказы' },
     { option: 'productsFor', icon: <CategoryIcon />, text: 'Сопутствующие товары' },
@@ -119,7 +117,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
                 <UserItems gotUsersPageInfo={gotUsersPageInfo} prop={gotUsers} role="user" />
               )}
               {state.favorites && <Favorites />}
-              {state.banners && <BannersForm />}
+              {/*{state.banners && <BannersForm />}*/}
               {state.myOrders && adminPageInfo && user?._id && (
                 <OrderItems ordersItems={orders} adminPageInfo={adminPageInfo} id={user._id} />
               )}

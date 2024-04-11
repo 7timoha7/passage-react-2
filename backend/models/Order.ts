@@ -100,7 +100,7 @@ const OrderSchema = new Schema<IOrder>({
   },
   email: {
     type: String,
-    required: true,
+    default: 'NO EMAIL',
   },
   paymentMethod: {
     type: String,

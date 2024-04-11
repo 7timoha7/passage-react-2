@@ -20,12 +20,17 @@ ordersRouter.post('/', async (req, res, next) => {
       lastName: req.body.lastName,
       phoneNumber: req.body.phoneNumber,
       address: req.body.address,
-      email: req.body.email,
       paymentMethod: req.body.paymentMethod,
       deliveryMethod: req.body.deliveryMethod,
       orderComment: req.body.orderComment,
       products: req.body.products,
     });
+
+    if (req.body.email === '') {
+      order.email = 'NO EMAIL';
+    } else {
+      order.email = req.body.email;
+    }
 
     order.totalPrice = await calculateTotalPrice(order.products);
     await order.save();

@@ -103,7 +103,19 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
           {'Роль' + ': '} {prop.role}
         </Typography>
         {user?.role === 'director' && (
-          <LoadingButton color="success" onClick={handleClick}>
+          <LoadingButton
+            sx={{
+              mt: 2,
+              color: '#e39912', // Цвет контура кнопки
+              borderColor: '#e39912', // Цвет контура кнопки
+
+              '&:hover': {
+                borderColor: '#756433', // Цвет контура кнопки при наведении
+                color: '#756433', // Цвет контура кнопки
+              },
+            }}
+            onClick={handleClick}
+          >
             {'Изменить роль'}
           </LoadingButton>
         )}
@@ -121,8 +133,36 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpen(false)}>отмена</Button>
-            <Button onClick={handleYes}>да</Button>
+            <Button
+              sx={{
+                mt: 2,
+                color: '#e39912', // Цвет контура кнопки
+                borderColor: '#e39912', // Цвет контура кнопки
+
+                '&:hover': {
+                  borderColor: '#756433', // Цвет контура кнопки при наведении
+                  color: '#756433', // Цвет контура кнопки
+                },
+              }}
+              onClick={() => setOpen(false)}
+            >
+              отмена
+            </Button>
+            <Button
+              sx={{
+                mt: 2,
+                color: '#e39912', // Цвет контура кнопки
+                borderColor: '#e39912', // Цвет контура кнопки
+
+                '&:hover': {
+                  borderColor: '#756433', // Цвет контура кнопки при наведении
+                  color: '#756433', // Цвет контура кнопки
+                },
+              }}
+              onClick={handleYes}
+            >
+              да
+            </Button>
           </DialogActions>
         </>
       </Dialog>

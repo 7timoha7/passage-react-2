@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, ThemeProvider, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectChatIdAdmin, selectChatIdAdminLoading } from '../../users/usersSlice';
 import { User } from '../../../types';
 import { createChatIdAdmin, deleteChatIdAdmin, fetchOneChatIdAdmin } from '../../users/usersThunks';
 import CurveText from '../../../components/UI/CurveText/CurveText';
 import { LoadingButton } from '@mui/lab';
+import customTheme from './themeId'; // Импорт пользовательской темы
 
 interface Props {
   user: User;
@@ -58,15 +59,17 @@ const ChatIdAdminForm: React.FC<Props> = ({ user }) => {
       <Box>
         {!getChatId ? (
           <>
-            <TextField
-              label="ID чата"
-              variant="outlined"
-              fullWidth
-              value={chatId}
-              onChange={handleInputChange}
-              margin="normal"
-              required
-            />
+            <ThemeProvider theme={customTheme}>
+              <TextField
+                label="ID чата"
+                variant="outlined"
+                fullWidth
+                value={chatId}
+                onChange={handleInputChange}
+                margin="normal"
+                required
+              />
+            </ThemeProvider>
             <Typography variant="caption" display="block" gutterBottom>
               Вы можете ввести свой ID в Telegram, для того чтоб получать уведомления о заказах.
             </Typography>
@@ -74,14 +77,36 @@ const ChatIdAdminForm: React.FC<Props> = ({ user }) => {
               <LoadingButton
                 loading={loading}
                 variant="contained"
-                color="primary"
                 type="submit"
                 style={{ marginTop: 16 }}
+                sx={{
+                  color: '#ffffff', // Цвет контура кнопки
+                  background: '#e39912', // Цвет контура кнопки
+
+                  '&:hover': {
+                    background: '#756433', // Цвет контура кнопки при наведении
+                    color: '#ffffff', // Цвет контура кнопки
+                  },
+                }}
               >
                 Отправить
               </LoadingButton>
 
-              <Button variant="text" color="primary" onClick={toggleInstructions} style={{ marginTop: 16 }}>
+              <Button
+                sx={{
+                  color: '#e39912', // Цвет контура кнопки
+                  borderColor: '#e39912', // Цвет контура кнопки
+
+                  '&:hover': {
+                    borderColor: '#756433', // Цвет контура кнопки при наведении
+                    color: '#756433', // Цвет контура кнопки
+                  },
+                }}
+                variant="text"
+                color="primary"
+                onClick={toggleInstructions}
+                style={{ marginTop: 16 }}
+              >
                 {showInstructions ? 'Скрыть инструкцию' : 'Показать инструкцию'}
               </Button>
             </Box>

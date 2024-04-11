@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectLoginError, selectLoginLoading } from './usersSlice';
-import { googleLogin, login } from './usersThunks';
+import { login } from './usersThunks';
 import { Alert, Avatar, Box, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import type { LoginMutation } from '../../types';
-import { GoogleLogin } from '@react-oauth/google';
 import 'react-phone-input-2/lib/style.css';
 import RestorePassword from './components/RestorePassword';
 
@@ -37,10 +36,10 @@ const Login = () => {
     }
   };
 
-  const googleLoginHandler = async (credentials: string) => {
-    await dispatch(googleLogin(credentials)).unwrap();
-    await navigate('/');
-  };
+  // const googleLoginHandler = async (credentials: string) => {
+  //   await dispatch(googleLogin(credentials)).unwrap();
+  //   await navigate('/');
+  // };
 
   return (
     <Container maxWidth="md">
@@ -61,18 +60,18 @@ const Login = () => {
         <Typography color={'white'} component="h1" variant="h5">
           Войти
         </Typography>
-        <Box sx={{ pt: 2 }}>
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              if (credentialResponse.credential) {
-                void googleLoginHandler(credentialResponse.credential);
-              }
-            }}
-            onError={() => {
-              console.log('Login failed');
-            }}
-          />
-        </Box>
+        {/*<Box sx={{ pt: 2 }}>*/}
+        {/*  <GoogleLogin*/}
+        {/*    onSuccess={(credentialResponse) => {*/}
+        {/*      if (credentialResponse.credential) {*/}
+        {/*        void googleLoginHandler(credentialResponse.credential);*/}
+        {/*      }*/}
+        {/*    }}*/}
+        {/*    onError={() => {*/}
+        {/*      console.log('Login failed');*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*</Box>*/}
         <Box component="form" onSubmit={submitFormHandler} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../../app/hooks';
 import { reAuthorization, verify } from '../../../features/users/usersThunks';
-import { Button, Container, Typography } from '@mui/material';
+import { Button, Container, Paper, Typography } from '@mui/material';
 import React, { useCallback, useEffect } from 'react';
 
 const ConfirmPage = () => {
@@ -22,12 +22,28 @@ const ConfirmPage = () => {
   }, [dispatch, token, navigateToCabinet]);
   return (
     <Container>
-      <Typography sx={{ display: 'inline-block' }} variant="h5">
-        {'Вы будете автоматически переведены в свой кабинет через 5 сек. . .  или вы можете перейти самостоятельно :'}
-      </Typography>{' '}
-      <Button onClick={navigateToCabinet} variant="text" color="primary">
-        {'перейти'}
-      </Button>
+      <Paper sx={{ m: 2, p: 2 }}>
+        <Typography sx={{ display: 'inline-block' }} variant="h5">
+          {'Вы будете автоматически переведены в свой кабинет через 5 сек. . .  или вы можете перейти самостоятельно :'}
+        </Typography>{' '}
+        <Button
+          onClick={navigateToCabinet}
+          variant="text"
+          color="primary"
+          sx={{
+            mt: 2,
+            color: '#e39912', // Цвет контура кнопки
+            borderColor: '#e39912', // Цвет контура кнопки
+
+            '&:hover': {
+              borderColor: '#756433', // Цвет контура кнопки при наведении
+              color: '#756433', // Цвет контура кнопки
+            },
+          }}
+        >
+          {'перейти'}
+        </Button>
+      </Paper>
     </Container>
   );
 };

@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import ProductCard from './ProductCard';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ProductsNewsBorderStyles } from '../../../styles';
 
 const ProductsNews = () => {
   const productsNews = useAppSelector(selectProductsNews);

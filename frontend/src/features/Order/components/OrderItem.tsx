@@ -252,7 +252,15 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
                   variant="contained"
                   loading={buttonLoading === prop._id}
                   size="small"
-                  sx={{ background: '#099100' }}
+                  sx={{
+                    color: '#ffffff', // Цвет контура кнопки
+                    background: '#e39912', // Цвет контура кнопки
+
+                    '&:hover': {
+                      background: '#756433', // Цвет контура кнопки при наведении
+                      color: '#ffffff', // Цвет контура кнопки
+                    },
+                  }}
                   onClick={() => handleClickOnCheckout(prop._id)}
                 >
                   Оформить заказ
@@ -269,7 +277,15 @@ const OrderItem: React.FC<Props> = ({ prop, pageInfo, adminPageInfo }) => {
                   color="success"
                   onClick={() => handleClickOnClose(prop._id, 'closed')}
                   size="small"
-                  sx={{ background: '#004fb4' }}
+                  sx={{
+                    color: '#ffffff', // Цвет контура кнопки
+                    background: '#e39912', // Цвет контура кнопки
+
+                    '&:hover': {
+                      background: '#756433', // Цвет контура кнопки при наведении
+                      color: '#ffffff', // Цвет контура кнопки
+                    },
+                  }}
                 >
                   Закрыть заказ
                 </LoadingButton>
