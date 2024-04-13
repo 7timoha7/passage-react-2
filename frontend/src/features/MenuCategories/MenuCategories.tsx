@@ -9,7 +9,6 @@ import { selectCategories } from './menuCategoriesSlice';
 import { fetchCategories } from './menuCategoriesThunks';
 import { Typography } from '@mui/material';
 import Categories from './Categories';
-import { menuCategoriesColor } from '../../styles';
 import NavigateTop from '../../components/UI/AppToolbar/NavigateTop/NavigateTop';
 import img1 from '../../assets/images/2.jpeg';
 
@@ -58,7 +57,6 @@ const MenuCategories = () => {
         sx={{
           width: { lg: drawerWidth },
           flexShrink: { sm: 0 },
-          background: menuCategoriesColor,
           borderRadius: '20px',
           display: { lg: 'none' },
         }}

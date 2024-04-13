@@ -115,7 +115,15 @@ const Basket = () => {
     <>
       <IconButton aria-label="Корзина" color="inherit" onClick={() => navigate('/basket')}>
         <Badge badgeContent={basket?.items?.length || 0} color="error">
-          <ShoppingCartIcon sx={{ color: '#ffffff' }} fontSize="large" />
+          <ShoppingCartIcon
+            sx={{
+              color: '#ffffff',
+              '&:hover': {
+                color: '#e8b86d',
+              },
+            }}
+            fontSize="large"
+          />
         </Badge>
       </IconButton>
       {/*<Popover*/}

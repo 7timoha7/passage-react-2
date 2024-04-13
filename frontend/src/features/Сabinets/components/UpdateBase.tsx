@@ -20,7 +20,20 @@ const UpdateBase = () => {
         <Grid container>
           <Grid item textAlign={'center'}>
             <h4>Для того чтобы обновить базу данных с базы 1С, нажмите данную кнопку и дождитесь обновления!</h4>
-            <LoadingButton loading={loadingApi} onClick={() => clickUpdate()} sx={{ mt: 3 }} variant={'contained'}>
+            <LoadingButton
+              sx={{
+                mt: 3,
+                color: '#ffffff', // Цвет контура кнопки
+                background: '#e39912', // Цвет контура кнопки
+                '&:hover': {
+                  color: '#ffffff', // Цвет контура кнопки при наведении
+                  background: '#756433', // Цвет контура кнопки при наведении
+                },
+              }}
+              loading={loadingApi}
+              onClick={() => clickUpdate()}
+              variant={'contained'}
+            >
               Обновить базу
             </LoadingButton>
           </Grid>

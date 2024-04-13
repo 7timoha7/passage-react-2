@@ -41,7 +41,7 @@ export const FooterStyle = {
   backgroundSize: 'repeat',
 };
 
-export const menuCategoriesColor = 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)';
+// export const menuCategoriesColor = 'linear-gradient(225deg, hsla(210, 100%, 79%, 1) 0%, hsla(210, 79%, 46%, 1) 100%)';
 
 export const HeaderStyles = {
   color: '#00337C',
