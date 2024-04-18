@@ -34,12 +34,12 @@ const AppToolbar = () => {
                 item
                 textAlign={'center'}
                 sx={{
-                  background: 'rgb(100,100,100)',
+                  background: '#404040',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  p: 2.5,
+                  p: 3,
                   borderRadius: '50%',
                   mt: 2,
                   mb: 2,

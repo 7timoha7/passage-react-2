@@ -113,7 +113,17 @@ const Basket = () => {
 
   return (
     <>
-      <IconButton aria-label="Корзина" color="inherit" onClick={() => navigate('/basket')}>
+      <IconButton
+        aria-label="Корзина"
+        color="inherit"
+        onClick={() => navigate('/basket')}
+        sx={{
+          background: '#404040',
+          '&:hover': {
+            background: '#7c7c7c',
+          },
+        }}
+      >
         <Badge badgeContent={basket?.items?.length || 0} color="error">
           <ShoppingCartIcon
             sx={{
