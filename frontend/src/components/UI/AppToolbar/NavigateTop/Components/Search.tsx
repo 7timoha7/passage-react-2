@@ -80,7 +80,7 @@ const CustomSearchBar: React.FC = () => {
   }, [handleClickOutside]);
 
   return (
-    <Box position="relative" width="100%" sx={{ background: 'rgba(100,100,100,0.7)', p: 0.5 }}>
+    <Box position="relative" width="100%" sx={{ background: 'rgba(100,100,100,0.7)', p: 0.5, borderRadius: '10px' }}>
       <TextField
         size="small"
         label="Живой поиск"
@@ -170,7 +170,15 @@ const CustomSearchBar: React.FC = () => {
           </ul>
           {searchResultsPreview.hasMore && (
             <Box display="flex" justifyContent="center">
-              <Button color="primary" onClick={handleExtendedSearch}>
+              <Button
+                sx={{
+                  color: '#e39912', // Цвет контура кнопки
+                  '&:hover': {
+                    color: '#ffffff', // Цвет контура кнопки при наведении
+                  },
+                }}
+                onClick={handleExtendedSearch}
+              >
                 Все результаты
               </Button>
             </Box>
