@@ -56,7 +56,7 @@ const SpecialCategoryItem = styled(CategoryItem)`
 
 const SubCategoryList = styled.div<{ $isOpen: boolean; $opacity: number }>`
   padding-left: 0;
-  max-height: ${({ $isOpen }) => ($isOpen ? '1000px' : '0')};
+  // max-height: ${({ $isOpen }) => ($isOpen ? '1000px' : '0')};
   overflow: hidden;
   transition: max-height 0.5s ease, transform 0.5s ease, opacity 0.5s ease;
   opacity: ${({ $opacity }) => $opacity};

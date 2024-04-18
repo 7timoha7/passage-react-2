@@ -140,7 +140,7 @@ const run = async () => {
             const imageName = `image${index + 1}.jpg`;
             const imagePath = path.join(imageFolder, imageName);
             fs.writeFileSync(imagePath, imageBase64, 'base64');
-            productImages.push(path.join('/images/imagesProduct', productData.goodID, imageName));
+            productImages.push(path.join('public/images/imagesProduct', productData.goodID, imageName));
           });
         }
 

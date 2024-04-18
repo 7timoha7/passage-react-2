@@ -30,12 +30,7 @@ const MenuCategories = () => {
     setMobileOpen(false);
   };
 
-  const drawer = (
-    <>
-      {/*<AccordionCategories categories={categories} close={closeMenu} />*/}
-      <Categories categories={categories} close={closeMenu} />
-    </>
-  );
+  const drawer = <Categories categories={categories} close={closeMenu} />;
 
   return (
     <Box

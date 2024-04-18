@@ -92,7 +92,8 @@ const ProductsNews = () => {
         <Spinner />
       ) : (
         <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={2} mb={3} justifyContent={'center'}>
-          {productsNews.length &&
+          {productsNews &&
+            productsNews.length &&
             productsNews.map((item) => (
               <Grid item key={item._id}>
                 <ProductCard product={item} indicator={indicator(item)} />

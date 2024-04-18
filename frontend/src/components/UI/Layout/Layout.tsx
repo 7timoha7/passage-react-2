@@ -95,11 +95,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         {location.pathname.includes('/product/') && (
           <>{productsForID && <ProductsFor categoriesID={productsForID} />}</>
         )}
-        {location.pathname === '/' && (
-          <>
-            <ProductsNews />
-          </>
-        )}
+        {location.pathname === '/' && <ProductsNews />}
       </Container>
 
       {location.pathname === '/' && (
