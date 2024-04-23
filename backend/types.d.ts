@@ -68,6 +68,11 @@ export interface IProductPriceFromApi {
   price: number;
 }
 
+export interface IProductPriceNameFromApi {
+  name: string;
+  typeID: string;
+}
+
 export interface IProductFromApi {
   name: string;
   article: string;
