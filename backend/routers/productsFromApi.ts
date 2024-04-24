@@ -302,18 +302,18 @@ productFromApiRouter.get('/', async (req, res, next) => {
 
     const responseProducts = await fetchData('goods-get');
 
-    // Вместо ожидания результата запроса, сохраняем его в переменную
-    const goodsData = await fetchData('goods-get');
-
-    // Путь к файлу
-    const directoryPath = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
-    const filePath = path.join(directoryPath, 'goodsData.txt');
-
-    // Создаем отсутствующие папки, если они не существуют
-    fs.mkdirSync(directoryPath, { recursive: true });
-
-    // Сохраняем данные в текстовый файл
-    fs.writeFileSync(filePath, JSON.stringify(goodsData, null, 2), 'utf-8');
+    // // Вместо ожидания результата запроса, сохраняем его в переменную
+    // const goodsData = await fetchData('goods-get');
+    //
+    // // Путь к файлу
+    // const directoryPath = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
+    // const filePath = path.join(directoryPath, 'goodsData.txt');
+    //
+    // // Создаем отсутствующие папки, если они не существуют
+    // fs.mkdirSync(directoryPath, { recursive: true });
+    //
+    // // Сохраняем данные в текстовый файл
+    // fs.writeFileSync(filePath, JSON.stringify(goodsData, null, 2), 'utf-8');
 
     const responseQuantity = await fetchData('goods-quantity-get');
     const responsePrice = await fetchData('goods-price-get');
