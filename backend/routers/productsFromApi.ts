@@ -301,7 +301,7 @@ productFromApiRouter.get('/', async (req, res, next) => {
     console.log('Delete collection');
 
     const responseProducts = await fetchData('goods-get');
-
+    // ////////////////////////////////////////////////////////
     // // Вместо ожидания результата запроса, сохраняем его в переменную
     // const goodsData = await fetchData('goods-get');
     //
@@ -313,8 +313,8 @@ productFromApiRouter.get('/', async (req, res, next) => {
     // fs.mkdirSync(directoryPath, { recursive: true });
     //
     // // Сохраняем данные в текстовый файл
-    // fs.writeFileSync(filePath, JSON.stringify(goodsData, null, 2), 'utf-8');
-
+    // fs.writeFileSync(filePath, JSON.stringify(goodsData.result.goodsGroups, null, 2), 'utf-8');
+    // /////////////////////////////////////////////////////////////////////
     const responseQuantity = await fetchData('goods-quantity-get');
     const responsePrice = await fetchData('goods-price-get');
 
