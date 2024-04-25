@@ -5,6 +5,7 @@ import {
   ICategoryFromApi,
   IProductFromApi,
   IProductPriceFromApi,
+  IProductPriceNameFromApi,
   IProductQuantityFromApi,
   IProductQuantityStocksFromApi,
 } from './types';
@@ -93,11 +94,20 @@ const run = async () => {
   const createProducts = async (
     products: IProductFromApi[],
     prices: IProductPriceFromApi[],
+    pricesName: IProductPriceNameFromApi[],
     quantities: IProductQuantityFromApi[],
     quantitiesStocks: IProductQuantityStocksFromApi[],
   ): Promise<void> => {
     try {
       const updatedProducts = [];
+
+      // Фильтруем объекты по условию typeID и наличия имени 'РРЦ'
+      const filteredPrices: IProductPriceFromApi[] = prices.filter((price) => {
+        // Проверяем совпадение по typeID
+        const matchingTypeID = pricesName.find((pn) => pn.typeID === price.typeID);
+        // Если есть совпадение по typeID и в pricesName есть объект с именем 'РРЦ', то возвращаем true
+        return matchingTypeID && pricesName.some((pn) => pn.name === 'РРЦ');
+      });
 
       for (const productData of products) {
         // Получаем массив данных о количестве товаров по goodID текущего продукта
@@ -115,7 +125,7 @@ const run = async () => {
         }
 
         // Получаем данные о цене для текущего продукта
-        const priceData = prices.find((p) => p.goodID === productData.goodID);
+        const priceData = filteredPrices.find((p) => p.goodID === productData.goodID);
         if (!priceData || !priceData.price) {
           // Пропускаем продукты без цены
           continue;
@@ -156,6 +166,12 @@ const run = async () => {
         ) {
           const area = calculateArea(size);
           recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
+        }
+
+        // Проверяем, является ли цена числом перед сохранением
+        if (isNaN(recalculatedPrice)) {
+          // console.error(`Ошибка: Некорректное значение цены для продукта ${JSON.stringify(productData)}`);
+          continue; // Пропускаем продукт и переходим к следующему
         }
 
         // Формируем объект продукта
@@ -291,6 +307,7 @@ const run = async () => {
   const quantityGoods: IProductQuantityFromApi[] = quantity.goods;
   const quantityStocks: IProductQuantityStocksFromApi[] = quantity.stocks;
   const price: IProductPriceFromApi[] = responsePrice.result.goods;
+  const priceName: IProductPriceNameFromApi[] = responsePrice.result.typesPrices;
   const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
   console.log('finish - loading data...');
 
@@ -304,7 +321,7 @@ const run = async () => {
     console.log('Collections were not present, skipping drop...');
   }
 
-  await createProducts(products, price, quantityGoods, quantityStocks);
+  await createProducts(products, price, priceName, quantityGoods, quantityStocks);
   await createCategories(categories);
 
   console.log('loading --- TRUE ! ! ! ');
