@@ -124,7 +124,7 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
 
   const onClickCard = () => {
     // dispatch(setProductsForID(product.ownerID));
-    navigate('/product/' + product._id);
+    navigate('/product/' + product.goodID);
   };
 
   return (

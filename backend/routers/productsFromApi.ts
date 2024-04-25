@@ -80,13 +80,17 @@ const processDescription = (description: string): { size: string; thickness: str
 
 // Функция для расчета площади на основе размера
 const calculateArea = (size: string): number => {
-  const [width, height] = size.split('*').map(Number);
-  return (width * height) / 1000000; // Переводим из мм² в м²
+  const [width, height] = size
+    .replace(/,/g, '.') // Заменяем запятые на точки для правильного преобразования в число
+    .split(/[*xXхХ]/)
+    .map(Number);
+  return (width * height) / 10000; // Переводим из см² в м²
 };
 
 // Функция для пересчета цены на квадратный метр
 const calculatePricePerSquareMeter = (price: number, area: number): number => {
-  return price * area; // Исправим на умножение
+  const totalPrice = price * area; // Вычисляем общую цену
+  return Number(totalPrice.toFixed(2)); // Округляем до двух знаков после запятой и преобразуем обратно в число
 };
 
 const createProducts = async (
@@ -95,6 +99,7 @@ const createProducts = async (
   pricesName: IProductPriceNameFromApi[],
   quantities: IProductQuantityFromApi[],
   quantitiesStocks: IProductQuantityStocksFromApi[],
+  categoriesData: ICategoryFromApi[],
 ): Promise<void> => {
   try {
     const updatedProducts = [];
@@ -126,6 +131,13 @@ const createProducts = async (
       const priceData = filteredPrices.find((p) => p.goodID === productData.goodID);
       if (!priceData || !priceData.price) {
         // Пропускаем продукты без цены
+        continue;
+      }
+
+      // Проверка на то есть ли у товара категория ?
+      const productWithCategory = categoriesData.find((p) => p.ID === productData.ownerID);
+      if (!productWithCategory || !productWithCategory.ownerID) {
+        // пропускаем если нет категории для товара
         continue;
       }
 
@@ -163,12 +175,12 @@ const createProducts = async (
         size
       ) {
         const area = calculateArea(size);
+        // recalculatedPrice = calculatePricePerSquareMeter(priceData.price, Number(area.toFixed(2)));
         recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
       }
 
       // Проверяем, является ли цена числом перед сохранением
       if (isNaN(recalculatedPrice)) {
-        // console.error(`Ошибка: Некорректное значение цены для продукта ${JSON.stringify(productData)}`);
         continue; // Пропускаем продукт и переходим к следующему
       }
 
@@ -329,7 +341,7 @@ productFromApiRouter.get('/', async (req, res, next) => {
 
     const categories: ICategoryFromApi[] = responseProducts.result.goodsGroups;
 
-    await createProducts(products, price, priceName, quantityGoods, quantityStocks);
+    await createProducts(products, price, priceName, quantityGoods, quantityStocks, categories);
     await createCategories(categories);
 
     console.log('loadingTRUE ! ! ! ');

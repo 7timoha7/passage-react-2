@@ -272,7 +272,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                     </TableCell>
                     <TableCell>
                       <Box>
-                        <Typography variant={'caption'}>Ширина/высота(мм): {product.size}</Typography>
+                        <Typography variant={'caption'}>Ширина/высота(см): {product.size}</Typography>
                       </Box>
                       <Box>
                         <Typography variant={'caption'}>Толщина(мм): {product.thickness}</Typography>

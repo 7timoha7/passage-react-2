@@ -96,7 +96,7 @@ productRouter.get('/news', async (req, res) => {
 
 productRouter.get('/:id', async (req, res, next) => {
   try {
-    const productRes = await Product.findById(req.params.id);
+    const productRes = await Product.findOne({ goodID: req.params.id });
     return res.send(productRes);
   } catch (e) {
     return next(e);
