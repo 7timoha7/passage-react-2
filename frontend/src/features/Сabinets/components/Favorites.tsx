@@ -24,7 +24,7 @@ const Favorites = () => {
 
   const indicator = (item: ProductType) => {
     if (basket?.items && item) {
-      return basket?.items.some((itemBasket) => itemBasket.product._id === item._id);
+      return basket?.items.some((itemBasket) => itemBasket.product.goodID === item.goodID);
     } else {
       return false;
     }

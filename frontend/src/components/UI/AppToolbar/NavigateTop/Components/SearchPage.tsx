@@ -36,7 +36,7 @@ const SearchPage: React.FC = () => {
   }, [dispatch, text]);
 
   const indicator = (item: ProductType) =>
-    stateBasket && item ? stateBasket.items.some((itemBasket) => itemBasket.product._id === item._id) : false;
+    stateBasket && item ? stateBasket.items.some((itemBasket) => itemBasket.product.goodID === item.goodID) : false;
 
   const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number) => {
     if (text) {

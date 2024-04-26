@@ -109,7 +109,7 @@ const BasketPage = () => {
                       <TableRow key={item.product.goodID + index}>
                         <TableCell sx={{ borderBottom: '4px solid #404040', borderTop: '4px solid #404040' }}>
                           <Typography
-                            onClick={() => navigate('/product/' + item.product._id)}
+                            onClick={() => navigate('/product/' + item.product.goodID)}
                             style={{ cursor: 'pointer' }}
                             variant="body1"
                             gutterBottom

@@ -141,7 +141,7 @@ const CustomSearchBar: React.FC = () => {
                   borderBottom: '1px solid #ccc',
                   color: 'black',
                 }}
-                onClick={() => handleProductCard(option._id)}
+                onClick={() => handleProductCard(option.goodID)}
               >
                 <Box marginRight={2}>
                   <LazyLoadImage
