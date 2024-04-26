@@ -84,7 +84,7 @@ const BasketPage = () => {
     const [lengthStr, widthStr] = sizeString.split('*');
     const lengthInMillimeters: number = parseInt(lengthStr);
     const widthInMillimeters: number = parseInt(widthStr);
-    return (lengthInMillimeters * widthInMillimeters) / (1000 * 1000);
+    return (lengthInMillimeters * widthInMillimeters) / (100 * 100);
   };
 
   const textMeters = (quantity: number, metersOne: number) => {

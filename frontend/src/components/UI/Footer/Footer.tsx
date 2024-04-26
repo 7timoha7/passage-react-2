@@ -107,15 +107,18 @@ const Footer = () => {
           <Divider sx={{ my: 1 }} />
           <Typography sx={{ textAlign: 'center', marginTop: 1, fontSize: '12px', color: '#ffffff' }}>
             <span style={{ background: 'rgba(40,40,40,0.66)', padding: '5px', borderRadius: '10px' }}>
-              Разработчик проекта:{' '}
               <Link
-                sx={{ textDecoration: 'none', '&:hover': { color: 'white' } }}
+                sx={{
+                  textDecoration: 'none',
+                  color: '#ffffff',
+                  '&:hover': { color: '#b9a87e' },
+                }}
                 href="https://summary-topaz.vercel.app/"
                 color="inherit"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Маркелов Артем
+                Разработчик проекта: Маркелов Артем
               </Link>
             </span>
           </Typography>

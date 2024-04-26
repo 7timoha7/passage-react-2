@@ -310,7 +310,9 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                     </TableCell>
                     <TableCell>
                       <Grid container spacing={2} alignItems={'center'}>
-                        <Grid item>{countryName && <Typography>{countryName}</Typography>}</Grid>
+                        <Grid item sx={{ mt: '3px' }}>
+                          {countryName && <Typography>{countryName}</Typography>}
+                        </Grid>
                         <Grid item>
                           {isoCountryCode && (
                             <CountryFlag
@@ -320,7 +322,6 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                                 width: '100%',
                                 maxWidth: '35px',
                                 height: 'auto',
-                                // border: '2px solid rgba(70,69,69,0.98)',
                                 borderRadius: '3px',
                               }}
                             />
