@@ -294,8 +294,6 @@ const BasketPage = () => {
                     disabled={basket?.items?.length === 0}
                     onClick={() => navigate('/order')}
                     variant="contained"
-                    // color="primary"
-                    // sx={{ marginLeft: 2 }}
                     sx={{
                       marginLeft: 2,
                       backgroundColor: '#e39912',

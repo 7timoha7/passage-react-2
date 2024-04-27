@@ -8,12 +8,6 @@ interface Props extends React.PropsWithChildren {
 }
 
 const ModalCoverNew: React.FC<Props> = ({ state, children }) => {
-  // const dispatch = useAppDispatch();
-  //
-  // const handleCloseModal = () => {
-  //   dispatch(closeModalCover());
-  // };
-
   return (
     <Modal
       open={state}

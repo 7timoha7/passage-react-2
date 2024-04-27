@@ -36,11 +36,6 @@ const Login = () => {
     }
   };
 
-  // const googleLoginHandler = async (credentials: string) => {
-  //   await dispatch(googleLogin(credentials)).unwrap();
-  //   await navigate('/');
-  // };
-
   return (
     <Container maxWidth="md">
       <Box
@@ -60,18 +55,6 @@ const Login = () => {
         <Typography color={'white'} component="h1" variant="h5">
           Войти
         </Typography>
-        {/*<Box sx={{ pt: 2 }}>*/}
-        {/*  <GoogleLogin*/}
-        {/*    onSuccess={(credentialResponse) => {*/}
-        {/*      if (credentialResponse.credential) {*/}
-        {/*        void googleLoginHandler(credentialResponse.credential);*/}
-        {/*      }*/}
-        {/*    }}*/}
-        {/*    onError={() => {*/}
-        {/*      console.log('Login failed');*/}
-        {/*    }}*/}
-        {/*  />*/}
-        {/*</Box>*/}
         <Box component="form" onSubmit={submitFormHandler} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>

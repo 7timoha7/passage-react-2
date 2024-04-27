@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Box, Container, useMediaQuery } from '@mui/material';
 import AppToolbar from '../AppToolbar/AppToolbar';
-import MenuCategories from '../../../features/MenuCategories/MenuCategories';
+import MenuCategories from '../../../features/MenuCategories/components/MenuCategories';
 import Footer from '../Footer/Footer';
 import { useLocation } from 'react-router-dom';
 import BreadcrumbsPage from '../BreadcrumbsPage/BreadcrumbsPage';
@@ -40,15 +40,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <MenuCategories />
 
       {location.pathname === '/' && (
-        <Box
-        // sx={{
-        //   '@media (max-width:800px)': {
-        //     display: 'none',
-        //   },
-        // }}
-        >
-          {/*<PorcelainStoneware />*/}
-
+        <Box>
           <PorcelainStoneware />
         </Box>
       )}
@@ -61,8 +53,6 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
             flexDirection: isMobile ? 'column' : 'row',
           }}
         >
-          {/*<Box sx={{ border: 'none', background: 'transparent' }}></Box>*/}
-
           <Box maxWidth={'100%'} component="main" sx={{ flex: 1, boxSizing: 'border-box' }}>
             {children}
           </Box>
@@ -78,15 +68,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       </Container>
 
       {location.pathname === '/' && (
-        <Box
-        // sx={{
-        //   '@media (max-width:800px)': {
-        //     display: 'none',
-        //   },
-        // }}
-        >
-          {/*<PorcelainStoneware />*/}
-
+        <Box>
           <PorcelainStoneware2 />
         </Box>
       )}
@@ -99,15 +81,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       </Container>
 
       {location.pathname === '/' && (
-        <Box
-        // sx={{
-        //   '@media (max-width:800px)': {
-        //     display: 'none',
-        //   },
-        // }}
-        >
-          {/*<PorcelainStoneware />*/}
-
+        <Box>
           <PorcelainStoneware3 />
         </Box>
       )}

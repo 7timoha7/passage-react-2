@@ -211,12 +211,6 @@ export interface BannerToServerType {
   image: File | null;
 }
 
-// export interface ProductForType {
-//   _id: string;
-//   category: CategoriesType;
-//   products: ProductType[];
-// }
-
 export interface ProductForType {
   _id: string;
   categoryID: CategoriesType;

@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import MenuCategoriesTop from '../../../../features/MenuCategories/MenuCategoriesTop';
+import MenuCategoriesTop from '../../../../features/MenuCategories/components/MenuCategoriesTop';
 import { Container, Button, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import React from 'react';

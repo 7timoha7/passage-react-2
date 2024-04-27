@@ -22,7 +22,6 @@ const PorcelainStoneware2 = () => {
           <img src={isMobile ? img1 : img1mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>Basin Mixer</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -30,7 +29,6 @@ const PorcelainStoneware2 = () => {
           <img src={isMobile ? img2 : img2mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>Bidet Mixer</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -38,23 +36,18 @@ const PorcelainStoneware2 = () => {
           <img src={isMobile ? img3 : img3mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>Kitchen Mixer</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
         <MDBCarouselItem itemId={4}>
           <img src={isMobile ? img4 : img4mini} className="d-block w-100" alt="..." />
-          <MDBCarouselCaption>
-            {/*<h5>Shower Mixer</h5>*/}
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
-          </MDBCarouselCaption>
+          <MDBCarouselCaption></MDBCarouselCaption>
         </MDBCarouselItem>
 
         <MDBCarouselItem itemId={5}>
           <img src={isMobile ? img5 : img5mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>Shower Range</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
       </MDBCarousel>

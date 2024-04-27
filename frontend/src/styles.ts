@@ -1,10 +1,5 @@
 import img1 from '../../frontend/src/assets/images/2.jpeg';
 
-export const ToolBarStylesTop = {
-  flexWrap: 'wrap',
-  background: '#404040',
-};
-
 export const ToolBarTopText = {
   color: 'rgb(255,255,255)',
   fontSize: '15px',

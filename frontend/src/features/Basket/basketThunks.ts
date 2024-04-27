@@ -22,7 +22,6 @@ export const createBasket = createAsyncThunk<
       return response.data;
     } else if (basketData.sessionKey) {
       const response = await axiosApi.post('/basket', basketData);
-      console.log(response.data);
       return response.data;
     }
   } catch (e) {

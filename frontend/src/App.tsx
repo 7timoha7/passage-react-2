@@ -27,7 +27,6 @@ import ProductFullPage from './features/Products/components/ProductFullPage';
 import OrderForm from './features/Order/components/OrderForm';
 import AboutPage from './components/UI/AboutPage/AboutPage';
 import ContactsPage from './components/UI/СontactsPage/СontactsPage';
-import ProductEdit from './features/Products/components/ProductEdit';
 import {
   selectProductsFromApiSuccess,
   selectProductSuccess,
@@ -235,14 +234,6 @@ function App() {
           element={
             <ProtectedRoute isAllowed={user && Boolean(user)}>
               <ConfirmPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/edit-product/:id"
-          element={
-            <ProtectedRoute isAllowed={user && Boolean(user.role === 'admin' || user.role === 'director')}>
-              <ProductEdit />
             </ProtectedRoute>
           }
         />

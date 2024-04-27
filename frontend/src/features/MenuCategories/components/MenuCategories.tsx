@@ -4,13 +4,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectCategories } from './menuCategoriesSlice';
-import { fetchCategories } from './menuCategoriesThunks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectCategories } from '../menuCategoriesSlice';
+import { fetchCategories } from '../menuCategoriesThunks';
 import { Typography } from '@mui/material';
 import Categories from './Categories';
-import NavigateTop from '../../components/UI/AppToolbar/NavigateTop/NavigateTop';
-import img1 from '../../assets/images/2.jpeg';
+import NavigateTop from '../../../components/UI/AppToolbar/NavigateTop/NavigateTop';
+import img1 from '../../../assets/images/2.jpeg';
 
 const drawerWidth = 250;
 
@@ -36,10 +36,6 @@ const MenuCategories = () => {
     <Box
       sx={{
         display: 'flex',
-
-        // '@media (max-width: 1200px)': {
-        //   mb: 1,
-        // },
         '@media (min-width: 1200px)': {
           mr: 2,
         },
@@ -97,7 +93,6 @@ const MenuCategories = () => {
           background: '#404040',
           display: { lg: 'none' },
           borderTop: '1.5px solid black',
-          // borderRadius: '5px',
         }}
       >
         <IconButton

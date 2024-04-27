@@ -76,7 +76,6 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
     { option: 'users', icon: <GroupIcon />, text: 'Пользователи' },
     { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
-    // { option: 'banners', icon: <ViewCarouselIcon />, text: 'Баннер' },
     { option: 'myOrders', icon: <WorkIcon />, text: 'Мои заказы' },
     { option: 'unacceptedOrders', icon: <WorkspacesIcon />, text: 'Непринятые заказы' },
     { option: 'productsFor', icon: <CategoryIcon />, text: 'Сопутствующие товары' },

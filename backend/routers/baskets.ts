@@ -127,7 +127,14 @@ basketRouter.get('/:sessionKey', async (req, res, next) => {
 
         return res.send(basketToFront);
       } else {
-        return res.send({ message: 'Session Key not found' });
+        const newBasketNoBase = new Basket({
+          session_key: sessionKeyBasket,
+          created_at: new Date(),
+          updated_at: new Date(),
+        });
+        await newBasketNoBase.save();
+        return res.send(newBasketNoBase);
+        // return res.send({ message: 'Session Key not found' });
       }
     }
   } catch (e) {

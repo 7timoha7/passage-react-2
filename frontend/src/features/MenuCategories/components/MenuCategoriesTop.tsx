@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectCategories } from './menuCategoriesSlice';
-import { fetchCategories } from './menuCategoriesThunks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectCategories } from '../menuCategoriesSlice';
+import { fetchCategories } from '../menuCategoriesThunks';
 import './MenuCategoriesTop.css';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import MenuIcon from '@mui/icons-material/Menu';

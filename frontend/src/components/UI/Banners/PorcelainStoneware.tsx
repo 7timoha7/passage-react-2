@@ -9,24 +9,9 @@ import { MDBCarousel, MDBCarouselCaption, MDBCarouselItem } from 'mdb-react-ui-k
 import { Typography } from '@mui/material';
 
 const PorcelainStoneware = () => {
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     const nextButton = document.querySelector('.carousel-control-next') as HTMLElement;
-  //     if (nextButton) {
-  //       nextButton.click();
-  //     }
-  //   }, 39000); // 39 секунд в миллисекундах
-  //
-  //   return () => clearTimeout(timer);
-  // }, []);
-
   return (
     <>
       <MDBCarousel showIndicators showControls fade style={{ margin: 0 }}>
-        {/*<MDBCarouselItem itemId={1}>*/}
-        {/*  <VideoYouTube />*/}
-        {/*</MDBCarouselItem>*/}
-
         <MDBCarouselItem itemId={1}>
           <img src={img1} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
@@ -103,12 +88,6 @@ const PorcelainStoneware = () => {
           <img src={img5} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>BURANO</h5>
-            {/*<p>*/}
-            {/*  ВАШ ДОМАШНИЙ ТУАЛЕТ ТЕПЕРЬ ОБЕСПЕЧИВАЕТ ПОЛНУЮ ГИГИЕНУ БЕЗ СОПРИКОСНОВЕНИЯ С ПОВЕРХНОСТЯМИ. БЕСКОНТАКТНАЯ*/}
-            {/*  СИСТЕМА СМЫВА ОТ RAK CERAMICS ПОЗВОЛЯЕТ ЭФФЕКТИВНО ОЧИЩАТЬ БЕЗ РИСКА ЗАРАЖЕНИЯ. МОДУЛЬ С ДАТЧИКОМ*/}
-            {/*  УСТАНАВЛИВАЕТСЯ ПОД КРЫШКОЙ БАЧКА УНИТАЗА И ПОДДЕРЖИВАЕТ ЧИСТОТУ БЕЗ ДОПОЛНИТЕЛЬНОГО КОНТАКТА. ЭФФЕКТИВНОЕ*/}
-            {/*  РАСПОЗНАВАНИЕ ПРИСУТСТВИЯ И ВЫБОР РЕЖИМА СМЫВА ПОДДЕРЖИВАЮТ МАКСИМАЛЬНУЮ ГИГИЕНУ В ДОМАШНИХ УСЛОВИЯХ.*/}
-            {/*</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -116,16 +95,8 @@ const PorcelainStoneware = () => {
           <img src={img6} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>CALACATTA NERO</h5>
-            {/*<p>*/}
-            {/*  ВАШ ДОМАШНИЙ ТУАЛЕТ ТЕПЕРЬ ОБЕСПЕЧИВАЕТ ПОЛНУЮ ГИГИЕНУ БЕЗ СОПРИКОСНОВЕНИЯ С ПОВЕРХНОСТЯМИ. БЕСКОНТАКТНАЯ*/}
-            {/*  СИСТЕМА СМЫВА ОТ RAK CERAMICS ПОЗВОЛЯЕТ ЭФФЕКТИВНО ОЧИЩАТЬ БЕЗ РИСКА ЗАРАЖЕНИЯ. МОДУЛЬ С ДАТЧИКОМ*/}
-            {/*  УСТАНАВЛИВАЕТСЯ ПОД КРЫШКОЙ БАЧКА УНИТАЗА И ПОДДЕРЖИВАЕТ ЧИСТОТУ БЕЗ ДОПОЛНИТЕЛЬНОГО КОНТАКТА. ЭФФЕКТИВНОЕ*/}
-            {/*  РАСПОЗНАВАНИЕ ПРИСУТСТВИЯ И ВЫБОР РЕЖИМА СМЫВА ПОДДЕРЖИВАЮТ МАКСИМАЛЬНУЮ ГИГИЕНУ В ДОМАШНИХ УСЛОВИЯХ.*/}
-            {/*</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
-
-        {/* Добавьте остальные элементы CarouselItem здесь */}
       </MDBCarousel>
     </>
   );

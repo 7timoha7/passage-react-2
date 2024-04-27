@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { ExpandMore, ChevronRight } from '@mui/icons-material';
 import './Categories.css';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../app/hooks';
-import { selectFetchAllCategoriesLoading } from './menuCategoriesSlice';
-import Spinner from '../../components/UI/Spinner/Spinner';
+import { useAppSelector } from '../../../app/hooks';
+import { selectFetchAllCategoriesLoading } from '../menuCategoriesSlice';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 import { Box } from '@mui/material';
 
 interface Category {

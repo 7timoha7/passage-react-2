@@ -15,8 +15,6 @@ import img5mini from '../../../assets/images/banner3/mini/5.jpeg';
 import img6mini from '../../../assets/images/banner3/mini/6.jpeg';
 import { useMediaQuery } from '@mui/material';
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
-
 const PorcelainStoneware3 = () => {
   const isMobile = useMediaQuery('@media (min-width: 650px)');
 
@@ -27,7 +25,6 @@ const PorcelainStoneware3 = () => {
           <img src={isMobile ? img1 : img1mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>FUSION</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -35,7 +32,6 @@ const PorcelainStoneware3 = () => {
           <img src={isMobile ? img2 : img2mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>OPULENCE</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -43,7 +39,6 @@ const PorcelainStoneware3 = () => {
           <img src={isMobile ? img3 : img3mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>IVORIS</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -51,7 +46,6 @@ const PorcelainStoneware3 = () => {
           <img src={isMobile ? img4 : img4mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>POLARIS</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -59,7 +53,6 @@ const PorcelainStoneware3 = () => {
           <img src={isMobile ? img5 : img5mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>CUTLERY</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
 
@@ -67,7 +60,6 @@ const PorcelainStoneware3 = () => {
           <img src={isMobile ? img6 : img6mini} className="d-block w-100" alt="..." />
           <MDBCarouselCaption>
             <h5>SUGGESTIONS</h5>
-            {/*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>*/}
           </MDBCarouselCaption>
         </MDBCarouselItem>
       </MDBCarousel>

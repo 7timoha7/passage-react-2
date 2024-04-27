@@ -152,36 +152,6 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                   style={{ objectFit: 'contain' }}
                 />
               )}
-
-              {/*<Box>*/}
-              {/*  <LazyLoadImage*/}
-              {/*    src={product.images.length ? apiURL + '/' + selectedImage : noImage}*/}
-              {/*    alt={product.name}*/}
-              {/*    width="100%"*/}
-              {/*    height="600px"*/}
-              {/*    effect="blur"*/}
-              {/*    placeholderSrc={placeHolderImg}*/}
-              {/*    style={{ objectFit: 'contain' }}*/}
-              {/*  />*/}
-              {/*  <Grid container spacing={1} mt={2}>*/}
-              {/*    {product.images.length*/}
-              {/*      ? product.images.map((image, index) => (*/}
-              {/*          <Grid item key={index}>*/}
-              {/*            <LazyLoadImage*/}
-              {/*              src={apiURL + '/' + image}*/}
-              {/*              alt={product.name}*/}
-              {/*              width="60px"*/}
-              {/*              height="60px"*/}
-              {/*              style={{ cursor: 'pointer', border: '1px solid #ccc', objectFit: 'contain' }}*/}
-              {/*              effect="blur"*/}
-              {/*              placeholderSrc={placeHolderImg}*/}
-              {/*              onClick={() => setSelectedImage(image)}*/}
-              {/*            />*/}
-              {/*          </Grid>*/}
-              {/*        ))*/}
-              {/*      : null}*/}
-              {/*  </Grid>*/}
-              {/*</Box>*/}
             </Card>
           </Grid>
 

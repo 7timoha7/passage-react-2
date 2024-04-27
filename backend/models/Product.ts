@@ -6,7 +6,6 @@ const Schema = mongoose.Schema;
 const ProductSchema = new Schema<IProduct>({
   name: {
     type: String,
-    // required: true,
   },
   images: {
     type: [String],
@@ -46,11 +45,9 @@ const ProductSchema = new Schema<IProduct>({
   },
   measureCode: {
     type: String,
-    // required: true,
   },
   measureName: {
     type: String,
-    // required: true,
   },
   ownerID: {
     type: String,
