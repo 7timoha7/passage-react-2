@@ -316,6 +316,24 @@ productFromApiRouter.get('/', async (req, res, next) => {
     const responseQuantity = await fetchData('goods-quantity-get');
     const responsePrice = await fetchData('goods-price-get');
 
+    // ////////////////////////////////////////////////////////
+    // // Вместо ожидания результата запроса, сохраняем его в переменную
+    // const goodsData = await fetchData('goods-get');
+    //
+    // // Путь к файлу
+    // const directoryPath = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
+    // const directoryPath2 = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
+    // const filePath = path.join(directoryPath, 'goodsData.txt');
+    // const filePath2 = path.join(directoryPath2, 'groupsData.txt');
+    //
+    // // Создаем отсутствующие папки, если они не существуют
+    // fs.mkdirSync(directoryPath, { recursive: true });
+    //
+    // // Сохраняем данные в текстовый файл
+    // fs.writeFileSync(filePath, JSON.stringify(goodsData.result.goods, null, 2), 'utf-8');
+    // fs.writeFileSync(filePath2, JSON.stringify(goodsData.result.goodsGroups, null, 2), 'utf-8');
+    // /////////////////////////////////////////////////////////////////////
+
     const products: IProductFromApi[] = responseProducts.result.goods;
 
     const quantity = responseQuantity.result;
@@ -329,6 +347,52 @@ productFromApiRouter.get('/', async (req, res, next) => {
 
     await createProducts(products, price, priceName, quantityGoods, quantityStocks, categories);
     await createCategories(categories);
+
+    // //////////////////////////
+    // // Функция для поиска товаров, которые не принадлежат ни одной категории
+    // const findProductsNotInCategories = async (products: IProductFromApi[], categories: ICategoryFromApi[]) => {
+    //   const categoryIds = categories.map((category) => category.ID);
+    //   const noProducts = products.filter((product) => !categoryIds.includes(product.ownerID));
+    //   console.log(noProducts.length);
+    //   return products.filter((product) => !categoryIds.includes(product.ownerID));
+    // };
+    //
+    // const saveProductsToFile = (
+    //   products: Array<{
+    //     name: string;
+    //     article: string;
+    //     goodID: string;
+    //     ownerID: string;
+    //   }>,
+    //   filePath: string,
+    // ) => {
+    //   const filteredProducts = products.map((product) => ({
+    //     name: product.name,
+    //     article: product.article,
+    //     goodID: product.goodID,
+    //     ownerID: product.ownerID,
+    //   }));
+    //
+    //   const jsonContent = JSON.stringify(filteredProducts, null, 2);
+    //
+    //   fs.writeFile(filePath, jsonContent, 'utf8', (err) => {
+    //     if (err) {
+    //       console.error('Ошибка при записи в файл:', err);
+    //       return;
+    //     }
+    //     console.log('Товары успешно сохранены в файл:', filePath);
+    //   });
+    // };
+    //
+    // findProductsNotInCategories(products, categories)
+    //   .then((filteredProducts) => {
+    //     const filePath = 'productsNotInCategories.json';
+    //     saveProductsToFile(filteredProducts, filePath);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Ошибка:', error);
+    //   });
+    // //////////////////////////
 
     console.log('loadingTRUE ! ! ! ');
 

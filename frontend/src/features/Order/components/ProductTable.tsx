@@ -11,7 +11,7 @@ const ProductTable: React.FC<Props> = ({ basket }) => {
     const [lengthStr, widthStr] = sizeString.split('*');
     const lengthInMillimeters: number = parseInt(lengthStr);
     const widthInMillimeters: number = parseInt(widthStr);
-    return (lengthInMillimeters * widthInMillimeters) / (1000 * 1000);
+    return (lengthInMillimeters * widthInMillimeters) / (100 * 100);
   };
 
   const textMeters = (quantity: number, metersOne: number) => {
@@ -53,12 +53,12 @@ const ProductTable: React.FC<Props> = ({ basket }) => {
               </Grid>
             )}
           </Grid>
-          <Typography variant="body1">Сумма: {product.product.price * product.quantity} сом</Typography>
+          <Typography variant="body1">Сумма: {(product.product.price * product.quantity).toFixed(2)} сом</Typography>
         </div>
       ))}
       <Divider />
       <Typography variant="h6" gutterBottom>
-        Итоговая стоимость: {basket.totalPrice} сом
+        Итоговая стоимость: {basket.totalPrice.toFixed(2)} сом
       </Typography>
     </Paper>
   );
