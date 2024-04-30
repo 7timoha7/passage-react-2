@@ -325,6 +325,7 @@ productFromApiRouter.get('/', async (req, res, next) => {
     // const directoryPath2 = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
     // const filePath = path.join(directoryPath, 'goodsData.txt');
     // const filePath2 = path.join(directoryPath2, 'groupsData.txt');
+    // const filePath3 = path.join(directoryPath2, 'priceData.txt');
     //
     // // Создаем отсутствующие папки, если они не существуют
     // fs.mkdirSync(directoryPath, { recursive: true });
@@ -332,6 +333,7 @@ productFromApiRouter.get('/', async (req, res, next) => {
     // // Сохраняем данные в текстовый файл
     // fs.writeFileSync(filePath, JSON.stringify(goodsData.result.goods, null, 2), 'utf-8');
     // fs.writeFileSync(filePath2, JSON.stringify(goodsData.result.goodsGroups, null, 2), 'utf-8');
+    // fs.writeFileSync(filePath3, JSON.stringify(responsePrice.result.goods, null, 2), 'utf-8');
     // /////////////////////////////////////////////////////////////////////
 
     const products: IProductFromApi[] = responseProducts.result.goods;

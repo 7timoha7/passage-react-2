@@ -73,13 +73,24 @@ const MenuCategories = () => {
             },
           }}
         >
-          <Box sx={{ m: 0, pt: 1.5, pb: 1.5 }}>
-            <Typography variant={'h6'} textAlign={'center'} sx={{ color: '#e8b86d' }}>
+          <Box sx={{ m: 0, pt: 1.2, pb: 1.2, background: 'rgba(0,0,0,0.34)' }}>
+            <Typography fontWeight={'bold'} fontSize={'24px'} textAlign={'center'} sx={{ color: '#e8b86d' }}>
               Меню
             </Typography>
           </Box>
           <Box>
             <NavigateTop close={closeMenu} />
+          </Box>
+          <Box>
+            <Typography
+              sx={{ background: 'rgba(0,0,0,0.34)', m: 0, pt: 1.2, pb: 1.2 }}
+              textAlign={'center'}
+              fontSize={'24px'}
+              fontWeight={'bold'}
+              color={'#e8b86d'}
+            >
+              Товары
+            </Typography>
           </Box>
           {drawer}
         </Drawer>

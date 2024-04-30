@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ExpandMore, ChevronRight } from '@mui/icons-material';
+import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import './Categories.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../app/hooks';
@@ -56,9 +56,8 @@ const SpecialCategoryItem = styled(CategoryItem)`
 
 const SubCategoryList = styled.div<{ $isOpen: boolean; $opacity: number }>`
   padding-left: 0;
-  // max-height: ${({ $isOpen }) => ($isOpen ? '1000px' : '0')};
   overflow: hidden;
-  transition: max-height 0.5s ease, transform 0.5s ease, opacity 0.5s ease;
+  transition: max-height 0.7s ease, transform 0.7s ease, opacity 0.7s ease;
   opacity: ${({ $opacity }) => $opacity};
   transform: translateY(${({ $isOpen }) => ($isOpen ? '0' : '-100%')});
 `;
@@ -84,7 +83,8 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
         });
     };
 
-    const topLevelCategory = categories.find((category) => category.name === 'Товары');
+    const topLevelCategory = categories.find((category) => category.name === 'Товары' || category.name === 'товары');
+
     const tree = topLevelCategory ? buildCategoryTree(categories, topLevelCategory.ID) : [];
     setCategoryTree(tree);
   }, [categories]);
@@ -123,13 +123,22 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
         {loading ? (
           <Spinner />
         ) : (
-          <Box sx={{ background: 'rgba(227,227,227,0.85)' }}>
+          <Box sx={{ background: 'rgba(255,255,255,0.85)' }}>
             {categories.map((category) => (
               <div key={category.ID}>
                 {category.subCategories && category.subCategories.length > 0 ? (
                   <CategoryItem $level={$level} onClick={() => handleCategoryClick(category.ID, category.ownerID)}>
-                    <IconWrapper>{openState[category.ID] ? <ExpandMore /> : <ChevronRight />}</IconWrapper>
-                    {category.name}
+                    <IconWrapper>
+                      {openState[category.ID] ? <ExpandMore sx={{ color: '#a96a04' }} /> : <ChevronRight />}
+                    </IconWrapper>
+                    <span
+                      style={{
+                        color: openState[category.ID] ? '#a96a04' : '#0c0c0c',
+                        fontWeight: openState[category.ID] ? 'bold' : 'normal',
+                      }}
+                    >
+                      {category.name}
+                    </span>
                   </CategoryItem>
                 ) : (
                   <SpecialCategoryItem $level={$level + 1} onClick={() => navigateAndClose(category.ID)}>
