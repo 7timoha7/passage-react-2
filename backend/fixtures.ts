@@ -8,12 +8,12 @@ const run = async () => {
   const db = mongoose.connection;
 
   try {
-    // await db.dropCollection('users');
-    // await db.dropCollection('baskets');
-    // await db.dropCollection('orders');
-    // await db.dropCollection('chatidadmins');
-    // await db.dropCollection('categories');
-    // await db.dropCollection('products');
+    await db.dropCollection('users');
+    await db.dropCollection('baskets');
+    await db.dropCollection('orders');
+    await db.dropCollection('chatidadmins');
+    await db.dropCollection('categories');
+    await db.dropCollection('products');
     console.log('delete products and categories');
   } catch (e) {
     console.log('Collections were not present, skipping drop...');
