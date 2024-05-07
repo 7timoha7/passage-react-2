@@ -63,30 +63,64 @@ const run = async () => {
 
   // Функция для обработки строки description и извлечения размера, толщины и описания
   const processDescription = (description: string): { size: string; thickness: string; description: string } => {
+    // Разделяем строку по разделителю "\\" и удаляем пробелы
     const parts = description.split('\\\\').map((part) => part.trim());
 
+    // Если разделители присутствуют, используем их для определения size, thickness и description
     if (parts.length > 1) {
+      // Если первая часть строки точно соответствует "Ковролин\\"
+      if (parts[0] === 'Ковролин') {
+        return {
+          size: parts[1] || '', // size
+          thickness: '', // Для Ковролина толщина не указывается
+          description: parts.slice(2).join('\\\\') || '', // description
+        };
+      }
+      // Если первая часть строки точно соответствует "Ламинат\\"
+      else if (parts[0] === 'Ламинат') {
+        return {
+          size: parts[1] || '', // size
+          thickness: parts[2] || '', // thickness
+          description: parts.slice(3).join('\\\\') || '', // description
+        };
+      }
+      // Если нет указания на тип покрытия, то это для плитки керамогранита
+      else {
+        return {
+          size: parts[0] || '', // Если size не указан, установите пустую строку
+          thickness: parts[1] || '', // Если thickness не указан, установите пустую строку
+          description: parts.slice(2).join('\\\\') || '', // Используем оставшуюся часть как description
+        };
+      }
+    }
+    // Если разделители отсутствуют, считаем, что описание относится к керамограниту
+    else {
       return {
-        size: parts[0] || '', // Если size не указан, установите пустую строку
-        thickness: parts[1] || '', // Если thickness не указан, установите пустую строку
-        description: parts.slice(2).join('\\\\') || '', // Используем оставшуюся часть как description
-      };
-    } else {
-      return {
-        size: '', // Разделители отсутствуют, size пуст
-        thickness: '', // Разделители отсутствуют, thickness пуст
-        description: parts[0] || '', // Используем весь текст как description
+        size: '', // пусто
+        thickness: '', // пусто
+        description: description, // весь текст как description
       };
     }
   };
 
   // Функция для расчета площади на основе размера
   const calculateArea = (size: string): number => {
-    const [width, height] = size
-      .replace(/,/g, '.') // Заменяем запятые на точки для правильного преобразования в число
-      .split(/[*xXхХ]/)
-      .map(Number);
-    return (width * height) / 10000; // Переводим из см² в м²
+    let width: number, height: number;
+
+    // Проверяем, является ли входная строка числом или числом с запятой
+    if (!isNaN(parseFloat(size))) {
+      // Если да, устанавливаем ширину равной этому числу, а высоту равной 1
+      width = parseFloat(size.replace(',', '.')); // Заменяем запятую на точку и преобразуем в число
+      height = 1;
+      return width * height;
+    } else {
+      // Иначе разбираем размер на ширину и высоту, как было раньше
+      [width, height] = size
+        .replace(/,/g, '.') // Заменяем запятые на точки для правильного преобразования в число
+        .split(/[*xXхХ]/)
+        .map(Number);
+      return (width * height) / 10000; // Переводим из см² в м²
+    }
   };
 
   // Функция для пересчета цены на квадратный метр
@@ -106,12 +140,10 @@ const run = async () => {
     try {
       const updatedProducts = [];
 
-      // Фильтруем объекты по условию typeID и наличия имени 'РРЦ'
+      // Фильтруем объекты по наличию имени 'РРЦ'
       const filteredPrices: IProductPriceFromApi[] = prices.filter((price) => {
-        // Проверяем совпадение по typeID
-        const matchingTypeID = pricesName.find((pn) => pn.typeID === price.typeID);
-        // Если есть совпадение по typeID и в pricesName есть объект с именем 'РРЦ', то возвращаем true
-        return matchingTypeID && pricesName.some((pn) => pn.name === 'РРЦ');
+        // Проверяем, есть ли в массиве pricesName объект с именем 'РРЦ' и с тем же typeID
+        return pricesName.some((pn) => pn.name === 'РРЦ' && pn.typeID === price.typeID);
       });
 
       for (const productData of products) {
@@ -167,6 +199,7 @@ const run = async () => {
         }
 
         // Обрабатываем размеры и описание товара
+
         const { size, thickness, description } = processDescription(productData.description);
 
         // Пересчитываем цену, если это необходимо
