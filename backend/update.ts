@@ -62,7 +62,14 @@ const run = async () => {
   };
 
   // Функция для обработки строки description и извлечения размера, толщины и описания
-  const processDescription = (description: string): { size: string; thickness: string; description: string } => {
+  const processDescription = (
+    description: string,
+  ): {
+    size: string;
+    thickness: string;
+    description: string;
+    type: string;
+  } => {
     // Разделяем строку по разделителю "\\" и удаляем пробелы
     const parts = description.split('\\\\').map((part) => part.trim());
 
@@ -74,6 +81,7 @@ const run = async () => {
           size: parts[1] || '', // size
           thickness: '', // Для Ковролина толщина не указывается
           description: parts.slice(2).join('\\\\') || '', // description
+          type: 'Ковролин',
         };
       }
       // Если первая часть строки точно соответствует "Ламинат\\"
@@ -82,6 +90,7 @@ const run = async () => {
           size: parts[1] || '', // size
           thickness: parts[2] || '', // thickness
           description: parts.slice(3).join('\\\\') || '', // description
+          type: 'Ламинат',
         };
       }
       // Если нет указания на тип покрытия, то это для плитки керамогранита
@@ -90,6 +99,7 @@ const run = async () => {
           size: parts[0] || '', // Если size не указан, установите пустую строку
           thickness: parts[1] || '', // Если thickness не указан, установите пустую строку
           description: parts.slice(2).join('\\\\') || '', // Используем оставшуюся часть как description
+          type: 'Керамогранит',
         };
       }
     }
@@ -99,16 +109,17 @@ const run = async () => {
         size: '', // пусто
         thickness: '', // пусто
         description: description, // весь текст как description
+        type: '',
       };
     }
   };
 
   // Функция для расчета площади на основе размера
-  const calculateArea = (size: string): number => {
+  const calculateArea = (size: string, type: string): number => {
     let width: number, height: number;
 
     // Проверяем, является ли входная строка числом или числом с запятой
-    if (!isNaN(parseFloat(size))) {
+    if (type === 'Ковролин') {
       // Если да, устанавливаем ширину равной этому числу, а высоту равной 1
       width = parseFloat(size.replace(',', '.')); // Заменяем запятую на точку и преобразуем в число
       height = 1;
@@ -200,7 +211,7 @@ const run = async () => {
 
         // Обрабатываем размеры и описание товара
 
-        const { size, thickness, description } = processDescription(productData.description);
+        const { size, thickness, description, type } = processDescription(productData.description);
 
         // Пересчитываем цену, если это необходимо
         let recalculatedPrice = priceData.price;
@@ -209,7 +220,7 @@ const run = async () => {
           (productData.measureName.toLowerCase() === 'м2' || productData.measureName.toLowerCase() === 'm2') &&
           size
         ) {
-          const area = calculateArea(size);
+          const area = calculateArea(size, type);
           // recalculatedPrice = calculatePricePerSquareMeter(priceData.price, Number(area.toFixed(2)));
           recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
         }
