@@ -77,7 +77,16 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
         .filter((category) => category.ownerID === parentID)
         .slice()
         .sort((a, b) => {
-          const searchString = 'RAK'; // Здесь можно указать любую подстроку для сортировки вверх
+          // Проверяем есть ли у категории подкатегории
+          const aHasSubcategories = categories.some((cat) => cat.ownerID === a.ID);
+          const bHasSubcategories = categories.some((cat) => cat.ownerID === b.ID);
+
+          // Сортировка по наличию подкатегорий: те с подкатегориями идут выше
+          if (aHasSubcategories && !bHasSubcategories) return -1;
+          if (!aHasSubcategories && bHasSubcategories) return 1;
+
+          // Сортировка по RAK в начале названия
+          const searchString = 'RAK';
           const aStartsWithSearch = a.name.toLowerCase().startsWith(searchString.toLowerCase());
           const bStartsWithSearch = b.name.toLowerCase().startsWith(searchString.toLowerCase());
 

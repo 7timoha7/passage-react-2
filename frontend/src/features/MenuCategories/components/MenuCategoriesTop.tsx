@@ -21,13 +21,35 @@ interface Category {
 const buildCategoryTree = (categories: Category[], parentId: string): Category[] => {
   const categoryTree: Category[] = [];
 
-  categories
+  const sortedCategories = categories
     .filter((category) => category.ownerID === parentId)
-    .forEach((category) => {
-      const subcategories = buildCategoryTree(categories, category.ID);
-      const categoryWithSubcategories: Category = { ...category, subcategories };
-      categoryTree.push(categoryWithSubcategories);
+    .slice()
+    .sort((a, b) => {
+      // Сначала сортируем категории по наличию подкатегорий
+      const aHasSubcategories = categories.some((cat) => cat.ownerID === a.ID);
+      const bHasSubcategories = categories.some((cat) => cat.ownerID === b.ID);
+
+      if (aHasSubcategories && !bHasSubcategories) return -1;
+      if (!aHasSubcategories && bHasSubcategories) return 1;
+
+      // Затем сортируем по строке "RAK" в начале названия
+      const searchString = 'RAK';
+      const aStartsWithSearch = a.name.toLowerCase().startsWith(searchString.toLowerCase());
+      const bStartsWithSearch = b.name.toLowerCase().startsWith(searchString.toLowerCase());
+
+      if (aStartsWithSearch && !bStartsWithSearch) return -1;
+      if (!aStartsWithSearch && bStartsWithSearch) return 1;
+
+      // Если обе строки начинаются с поисковой строки или не содержат ее,
+      // тогда сравниваем их с помощью localeCompare для алфавитной сортировки
+      return a.name.localeCompare(b.name);
     });
+
+  sortedCategories.forEach((category) => {
+    const subcategories = buildCategoryTree(categories, category.ID);
+    const categoryWithSubcategories: Category = { ...category, subcategories };
+    categoryTree.push(categoryWithSubcategories);
+  });
 
   return categoryTree;
 };
