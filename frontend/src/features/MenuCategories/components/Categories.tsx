@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ChevronRight, ExpandMore } from '@mui/icons-material';
-import './Categories.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../app/hooks';
 import { selectFetchAllCategoriesLoading } from '../menuCategoriesSlice';
@@ -23,6 +22,10 @@ interface OpenState {
   [categoryId: string]: boolean;
 }
 
+interface ActiveState {
+  [categoryId: string]: boolean;
+}
+
 interface Props {
   categories: Category[];
   close: () => void;
@@ -32,27 +35,21 @@ const CategoryWrapper = styled.div`
   max-width: 100%;
 `;
 
-const CategoryItem = styled.div<{ $level: number }>`
-  border-bottom: 2px solid #0a0a0a;
+const CategoryItem = styled.div<{ $level: number; $isActive: boolean }>`
   cursor: pointer;
   transition: background-color 0.4s ease;
   display: flex;
   align-items: center;
   padding: 5px 5px 5px ${(props) => props.$level * 10}px;
   color: #0c0c0c;
+  background-color: ${({ $isActive }) => ($isActive ? '#eaeaea' : 'transparent')};
 
   &:hover {
-    background: rgba(145, 145, 145, 0.58);
+    background-color: ${({ $isActive }) => ($isActive ? '#eaeaea' : 'rgba(145, 145, 145, 0.58)')};
   }
 `;
 
-const SpecialCategoryItem = styled(CategoryItem)`
-  background: rgba(231, 225, 225, 0.42);
-
-  &:hover {
-    background: rgba(145, 145, 145, 0.58);
-  }
-`;
+const SpecialCategoryItem = styled(CategoryItem)``;
 
 const SubCategoryList = styled.div<{ $isOpen: boolean; $opacity: number }>`
   padding-left: 0;
@@ -70,17 +67,32 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
   const [categoryTree, setCategoryTree] = useState<HierarchicalCategory[]>([]);
   const [openState, setOpenState] = useState<OpenState>({});
   const [subCategoriesOpacity, setSubCategoriesOpacity] = useState<number>(1);
+  const [activeState, setActiveState] = useState<ActiveState>({});
   const navigate = useNavigate();
   const loading = useAppSelector(selectFetchAllCategoriesLoading);
 
   useEffect(() => {
     const buildCategoryTree = (categories: Category[], parentID?: string): HierarchicalCategory[] => {
-      return categories
+      const sortedCategories = categories
         .filter((category) => category.ownerID === parentID)
-        .map((category) => {
-          const subCategories = buildCategoryTree(categories, category.ID);
-          return { ...category, subCategories };
+        .slice()
+        .sort((a, b) => {
+          const searchString = 'RAK'; // Здесь можно указать любую подстроку для сортировки вверх
+          const aStartsWithSearch = a.name.toLowerCase().startsWith(searchString.toLowerCase());
+          const bStartsWithSearch = b.name.toLowerCase().startsWith(searchString.toLowerCase());
+
+          if (aStartsWithSearch && !bStartsWithSearch) return -1;
+          if (!aStartsWithSearch && bStartsWithSearch) return 1;
+
+          // Если обе строки начинаются с поисковой строки или не содержат ее,
+          // тогда сравниваем их с помощью localeCompare для алфавитной сортировки
+          return a.name.localeCompare(b.name);
         });
+
+      return sortedCategories.map((category) => {
+        const subCategories = buildCategoryTree(categories, category.ID);
+        return { ...category, subCategories };
+      });
     };
 
     const topLevelCategory = categories.find((category) => category.name === 'Товары' || category.name === 'товары');
@@ -104,6 +116,19 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
       return updatedOpenState;
     });
 
+    setActiveState((prevState) => {
+      const newState: ActiveState = {};
+      // При клике на категорию, сначала делаем все категории на этом уровне неактивными
+      Object.keys(prevState).forEach((id) => {
+        if (categories.find((cat) => cat.ID === id)?.ownerID === ownerID) {
+          newState[id] = false;
+        }
+      });
+      // Затем активируем текущую категорию
+      newState[categoryId] = !prevState[categoryId];
+      return newState;
+    });
+
     setSubCategoriesOpacity(0);
     setTimeout(() => setSubCategoriesOpacity(1), 50);
   };
@@ -123,11 +148,15 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
         {loading ? (
           <Spinner />
         ) : (
-          <Box sx={{ background: 'rgba(255,255,255,0.85)' }}>
+          <Box sx={{ background: 'rgba(255,255,255,0.89)' }}>
             {categories.map((category) => (
               <div key={category.ID}>
                 {category.subCategories && category.subCategories.length > 0 ? (
-                  <CategoryItem $level={$level} onClick={() => handleCategoryClick(category.ID, category.ownerID)}>
+                  <CategoryItem
+                    $level={$level}
+                    $isActive={activeState[category.ID]}
+                    onClick={() => handleCategoryClick(category.ID, category.ownerID)}
+                  >
                     <IconWrapper>
                       {openState[category.ID] ? <ExpandMore sx={{ color: '#a96a04' }} /> : <ChevronRight />}
                     </IconWrapper>
@@ -141,7 +170,11 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
                     </span>
                   </CategoryItem>
                 ) : (
-                  <SpecialCategoryItem $level={$level + 1} onClick={() => navigateAndClose(category.ID)}>
+                  <SpecialCategoryItem
+                    $level={$level + 1}
+                    $isActive={activeState[category.ID]}
+                    onClick={() => navigateAndClose(category.ID)}
+                  >
                     <IconWrapper />
                     {category.name}
                   </SpecialCategoryItem>
