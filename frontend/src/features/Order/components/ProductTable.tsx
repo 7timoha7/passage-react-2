@@ -8,10 +8,17 @@ interface Props {
 
 const ProductTable: React.FC<Props> = ({ basket }) => {
   const calculateSquareAreaInSquareMeters = (sizeString: string): number => {
-    const [lengthStr, widthStr] = sizeString.split('*');
-    const lengthInMillimeters: number = parseInt(lengthStr);
-    const widthInMillimeters: number = parseInt(widthStr);
-    return (lengthInMillimeters * widthInMillimeters) / (100 * 100);
+    // Проверяем, содержит ли строка символ '*'
+    if (sizeString.includes('*')) {
+      const [lengthStr, widthStr] = sizeString.split('*');
+      const lengthInCentimeters: number = parseInt(lengthStr);
+      const widthInCentimeters: number = parseInt(widthStr);
+      return (lengthInCentimeters * widthInCentimeters) / (100 * 100);
+    } else {
+      // Предполагаем, что пришли размеры в метрах
+      // Площадь квадрата вычисляется как сторона в квадрате
+      return parseFloat(sizeString);
+    }
   };
 
   const textMeters = (quantity: number, metersOne: number) => {

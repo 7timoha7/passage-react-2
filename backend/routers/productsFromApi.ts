@@ -67,6 +67,7 @@ const processDescription = (
   thickness: string;
   description: string;
   type: string;
+  quantity?: string;
 } => {
   // Разделяем строку по разделителю "\\" и удаляем пробелы
   const parts = description.split('\\\\').map((part) => part.trim());
@@ -87,7 +88,8 @@ const processDescription = (
       return {
         size: parts[1] || '', // size
         thickness: parts[2] || '', // thickness
-        description: parts.slice(3).join('\\\\') || '', // description
+        quantity: parts[3] || '', //количество в шт
+        description: parts.slice(4).join('\\\\') || '', // description
         type: 'Ламинат',
       };
     }
