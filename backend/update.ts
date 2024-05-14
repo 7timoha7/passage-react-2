@@ -249,6 +249,7 @@ const run = async () => {
               };
             }),
           price: recalculatedPrice, // Используем пересчитанную цену
+          priceOriginal: priceData.price,
           images: productImages,
           size,
           thickness,
