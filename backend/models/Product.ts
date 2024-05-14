@@ -15,6 +15,10 @@ const ProductSchema = new Schema<IProduct>({
     type: Number,
     required: true,
   },
+  priceOriginal: {
+    type: Number,
+    required: true,
+  },
   quantity: {
     type: [
       {
@@ -64,6 +68,10 @@ const ProductSchema = new Schema<IProduct>({
   },
   originCountry: {
     type: String,
+  },
+  type: {
+    type: String,
+    default: '',
   },
 });
 

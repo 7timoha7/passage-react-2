@@ -164,13 +164,39 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                 height: '100%',
               }}
             >
-              <Box>
+              <Box sx={{ mt: 2, mb: 2 }}>
                 <Typography variant="h5" gutterBottom>
                   {product.name}
                 </Typography>
-                <Typography variant="subtitle1" gutterBottom>
-                  Цена: {product.price} сом
-                </Typography>
+                <Box>
+                  <Typography sx={{ color: '#e79d15', mt: 1 }}>
+                    {product.price + ' сом'}
+                    {product.type === 'Керамогранит' ? (
+                      <span style={{ color: '#75684f', fontSize: '15px' }}> - за плитку</span>
+                    ) : (
+                      ''
+                    )}
+                    {product.type === 'Ковролин' ? (
+                      <span style={{ color: '#75684f', fontSize: '15px' }}> - минимально за {product.size} м²</span>
+                    ) : (
+                      ''
+                    )}
+                  </Typography>
+
+                  {product.type === 'Керамогранит' ? (
+                    <Typography sx={{ color: '#e79d15' }}>
+                      {product.priceOriginal + ' сом'}
+                      <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
+                    </Typography>
+                  ) : null}
+
+                  {product.type === 'Ковролин' ? (
+                    <Typography sx={{ color: '#e79d15' }}>
+                      {product.priceOriginal + ' сом'}
+                      <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
+                    </Typography>
+                  ) : null}
+                </Box>
               </Box>
               <Grid container spacing={2}>
                 <Grid item>

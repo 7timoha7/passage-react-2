@@ -209,7 +209,35 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
             </Typography>
           </Box>
 
-          <Typography sx={{ color: '#e79d15' }}>{product.price + ' сом'}</Typography>
+          <Typography sx={{ color: '#e79d15', mt: 1 }}>
+            {product.price + ' сом'}
+            {product.type === 'Керамогранит' ? (
+              <span style={{ color: '#75684f', fontSize: '15px' }}> - за плитку</span>
+            ) : (
+              ''
+            )}
+            {product.type === 'Ковролин' ? (
+              <span style={{ color: '#75684f', fontSize: '15px' }}> - минимально за {product.size} м²</span>
+            ) : (
+              ''
+            )}
+          </Typography>
+
+          {product.type === 'Керамогранит' ? (
+            <Typography sx={{ color: '#e79d15' }}>
+              {product.priceOriginal + ' сом'}
+              <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
+            </Typography>
+          ) : null}
+
+          {product.type === 'Ковролин' ? (
+            <Typography sx={{ color: '#e79d15' }}>
+              {product.priceOriginal + ' сом'}
+              <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
+            </Typography>
+          ) : null}
+
+          <Typography></Typography>
           <Box
             sx={{
               marginTop: 'auto',

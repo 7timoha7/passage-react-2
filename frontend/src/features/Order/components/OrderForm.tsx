@@ -135,7 +135,7 @@ const OrderForm = () => {
         boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
       }}
     >
-      {basket ? <ProductTable basket={basket} /> : null}
+      {basket && <ProductTable basket={basket} />}
 
       <Typography color={'white'} variant="h6" gutterBottom>
         Заполните данные

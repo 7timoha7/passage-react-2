@@ -254,6 +254,7 @@ const run = async () => {
           thickness,
           description,
           originCountry: productData.originCountry,
+          type: type ? type : '',
         });
 
         // Сохраняем продукт в базу данных

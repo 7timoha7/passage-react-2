@@ -22,6 +22,9 @@ import { LoadingButton } from '@mui/lab';
 import { selectBasket, selectBasketOneLoading, selectBasketUpdateLoading } from './basketSlice';
 import { fetchBasket, updateBasket } from './basketThunks';
 import { selectUser } from '../users/usersSlice';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { apiURL, placeHolderImg } from '../../constants';
+import noImg from '../../assets/images/no_image.jpg';
 
 const BasketPage = () => {
   const basket = useAppSelector(selectBasket);
@@ -115,14 +118,31 @@ const BasketPage = () => {
                     {basket.items.map((item, index) => (
                       <TableRow key={item.product.goodID + index}>
                         <TableCell sx={{ borderBottom: '4px solid #404040', borderTop: '4px solid #404040' }}>
-                          <Typography
+                          <Grid
+                            container
+                            spacing={2}
                             onClick={() => navigate('/product/' + item.product.goodID)}
-                            style={{ cursor: 'pointer' }}
-                            variant="body1"
-                            gutterBottom
+                            sx={{ cursor: 'pointer' }}
                           >
-                            Наименование: <span style={{ fontWeight: 'bold' }}>{item.product.name}</span>
-                          </Typography>
+                            <Grid item>
+                              <LazyLoadImage
+                                src={item.product.images[0] ? apiURL + '/' + item.product.images[0] : noImg}
+                                alt={item.product.name}
+                                width="40px"
+                                height="40px"
+                                style={{ objectFit: 'contain' }}
+                                placeholderSrc={placeHolderImg}
+                                effect="blur"
+                              />
+                            </Grid>
+
+                            <Grid item>
+                              <Typography variant="body1" gutterBottom>
+                                Наименование: <span style={{ fontWeight: 'bold' }}>{item.product.name}</span>
+                              </Typography>
+                            </Grid>
+                          </Grid>
+
                           <Table size="small">
                             <TableBody>
                               <TableRow>

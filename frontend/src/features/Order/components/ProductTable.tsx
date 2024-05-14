@@ -1,6 +1,9 @@
 import React from 'react';
 import { Paper, Grid, Typography, Divider } from '@mui/material';
 import { BasketTypeOnServerMutation } from '../../../types';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { apiURL, placeHolderImg } from '../../../constants';
+import noImg from '../../../assets/images/no_image.jpg';
 
 interface Props {
   basket: BasketTypeOnServerMutation;
@@ -38,9 +41,25 @@ const ProductTable: React.FC<Props> = ({ basket }) => {
             paddingBottom: '15px',
           }}
         >
-          <Typography variant="body1" gutterBottom>
-            Название товара: {product.product.name}
-          </Typography>
+          <Grid container spacing={1} flexDirection={'column'}>
+            <Grid item>
+              <LazyLoadImage
+                src={product.product.images[0] ? apiURL + '/' + product.product.images[0] : noImg}
+                alt={product.product.name}
+                width="40px"
+                height="40px"
+                style={{ objectFit: 'contain' }}
+                placeholderSrc={placeHolderImg}
+                effect="blur"
+              />
+            </Grid>
+
+            <Grid item>
+              <Typography variant="body1" gutterBottom>
+                Наименование: <span style={{ fontWeight: 'bold' }}>{product.product.name}</span>
+              </Typography>
+            </Grid>
+          </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Typography variant="body1">Количество: {product.quantity}</Typography>

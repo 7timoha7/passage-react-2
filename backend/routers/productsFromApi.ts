@@ -210,7 +210,6 @@ const createProducts = async (
       }
 
       // Обрабатываем размеры и описание товара
-
       const { size, thickness, description, type } = processDescription(productData.description);
 
       // Пересчитываем цену, если это необходимо
@@ -249,11 +248,13 @@ const createProducts = async (
             };
           }),
         price: recalculatedPrice, // Используем пересчитанную цену
+        priceOriginal: priceData.price,
         images: productImages,
         size,
         thickness,
         description,
         originCountry: productData.originCountry,
+        type: type ? type : '',
       });
 
       // Сохраняем продукт в базу данных

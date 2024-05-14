@@ -42,10 +42,12 @@ export interface IProduct {
     quantity: number;
   }[];
   price: number;
+  priceOriginal: number;
   description: string;
   size: string;
   thickness: string;
   originCountry: string;
+  type: string;
 }
 
 export interface IProductQuantityFromApi {
