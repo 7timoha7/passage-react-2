@@ -13,29 +13,22 @@ import chatIdAdminRouter from './routers/chatIdAdmins';
 import bestsellerRouter from './routers/bestsellers';
 import bannersRouter from './routers/banners';
 import productsForRouter from './routers/productsFor';
-import https from 'https';
-import fs from 'fs';
 
 const app = express();
-const port = 443; // Порт HTTPS сервера
-
-// Загрузка SSL-сертификата и закрытого ключа
-const privateKey = fs.readFileSync('/etc/ssl/certs/server.key', 'utf8');
-const certificate = fs.readFileSync('/etc/ssl/certs/server.crt', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
+const port = 8000;
 
 const staticFilesPath = path.join(__dirname, 'public');
 app.use(cors());
 app.use(express.static(staticFilesPath));
 app.use(express.json());
-app.use(
-  cors({
-    credentials: true,
-    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    origin: ['http://passage.go.kg/', 'https://passage.go.kg/'],
-  }),
-);
+// app.use(
+//   cors({
+//     credentials: true,
+//     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     origin: ['http://passage.kg/', 'https://passage.kg/'],
+//   }),
+// );
 app.use('/users', usersRouter);
 app.use('/categories', categoryRouter);
 app.use('/products', productRouter);
@@ -51,11 +44,7 @@ const run = async () => {
   mongoose.set('strictQuery', false);
   await mongoose.connect(config.db);
 
-  // Создание HTTPS сервера с передачей SSL-сертификата и закрытого ключа
-  const httpsServer = https.createServer(credentials, app);
-
-  // Запуск HTTPS сервера
-  httpsServer.listen(port, () => {
+  app.listen(port, () => {
     console.log('We are live on ' + port);
   });
 
