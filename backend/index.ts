@@ -21,14 +21,19 @@ const staticFilesPath = path.join(__dirname, 'public');
 app.use(cors());
 app.use(express.static(staticFilesPath));
 app.use(express.json());
-// app.use(
-//   cors({
-//     credentials: true,
-//     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-//     origin: ['http://passage.kg/', 'https://passage.kg/'],
-//   }),
-// );
+app.use(
+  cors({
+    credentials: true,
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: [
+      'http://passage.go.kg/',
+      'https://passage.go.kg/',
+      'http://www.passage.go.kg/',
+      'https://www.passage.go.kg/',
+    ],
+  }),
+);
 app.use('/users', usersRouter);
 app.use('/categories', categoryRouter);
 app.use('/products', productRouter);
