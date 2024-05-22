@@ -26,12 +26,7 @@ app.use(
     credentials: true,
     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    origin: [
-      'http://passage.go.kg/',
-      'https://passage.go.kg/',
-      'http://www.passage.go.kg/',
-      'https://www.passage.go.kg/',
-    ],
+    origin: ['http://passage.kg/', 'https://passage.kg/', 'http://www.passage.kg/', 'https://www.passage.kg/'],
   }),
 );
 app.use('/users', usersRouter);
