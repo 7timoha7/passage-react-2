@@ -198,14 +198,14 @@ const run = async () => {
           const mainImageName = 'image_main.jpg';
           const mainImagePath = path.join(imageFolder, mainImageName);
           fs.writeFileSync(mainImagePath, productData.imageBase64, 'base64');
-          productImages.push(path.join('images/imagesProduct', productData.goodID, mainImageName));
+          productImages.push(path.join('imagesProduct', productData.goodID, mainImageName));
         }
         if (productData.imagesBase64 && productData.imagesBase64.length > 0) {
           productData.imagesBase64.forEach((imageBase64, index) => {
             const imageName = `image${index + 1}.jpg`;
             const imagePath = path.join(imageFolder, imageName);
             fs.writeFileSync(imagePath, imageBase64, 'base64');
-            productImages.push(path.join('images/imagesProduct', productData.goodID, imageName));
+            productImages.push(path.join('imagesProduct', productData.goodID, imageName));
           });
         }
 
