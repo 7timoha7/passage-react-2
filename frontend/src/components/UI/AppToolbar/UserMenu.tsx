@@ -12,9 +12,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 interface Props {
   user: User;
+  close?: () => void;
 }
 
-const UserMenu: React.FC<Props> = ({ user }) => {
+const UserMenu: React.FC<Props> = ({ user, close }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -29,10 +30,16 @@ const UserMenu: React.FC<Props> = ({ user }) => {
   const onMenuItemClick = (path: string) => {
     handleClose();
     navigate(path);
+    if (close) {
+      close();
+    }
   };
 
   const handleLogout = async () => {
     await dispatch(logout());
+    if (close) {
+      await close();
+    }
     await navigate('/');
   };
 

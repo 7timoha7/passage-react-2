@@ -15,7 +15,11 @@ const theme = createTheme({
   },
 });
 
-const AnonymousMenu = () => {
+interface Props {
+  close?: () => void;
+}
+
+const AnonymousMenu: React.FC<Props> = ({ close }) => {
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -26,6 +30,7 @@ const AnonymousMenu = () => {
             sx={{
               '@media (max-width: 1200px)': {
                 mb: 1,
+                ml: 2,
               },
             }}
             alignItems="center"
@@ -38,6 +43,7 @@ const AnonymousMenu = () => {
               startIcon={<AccountCircle />}
               color="secondary"
               sx={{ ':hover': { color: '#ddbe86' } }}
+              onClick={close}
             >
               <Typography fontSize={'12px'}>Регистрация</Typography>
             </Button>
@@ -58,6 +64,7 @@ const AnonymousMenu = () => {
               variant="outlined"
               startIcon={<LockOutlined />}
               color="secondary"
+              onClick={close}
             >
               <Typography fontSize={'12px'}>Вход</Typography>
             </Button>

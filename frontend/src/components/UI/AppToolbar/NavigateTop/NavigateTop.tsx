@@ -82,7 +82,7 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
           ))}
         </Box>
 
-        <Box>{user ? <UserMenu user={user} /> : <AnonymousMenu />}</Box>
+        <Box>{user ? <UserMenu close={close} user={user} /> : <AnonymousMenu close={close} />}</Box>
       </Box>
     </>
   );
