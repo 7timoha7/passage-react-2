@@ -183,7 +183,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                     )}
                   </Typography>
 
-                  {product.type === 'Керамогранит' ? (
+                  {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
                     <Typography sx={{ color: '#e79d15' }}>
                       {product.priceOriginal + ' сом'}
                       <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
