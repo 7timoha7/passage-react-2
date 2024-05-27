@@ -15,7 +15,7 @@ const config = {
     clientId: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID : '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET : '',
   },
-  mail: 'passagerakcaramics@gmail.com',
+  mail: 'passagerakceramics@gmail.com',
   site: process.env.WEBSITE_ADDRESS ? process.env.WEBSITE_ADDRESS : 'https://passage.kg',
 };
 

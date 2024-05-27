@@ -36,7 +36,8 @@ const Register = () => {
     event.preventDefault();
     try {
       await dispatch(register(state)).unwrap();
-      navigate('/');
+      await navigate('/');
+      await window.location.reload();
     } catch (e) {
       console.log(e);
     }

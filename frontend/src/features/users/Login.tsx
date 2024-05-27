@@ -30,7 +30,10 @@ const Login = () => {
     event.preventDefault();
     try {
       await dispatch(login(state)).unwrap();
-      navigate('/');
+
+      await navigate('/', { replace: true });
+      // Добавьте перезагрузку страницы для отладки
+      await window.location.reload();
     } catch (error) {
       console.error('Ошибка входа:', error);
     }
