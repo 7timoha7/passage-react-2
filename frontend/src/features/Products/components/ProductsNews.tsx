@@ -80,10 +80,8 @@ const ProductsNews = () => {
         pb: 3,
       }}
     >
-      <Box mb={2}>
-        <Typography variant="h4" fontWeight={'bold'} style={{ marginLeft: '2%' }}>
-          Новинки
-        </Typography>
+      <Box mb={2} mt={2}>
+        <Typography variant="h4">НОВИНКИ</Typography>
       </Box>
 
       {renderPagination()}

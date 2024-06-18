@@ -12,6 +12,7 @@ import { Box, Checkbox, Grid, Typography } from '@mui/material';
 import { closeModalCover } from '../../users/usersSlice';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { LoadingButton } from '@mui/lab';
+import { btnColorProductsForModalCancel, productsForBgPageCheckBox } from '../../../styles';
 
 interface Props {
   productsFoID: string;
@@ -88,7 +89,7 @@ const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
                   spacing={1}
                   justifyContent={'space-between'}
                   container
-                  sx={{ background: 'rgba(253,203,92,0.62)', borderRadius: '10px' }}
+                  sx={{ background: productsForBgPageCheckBox, borderRadius: '10px' }}
                 >
                   <Grid item>
                     <Typography>{item.name}</Typography>
@@ -111,14 +112,7 @@ const ProductsForItem: React.FC<Props> = ({ productsFoID, categories }) => {
 
       <Box sx={{ mt: 2 }} justifyContent={'flex-end'} display={'flex'}>
         <LoadingButton
-          sx={{
-            borderColor: '#fac058', // Цвет кнопки
-            color: '#fac058',
-            '&:hover': {
-              borderColor: '#ab944d', // Цвет кнопки при наведении
-              color: '#ab944d',
-            },
-          }}
+          sx={btnColorProductsForModalCancel}
           loading={updateLoading}
           variant={'outlined'}
           onClick={() => onClickBtnCancel()}

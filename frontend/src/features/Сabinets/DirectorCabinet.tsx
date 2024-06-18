@@ -13,7 +13,7 @@ import { CabinetState } from '../../types';
 import UserItems from '../users/components/UserItems';
 import WcIcon from '@mui/icons-material/Wc';
 import MyInformation from './components/MyInformation';
-import { someStyle } from '../../styles';
+import { colorMenuInf, someStyle } from '../../styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorites from './components/Favorites';
 import UpdateBase from './components/UpdateBase';
@@ -89,10 +89,13 @@ const DirectorCabinet: React.FC<Props> = ({ exist = initialState }) => {
                     selected={selectedIndex === index}
                     onClick={() => handleClickOption(option.option, index)}
                   >
-                    <ListItemIcon style={selectedIndex === index ? { color: '#e8b86d' } : {}}>
+                    <ListItemIcon style={selectedIndex === index ? { color: colorMenuInf } : {}}>
                       {option.icon}
                     </ListItemIcon>
-                    <ListItemText style={selectedIndex === index ? { color: '#e8b86d' } : {}} primary={option.text} />
+                    <ListItemText
+                      style={selectedIndex === index ? { color: colorMenuInf } : {}}
+                      primary={option.text}
+                    />
                   </ListItemButton>
                 ))}
               </List>

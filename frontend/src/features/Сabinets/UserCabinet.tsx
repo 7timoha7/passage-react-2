@@ -6,7 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MyInformation from './components/MyInformation';
 import { CabinetState } from '../../types';
-import { someStyle } from '../../styles';
+import { colorMenuInf, someStyle } from '../../styles';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import Favorites from './components/Favorites';
 import { selectOrders, selectOrdersPageInfo } from '../Order/orderSlice';
@@ -69,8 +69,10 @@ const UserCabinet: React.FC<Props> = ({ exist = initialState }) => {
                   selected={selectedIndex === index}
                   onClick={() => handleClickOption(option.option, index)}
                 >
-                  <ListItemIcon style={selectedIndex === index ? { color: '#e8b86d' } : {}}>{option.icon}</ListItemIcon>
-                  <ListItemText style={selectedIndex === index ? { color: '#e8b86d' } : {}} primary={option.text} />
+                  <ListItemIcon style={selectedIndex === index ? { color: colorMenuInf } : {}}>
+                    {option.icon}
+                  </ListItemIcon>
+                  <ListItemText style={selectedIndex === index ? { color: colorMenuInf } : {}} primary={option.text} />
                 </ListItemButton>
               ))}
             </List>

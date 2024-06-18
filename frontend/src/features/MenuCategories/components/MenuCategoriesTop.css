@@ -1,4 +1,3 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin,cyrillic);
 
 * {
   box-sizing: border-box;
@@ -41,13 +40,18 @@ nav a {
   border-left: 0;
 }
 
+
 .topmenu > li > a {
   padding: 20px 30px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 15px;
+  /*font-weight: bold;*/
   text-transform: uppercase;
-  color: #e8b86d;
+  color: rgb(255, 255, 255);
   letter-spacing: 2px;
+}
+
+.topmenu > li > a:hover {
+  color: #ddbe86;
 }
 
 .topmenu > li > a.active,
@@ -83,7 +87,7 @@ nav a {
 .submenu li a {
   color: #282828;
   padding: 10px 20px;
-  font-size: 13px;
+  font-size: 15px;
   border-bottom: 1px solid #CBCBCC;
 }
 

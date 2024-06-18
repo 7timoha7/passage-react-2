@@ -172,6 +172,17 @@ const run = async () => {
           continue;
         }
 
+        // Проверяем, есть ли остатки только на складе 'Склад материалов (не для продажи)'
+        const hasOnlyExcludedWarehouseStock = quantityDataArray.find((q) => {
+          const stock = quantitiesStocks.find((qs) => qs.stockID === q.stockID && q.quantity > 0);
+          return stock && stock.name === 'Склад материалов (не для продажи)';
+        });
+
+        if (hasOnlyExcludedWarehouseStock) {
+          // Пропускаем продукт, если он есть только на исключенном складе
+          continue;
+        }
+
         // Получаем данные о цене для текущего продукта
         const priceData = filteredPrices.find((p) => p.goodID === productData.goodID);
         if (!priceData || !priceData.price) {
@@ -355,10 +366,6 @@ const run = async () => {
   const responseProducts = await fetchData('goods-get');
   const responseQuantity = await fetchData('goods-quantity-get');
   const responsePrice = await fetchData('goods-price-get');
-
-  // console.log('Товары : ' + JSON.stringify(responseProducts));
-  // console.log('количество : ' + JSON.stringify(responseQuantity));
-  // console.log('цены : ' + JSON.stringify(responsePrice));
 
   const products: IProductFromApi[] = responseProducts.result.goods;
   const quantity = responseQuantity.result;

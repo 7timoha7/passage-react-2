@@ -49,7 +49,7 @@ const UserMenu: React.FC<Props> = ({ user, close }) => {
         <Button onClick={handleClick} color="inherit" sx={{ color: 'white' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography sx={{ mr: 1 }} fontWeight="bold">{`${user.firstName} ${user.lastName}`}</Typography>
-            <MenuIcon fontSize={'large'} />
+            <MenuIcon fontSize={'medium'} sx={{ mt: '-4px' }} />
           </div>
         </Button>
       </Grid>
@@ -62,7 +62,7 @@ const UserMenu: React.FC<Props> = ({ user, close }) => {
           paper: {
             sx: {
               borderRadius: '8px',
-              background: 'linear-gradient(90deg, rgba(64,64,64,1) 0%, rgba(159,159,159,1) 100%)',
+              background: 'linear-gradient(135deg, rgb(90, 30, 30), rgb(39, 14, 14));',
             },
           },
         }}

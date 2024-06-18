@@ -11,7 +11,6 @@ import {
   searchProductsFull,
   searchProductsPreview,
 } from './productsThunks';
-import { getOrders } from '../Order/orderThunks';
 
 interface ProductsState {
   products: ProductType[];

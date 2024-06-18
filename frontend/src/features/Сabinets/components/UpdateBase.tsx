@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectProductsFromApiLoading } from '../../Products/productsSlise';
 import { productsFromApi } from '../../Products/productsThunks';
 import { fetchCategories } from '../../MenuCategories/menuCategoriesThunks';
+import { btnColorUpdateBase } from '../../../styles';
 
 const UpdateBase = () => {
   const dispatch = useAppDispatch();
@@ -21,15 +22,7 @@ const UpdateBase = () => {
           <Grid item textAlign={'center'}>
             <h4>Для того чтобы обновить базу данных с базы 1С, нажмите данную кнопку и дождитесь обновления!</h4>
             <LoadingButton
-              sx={{
-                mt: 3,
-                color: '#ffffff', // Цвет контура кнопки
-                background: '#e39912', // Цвет контура кнопки
-                '&:hover': {
-                  color: '#ffffff', // Цвет контура кнопки при наведении
-                  background: '#756433', // Цвет контура кнопки при наведении
-                },
-              }}
+              sx={btnColorUpdateBase}
               loading={loadingApi}
               onClick={() => clickUpdate()}
               variant={'contained'}

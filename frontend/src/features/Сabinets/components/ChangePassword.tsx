@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../../app/hooks';
 import { changePass, logout } from '../../users/usersThunks';
 import { enqueueSnackbar } from 'notistack';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { btnColorRestorePassword, btnColorRestorePasswordCancelAndChange } from '../../../styles';
 
 const ChangePassword = () => {
   const dispatch = useAppDispatch();
@@ -60,18 +61,7 @@ const ChangePassword = () => {
 
   return (
     <Box>
-      <Button
-        sx={{
-          borderColor: '#e3a230',
-          color: '#e3a230',
-          '&:hover': {
-            borderColor: '#ab944d',
-            color: '#ab944d',
-          },
-        }}
-        variant="outlined"
-        onClick={handleClickOpen}
-      >
+      <Button sx={btnColorRestorePassword} variant="outlined" onClick={handleClickOpen}>
         {'Изменить пароль'}
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -109,26 +99,13 @@ const ChangePassword = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleClose}
-            sx={{
-              color: '#e3a230',
-              '&:hover': {
-                color: '#ab944d',
-              },
-            }}
-          >
+          <Button onClick={handleClose} sx={btnColorRestorePasswordCancelAndChange}>
             {'Назад'}
           </Button>
           <Button
             disabled={password.password1.length < 3 || password.password2.length < 3}
             onClick={handleConfirmOpen}
-            sx={{
-              color: '#e3a230',
-              '&:hover': {
-                color: '#ab944d',
-              },
-            }}
+            sx={btnColorRestorePasswordCancelAndChange}
           >
             {'Изменить пароль'}
           </Button>

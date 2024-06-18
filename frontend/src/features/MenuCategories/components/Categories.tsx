@@ -42,10 +42,10 @@ const CategoryItem = styled.div<{ $level: number; $isActive: boolean }>`
   align-items: center;
   padding: 5px 5px 5px ${(props) => props.$level * 10}px;
   color: #0c0c0c;
-  background-color: ${({ $isActive }) => ($isActive ? '#eaeaea' : 'transparent')};
+  background-color: ${({ $isActive }) => ($isActive ? '#b4b4b4' : 'transparent')};
 
   &:hover {
-    background-color: ${({ $isActive }) => ($isActive ? '#eaeaea' : 'rgba(145, 145, 145, 0.58)')};
+    //background-color: ${({ $isActive }) => ($isActive ? '#eaeaea' : 'rgba(173,173,173,0.92)')};
   }
 `;
 
@@ -157,7 +157,7 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
         {loading ? (
           <Spinner />
         ) : (
-          <Box sx={{ background: 'rgba(255,255,255,0.89)' }}>
+          <Box sx={{ background: 'rgba(183,183,183,0.34)' }}>
             {categories.map((category) => (
               <div key={category.ID}>
                 {category.subCategories && category.subCategories.length > 0 ? (
@@ -167,11 +167,11 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
                     onClick={() => handleCategoryClick(category.ID, category.ownerID)}
                   >
                     <IconWrapper>
-                      {openState[category.ID] ? <ExpandMore sx={{ color: '#a96a04' }} /> : <ChevronRight />}
+                      {openState[category.ID] ? <ExpandMore sx={{ color: '#af761a' }} /> : <ChevronRight />}
                     </IconWrapper>
                     <span
                       style={{
-                        color: openState[category.ID] ? '#a96a04' : '#0c0c0c',
+                        color: openState[category.ID] ? '#a87016' : '#0c0c0c',
                         fontWeight: openState[category.ID] ? 'bold' : 'normal',
                       }}
                     >

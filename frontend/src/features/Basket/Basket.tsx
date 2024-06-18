@@ -7,6 +7,7 @@ import { selectBasket } from './basketSlice';
 import { selectUser } from '../users/usersSlice';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { toolbarTobAndBottomColor } from '../../styles';
 
 const Basket = () => {
   const dispatch = useAppDispatch();
@@ -36,9 +37,9 @@ const Basket = () => {
         color="inherit"
         onClick={() => navigate('/basket')}
         sx={{
-          background: '#404040',
+          background: toolbarTobAndBottomColor,
           '&:hover': {
-            background: '#7c7c7c',
+            background: 'rgba(90,30,30,0.67)',
           },
         }}
       >
@@ -46,9 +47,6 @@ const Basket = () => {
           <ShoppingCartIcon
             sx={{
               color: '#ffffff',
-              '&:hover': {
-                color: '#e8b86d',
-              },
             }}
             fontSize="large"
           />

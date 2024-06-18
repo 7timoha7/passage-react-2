@@ -11,12 +11,14 @@ const bannersRouter = express.Router();
 
 bannersRouter.post('/', auth, permit('admin'), bannersImagesUpload.single('image'), async (req, res, next) => {
   try {
-    const { title, desk } = req.body;
-    const imagePath = req.file ? `/images/banners/${req.file.filename}` : '';
+    const { typeBanner, title, desk, link } = req.body;
 
+    const imagePath = req.file ? `/images/banners/${req.file.filename}` : '';
     const newBanner = new Banner({
+      typeBanner,
       title,
       desk,
+      link,
       image: imagePath,
     });
 
@@ -33,7 +35,7 @@ bannersRouter.post('/', auth, permit('admin'), bannersImagesUpload.single('image
   }
 });
 
-bannersRouter.get('/', async (_req, res, next) => {
+bannersRouter.get('/', async (req, res, next) => {
   try {
     const banners = await Banner.find();
     res.send(banners);

@@ -1,45 +1,87 @@
-import { Grid, Paper, Typography } from '@mui/material';
-import advantages1 from '../../../assets/images/advantages/advantage_1.png';
-import advantages2 from '../../../assets/images/advantages/advantage_2.png';
-import advantages3 from '../../../assets/images/advantages/advantage_3.png';
+import img1 from '../../../assets/images/logoAbout/rak.png';
+import img2 from '../../../assets/images/logoAbout/kludi.png';
+import img3 from '../../../assets/images/logoAbout/porcelain.png';
+import { Box, CardMedia, Grid, Typography, useMediaQuery, Card } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const AboutPage = () => {
+const images = [
+  { src: img1, path: '/about/rakceramics' },
+  { src: img2, path: '/about/kludirak' },
+  { src: img3, path: '/about/rakporcelain' },
+];
+
+const getCardStyles = () => ({
+  borderRadius: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '300px',
+  width: '300px',
+  '@media (max-width:600px)': {
+    width: '250px',
+    height: '250px',
+  },
+  '@media (max-width:480px)': {
+    width: '220px',
+    height: '220px',
+  },
+  transition: 'transform 0.3s, box-shadow 0.3s',
+  cursor: 'pointer',
+  '&:hover': {
+    transform: 'scale(1.05)',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+  },
+  '&:active': {
+    transform: 'scale(0.95)',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+  },
+});
+
+type CardItemProps = {
+  image: string;
+  padding: string;
+  onClick: () => void;
+};
+
+const CardItem: React.FC<CardItemProps> = ({ image, padding, onClick }) => (
+  <Grid item>
+    <Card sx={getCardStyles()} onClick={onClick}>
+      <CardMedia
+        component="img"
+        image={image}
+        sx={{
+          maxHeight: '100%',
+          maxWidth: '100%',
+          objectFit: 'contain',
+          padding: padding,
+        }}
+      />
+    </Card>
+  </Grid>
+);
+
+const AboutPage: React.FC = () => {
+  const isSmallScreen = useMediaQuery('(max-width: 600px)');
+  const navigate = useNavigate();
+
+  const handleClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
-    <Paper sx={{ p: 4, mt: 2 }}>
-      <Typography variant="h4" gutterBottom>
-        О нас
+    <Box>
+      <Typography sx={{ mt: '30px' }} variant="h4">
+        О НАС
       </Typography>
-      <Typography variant="body1" paragraph>
-        Сеть шоурумов Passage является официальным представителем ведущих мировых брендов - RAK ceramics, KLUDI RAK, RAK
-        porcelain, Vitra. RAK ceramics - является одним из крупнейших керамических брендов в мире. Специализируясь на
-        настенной и напольной плитке из керамического гранита и сантехнике, Rak ceramics производит 118 миллионов м2
-        плитки и 5.7 миллионов сантехнических изделий.
-      </Typography>
-      <Typography variant="body1" paragraph>
-        KLUDI RAK – сантехника с беспрецедентной гарантией в 10 лет! В сочетании с лучшими немецкими технологиями и
-        процессами обеспечения качества, современными европейским оборудованием, KLUDI RAK предлагает долговечную
-        сантехнику, которая радует многих клиентов.
-      </Typography>
-      <Typography variant="body1" paragraph>
-        RAK porcelain — это новое сочетание качества, долговечности и эстетики, состоящее из изысканных столовых
-        приборов, модной посуды и эргономичных кухонных аксессуаров, которые обеспечивают уникальные впечатления от еды.
-      </Typography>
-      <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-        Преимущества RAK ceramics
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
-          <img src={advantages3} alt="Преимущество 1" style={{ width: '100%', height: 'auto' }} />
+      <Box sx={{ p: 4, mt: 3 }}>
+        <Grid container spacing={isSmallScreen ? 1.5 : 4} mt={2} mb={3} justifyContent={'center'}>
+          {images.map((image) => (
+            <CardItem key={image.path} image={image.src} padding="40px" onClick={() => handleClick(image.path)} />
+          ))}
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <img src={advantages2} alt="Преимущество 2" style={{ width: '100%', height: 'auto' }} />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <img src={advantages1} alt="Преимущество 3" style={{ width: '100%', height: 'auto' }} />
-        </Grid>
-      </Grid>
-    </Paper>
+      </Box>
+    </Box>
   );
 };
 

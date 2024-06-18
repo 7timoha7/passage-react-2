@@ -28,6 +28,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import { btnColorOrderFormCancel, btnColorOrderFormCreateOrder, colorFormBg } from '../../../styles';
 
 const OrderForm = () => {
   const [formData, setFormData] = useState<OrderSendType>({
@@ -130,7 +131,7 @@ const OrderForm = () => {
         margin: 'auto',
         marginTop: '10px',
         padding: '20px',
-        background: 'rgba(0,0,0,0.57)',
+        background: colorFormBg,
         borderRadius: '8px',
         boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
       }}
@@ -229,29 +230,13 @@ const OrderForm = () => {
               disabled={formData.products.length <= 0}
               variant="contained"
               type="submit"
-              sx={{
-                backgroundColor: '#ddbe86', // Цвет кнопки
-                '&:hover': {
-                  backgroundColor: '#ab944d', // Цвет кнопки при наведении
-                },
-              }}
+              sx={btnColorOrderFormCreateOrder}
             >
               Заказать
             </LoadingButton>
           </Grid>
           <Grid item>
-            <Button
-              sx={{
-                borderColor: '#ddbe86', // Цвет кнопки
-                color: '#ddbe86',
-                '&:hover': {
-                  borderColor: '#ab944d', // Цвет кнопки при наведении
-                  color: '#ab944d', // Цвет кнопки при наведении
-                },
-              }}
-              variant="outlined"
-              onClick={() => navigate(-1)}
-            >
+            <Button sx={btnColorOrderFormCancel} variant="outlined" onClick={() => navigate(-1)}>
               Назад
             </Button>
           </Grid>
@@ -263,7 +248,7 @@ const OrderForm = () => {
           <Typography>В ближайшее время с вами свяжется администратор для подтверждения заказа.</Typography>
         </DialogContent>
         <DialogActions>
-          <Button variant={'outlined'} onClick={handleCloseDialog} color="success">
+          <Button variant={'outlined'} onClick={handleCloseDialog} sx={btnColorOrderFormCancel}>
             Ок
           </Button>
         </DialogActions>

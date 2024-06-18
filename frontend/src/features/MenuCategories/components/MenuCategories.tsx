@@ -10,7 +10,9 @@ import { fetchCategories } from '../menuCategoriesThunks';
 import { Typography } from '@mui/material';
 import Categories from './Categories';
 import NavigateTop from '../../../components/UI/AppToolbar/NavigateTop/NavigateTop';
-import img1 from '../../../assets/images/2.jpeg';
+import img1 from '../../../assets/images/newFon/17.jpeg';
+import { toolbarTobAndBottomColor } from '../../../styles';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 250;
 
@@ -73,23 +75,23 @@ const MenuCategories = () => {
             },
           }}
         >
-          <Box sx={{ m: 0, pt: 1.2, pb: 1.2, background: 'rgba(0,0,0,0.34)' }}>
-            <Typography fontWeight={'bold'} fontSize={'24px'} textAlign={'center'} sx={{ color: '#e8b86d' }}>
-              Меню
-            </Typography>
+          <Box sx={{ m: 0, pt: 1.2, pb: 1.2 }} textAlign={'center'}>
+            <Link to="/" style={{ margin: 'auto' }} onClick={closeMenu}>
+              <img style={{ maxWidth: '200px' }} src="/logo_brown_mobile.png" alt="passage" />
+            </Link>
           </Box>
           <Box>
             <NavigateTop close={closeMenu} />
           </Box>
           <Box>
             <Typography
-              sx={{ background: 'rgba(0,0,0,0.34)', m: 0, pt: 1.2, pb: 1.2 }}
+              sx={{ m: 0, pt: 1.2, pb: 1.2 }}
               textAlign={'center'}
               fontSize={'24px'}
               fontWeight={'bold'}
-              color={'#e8b86d'}
+              color={toolbarTobAndBottomColor}
             >
-              Товары
+              ПРОДУКЦИЯ
             </Typography>
           </Box>
           {drawer}
@@ -101,7 +103,7 @@ const MenuCategories = () => {
           flexGrow: 1,
           pl: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          background: '#404040',
+          background: toolbarTobAndBottomColor,
           display: { lg: 'none' },
           borderTop: '1.5px solid black',
         }}
@@ -127,7 +129,7 @@ const MenuCategories = () => {
               ml: 1,
             }}
           >
-            Меню
+            МЕНЮ
           </Typography>
         </IconButton>
       </Box>

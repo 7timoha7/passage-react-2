@@ -7,11 +7,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MyInformation from './components/MyInformation';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import { CabinetState } from '../../types';
 import GroupIcon from '@mui/icons-material/Group';
 import { getByRole } from '../users/usersThunks';
 import UserItems from '../users/components/UserItems';
-import { someStyle } from '../../styles';
+import { colorMenuInf, someStyle } from '../../styles';
 import Favorites from './components/Favorites';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getForAdminHisOrders, getOrders } from '../Order/orderThunks';
@@ -26,6 +27,7 @@ import {
 } from '../Order/orderSlice';
 import CategoryIcon from '@mui/icons-material/Category';
 import ProductsForPage from '../ProductsFor/components/ProductsForPage';
+import BannersPageForm from '../Banners/BannersPageForm';
 
 const initialState: CabinetState = {
   myInfo: true,
@@ -75,10 +77,11 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
   const options = [
     { option: 'myInfo', icon: <PersonIcon />, text: 'Моя информация' },
     { option: 'users', icon: <GroupIcon />, text: 'Пользователи' },
+    { option: 'productsFor', icon: <CategoryIcon />, text: 'Сопутствующие товары' },
+    { option: 'banners', icon: <ViewCarouselIcon />, text: 'Баннеры' },
     { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
     { option: 'myOrders', icon: <WorkIcon />, text: 'Мои заказы' },
     { option: 'unacceptedOrders', icon: <WorkspacesIcon />, text: 'Непринятые заказы' },
-    { option: 'productsFor', icon: <CategoryIcon />, text: 'Сопутствующие товары' },
   ];
 
   return (
@@ -102,10 +105,13 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
                     selected={selectedIndex === index}
                     onClick={() => handleClickOption(option.option, index)}
                   >
-                    <ListItemIcon style={selectedIndex === index ? { color: '#e8b86d' } : {}}>
+                    <ListItemIcon style={selectedIndex === index ? { color: colorMenuInf } : {}}>
                       {option.icon}
                     </ListItemIcon>
-                    <ListItemText style={selectedIndex === index ? { color: '#e8b86d' } : {}} primary={option.text} />
+                    <ListItemText
+                      style={selectedIndex === index ? { color: colorMenuInf } : {}}
+                      primary={option.text}
+                    />
                   </ListItemButton>
                 ))}
               </List>
@@ -116,7 +122,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
                 <UserItems gotUsersPageInfo={gotUsersPageInfo} prop={gotUsers} role="user" />
               )}
               {state.favorites && <Favorites />}
-              {/*{state.banners && <BannersForm />}*/}
+              {state.banners && <BannersPageForm />}
               {state.myOrders && adminPageInfo && user?._id && (
                 <OrderItems ordersItems={orders} adminPageInfo={adminPageInfo} id={user._id} />
               )}

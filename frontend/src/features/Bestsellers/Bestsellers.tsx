@@ -55,7 +55,7 @@ const Bestsellers: React.FC = () => {
       { breakpoint: 1300, settings: { variableWidth: false, slidesToShow: 3, centerMode: false } },
       { breakpoint: 1080, settings: { variableWidth: false, slidesToShow: 2, centerMode: false } },
       { breakpoint: 800, settings: { variableWidth: false, slidesToShow: 2, centerMode: false } },
-      { breakpoint: 400, settings: { variableWidth: false, slidesToShow: 1, centerMode: false } },
+      { breakpoint: 388, settings: { variableWidth: false, slidesToShow: 1, centerMode: false } },
     ],
   };
 
@@ -112,12 +112,10 @@ const Bestsellers: React.FC = () => {
           </style>
 
           <Grid container justifyContent={'space-between'} alignItems={'center'} sx={{ mb: 3 }}>
-            <Typography variant="h5" fontWeight={'bold'} style={{ marginLeft: '2%' }}>
-              Хиты продаж
-            </Typography>
+            <Typography variant="h4">ПОПУЛЯРНЫЕ ТОВАРЫ</Typography>
             <Grid item></Grid>
             <Grid item>
-              <Grid container spacing={2} sx={{ mr: 3, mt: 2 }}>
+              <Grid container spacing={2}>
                 <Grid item>
                   <IconButton
                     sx={{
@@ -153,18 +151,12 @@ const Bestsellers: React.FC = () => {
             <>
               {bestsellersProduct.length < 2 ? (
                 <Box sx={{ p: 2 }}>
-                  <ProductCard
-                    newsSize={true}
-                    indicator={indicator(bestsellersProduct[0])}
-                    product={bestsellersProduct[0]}
-                  />
+                  <ProductCard indicator={indicator(bestsellersProduct[0])} product={bestsellersProduct[0]} />
                 </Box>
               ) : (
                 <Slider ref={sliderRef} {...sliderSettings}>
                   {bestsellersProduct.map((item) => (
-                    <div key={item._id}>
-                      <ProductCard newsSize={true} indicator={indicator(item)} product={item} />
-                    </div>
+                    <ProductCard indicator={indicator(item)} product={item} key={item._id} />
                   ))}
                 </Slider>
               )}

@@ -8,13 +8,15 @@ export const createBanners = createAsyncThunk<GlobalSuccess, BannerToServerType>
     try {
       const formData = new FormData();
 
+      formData.append('typeBanner', bannerToServer.typeBanner);
       formData.append('title', bannerToServer.title);
       formData.append('desk', bannerToServer.desk);
+      formData.append('link', bannerToServer.link);
 
       if (bannerToServer.image) {
         formData.append('image', bannerToServer.image);
       }
-
+      console.log('thunks - ' + JSON.stringify(formData));
       const response = await axiosApi.post('/banners', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -30,7 +32,7 @@ export const createBanners = createAsyncThunk<GlobalSuccess, BannerToServerType>
 
 export const fetchBanners = createAsyncThunk<BannerType[]>('banners/fetchBanners', async () => {
   try {
-    const response = await axiosApi.get<BannerType[]>('/banners');
+    const response = await axiosApi.get<BannerType[]>('/banners/');
     return response.data;
   } catch {
     throw new Error();

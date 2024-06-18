@@ -10,6 +10,7 @@ import { ordersReducer } from '../features/Order/orderSlice';
 import { bestsellersReducer } from '../features/Bestsellers/bestsellersSlice';
 import { bannersReducer } from '../features/Banners/bannersSlice';
 import { productsForReducer } from '../features/ProductsFor/productsForSlice';
+import { designerReducer } from '../components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Designers/designersSlice';
 
 const usersPersistConfig = {
   key: 'passage:users',
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   orders: persistReducer(usersPersistConfig, ordersReducer),
   bestsellers: persistReducer(usersPersistConfig, bestsellersReducer),
   banners: persistReducer(usersPersistConfig, bannersReducer),
+  designer: persistReducer(usersPersistConfig, designerReducer),
 });
 
 export const store = configureStore({

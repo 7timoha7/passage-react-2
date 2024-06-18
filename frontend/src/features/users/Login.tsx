@@ -9,6 +9,12 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import type { LoginMutation } from '../../types';
 import 'react-phone-input-2/lib/style.css';
 import RestorePassword from './components/RestorePassword';
+import {
+  avatarColor,
+  backgroundColorLoginRegister,
+  btnColorLigInRegister,
+  btnColorLigInRegisterBottom,
+} from '../../styles';
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +38,7 @@ const Login = () => {
       await dispatch(login(state)).unwrap();
 
       await navigate('/', { replace: true });
-      // Добавьте перезагрузку страницы для отладки
+
       await window.location.reload();
     } catch (error) {
       console.error('Ошибка входа:', error);
@@ -47,12 +53,12 @@ const Login = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          background: 'rgba(0,0,0,0.57)',
+          background: backgroundColorLoginRegister,
           borderRadius: '10px',
           padding: '20px',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: '#ddbe86' }}>
+        <Avatar sx={{ m: 1, backgroundColor: avatarColor }}>
           <LockOpenIcon />
         </Avatar>
         <Typography color={'white'} component="h1" variant="h5">
@@ -108,31 +114,13 @@ const Login = () => {
             loading={loading}
             fullWidth
             variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              backgroundColor: '#ddbe86', // Цвет кнопки
-              '&:hover': {
-                backgroundColor: '#ab944d', // Цвет кнопки при наведении
-              },
-            }}
+            sx={btnColorLigInRegister}
           >
             {'Войти'}
           </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link
-                sx={{
-                  color: '#ddbe86',
-                  '&:hover': {
-                    color: '#ab944d', // Цвет кнопки при наведении
-                  },
-                  textDecoration: 'none',
-                }}
-                component={RouterLink}
-                to="/register"
-                variant="body2"
-              >
+              <Link sx={btnColorLigInRegisterBottom} component={RouterLink} to="/register" variant="body2">
                 {'Регистрация'}
               </Link>
             </Grid>

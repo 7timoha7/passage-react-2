@@ -202,14 +202,18 @@ export interface BestsellerType {
 
 export interface BannerType {
   _id: string;
-  title: string;
-  desk: string;
+  typeBanner: string;
+  title?: string;
+  desk?: string;
+  link?: string;
   image: string;
 }
 
 export interface BannerToServerType {
+  typeBanner: string;
   title: string;
   desk: string;
+  link: string;
   image: File | null;
 }
 
@@ -235,3 +239,42 @@ export interface ProductForToServer {
   categoryID: string;
   categoryForID: string[];
 }
+
+/////////////////////////////////////////////////////////////////
+export interface DesignerDescType {
+  _id: string;
+  title: string;
+  desc: string;
+}
+
+export interface DesignerGalleryType {
+  _id: string;
+  alt: string;
+  caption: string;
+  image: string;
+}
+
+export interface DesignerPdfType {
+  _id: string;
+  title: string;
+  img: string;
+  pdf: string;
+}
+
+export interface DesignerDescTypeToServer {
+  title: string;
+  desc: string;
+}
+
+export interface DesignerGalleryTypeToServer {
+  caption: string;
+  image: File | null;
+}
+
+export interface DesignerPdfTypeToServer {
+  title: string;
+  img: File | null;
+  pdf: File | null;
+}
+
+////////////////////////////////////////////////////////////////////////

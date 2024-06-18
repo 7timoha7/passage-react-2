@@ -1,18 +1,11 @@
 main {
   margin: 0;
   padding: 0;
-  /*background: rgba(210, 210, 210, 0.54);*/
 }
-
-/*body {*/
-/*  margin: 0;*/
-/*  padding: 0;*/
-/*  background: rgba(210, 210, 210, 0.54) !important;*/
-/*}*/
 
 body {
   margin: 0;
   padding: 0;
-  background-image: url('../src/assets/images/fon2.jpeg'); /* Путь к вашему изображению */
+  background-image: url('../src/assets/images/newFon/17.jpeg'); /* Путь к вашему изображению */
   background-repeat: repeat;
 }

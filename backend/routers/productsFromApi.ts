@@ -172,6 +172,28 @@ const createProducts = async (
         continue;
       }
 
+      // Проверяем, есть ли остатки только на складе 'Склад материалов (не для продажи)'
+      const hasOnlyExcludedWarehouseStock = quantityDataArray.every((q) => {
+        const stock = quantitiesStocks.find((qs) => qs.stockID === q.stockID);
+        return stock && stock.name === 'Склад материалов (не для продажи)';
+      });
+
+      if (hasOnlyExcludedWarehouseStock) {
+        // Пропускаем продукт, если он есть только на исключенном складе
+        continue;
+      }
+
+      // Фильтруем остатки, чтобы не учитывать склады с именем 'Склад материалов (не для продажи)'
+      const validQuantityDataArray = quantityDataArray.filter((q) => {
+        const stock = quantitiesStocks.find((qs) => qs.stockID === q.stockID);
+        return stock && stock.name !== 'Склад материалов (не для продажи)' && q.quantity > 0;
+      });
+
+      // Проверяем, есть ли положительные остатки на других складах
+      if (validQuantityDataArray.length === 0) {
+        continue;
+      }
+
       // Получаем данные о цене для текущего продукта
       const priceData = filteredPrices.find((p) => p.goodID === productData.goodID);
       if (!priceData || !priceData.price) {
@@ -220,7 +242,6 @@ const createProducts = async (
         size
       ) {
         const area = calculateArea(size, type);
-        // recalculatedPrice = calculatePricePerSquareMeter(priceData.price, Number(area.toFixed(2)));
         recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
       }
 
@@ -237,16 +258,14 @@ const createProducts = async (
         measureCode: productData.measureCode,
         measureName: productData.measureName,
         ownerID: productData.ownerID,
-        quantity: quantityDataArray
-          .filter((quantityData) => quantityData.quantity > 0) // Отфильтровать только элементы с положительным количеством
-          .map((quantityData) => {
-            const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
-            return {
-              name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
-              stockID: quantityData.stockID,
-              quantity: quantityData.quantity,
-            };
-          }),
+        quantity: validQuantityDataArray.map((quantityData) => {
+          const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
+          return {
+            name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
+            stockID: quantityData.stockID,
+            quantity: quantityData.quantity,
+          };
+        }),
         price: recalculatedPrice, // Используем пересчитанную цену
         priceOriginal: priceData.price,
         images: productImages,
@@ -365,22 +384,21 @@ productFromApiRouter.get('/', async (req, res, next) => {
 
     // ////////////////////////////////////////////////////////
     // // Вместо ожидания результата запроса, сохраняем его в переменную
-    // const goodsData = await fetchData('goods-get');
     //
     // // Путь к файлу
     // const directoryPath = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
     // const directoryPath2 = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
     // const filePath = path.join(directoryPath, 'goodsData.txt');
-    // const filePath2 = path.join(directoryPath2, 'groupsData.txt');
+    // const filePath2 = path.join(directoryPath2, 'QuantityData.txt');
     // const filePath3 = path.join(directoryPath2, 'priceData.txt');
     //
     // // Создаем отсутствующие папки, если они не существуют
     // fs.mkdirSync(directoryPath, { recursive: true });
     //
     // // Сохраняем данные в текстовый файл
-    // fs.writeFileSync(filePath, JSON.stringify(goodsData.result.goods, null, 2), 'utf-8');
-    // fs.writeFileSync(filePath2, JSON.stringify(goodsData.result.goodsGroups, null, 2), 'utf-8');
-    // fs.writeFileSync(filePath3, JSON.stringify(responsePrice.result.goods, null, 2), 'utf-8');
+    // fs.writeFileSync(filePath, JSON.stringify(responseProducts.result, null, 2), 'utf-8');
+    // fs.writeFileSync(filePath2, JSON.stringify(responseQuantity.result, null, 2), 'utf-8');
+    // fs.writeFileSync(filePath3, JSON.stringify(responsePrice.result, null, 2), 'utf-8');
     // /////////////////////////////////////////////////////////////////////
 
     const products: IProductFromApi[] = responseProducts.result.goods;

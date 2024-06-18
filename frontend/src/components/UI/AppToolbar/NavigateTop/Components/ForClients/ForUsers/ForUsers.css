@@ -1,0 +1,87 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin,cyrillic);
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav ul:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+nav a {
+  text-decoration: none;
+  display: block;
+  transition: .3s linear;
+}
+
+.topmenu > li {
+  float: left;
+  position: relative;
+  border-left: 1px solid black;
+}
+
+.topmenu > li:first-child {
+  border-left: 0;
+}
+
+.topmenu > li > a {
+  padding: 20px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffffff;
+  letter-spacing: 2px;
+  background: #413F3C; /* Цвет фона для основного меню */
+}
+
+.topmenu > li > a:hover {
+  color: #ddbe86;
+}
+
+.submenu {
+  position: absolute;
+  top: 100%; /* Позиционирует подменю сразу под основным меню */
+  left: 0;
+  z-index: 5;
+  min-width: 230px;
+  background: white;
+  border-top: 1px solid #CBCBCC;
+  border-left: 1px solid #CBCBCC;
+  border-right: 1px solid #CBCBCC;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s linear;
+}
+
+.submenu li {
+  position: relative;
+}
+
+.submenu li a {
+  color: #282828;
+  padding: 10px 20px;
+  font-size: 13px;
+  border-bottom: 1px solid #CBCBCC;
+}
+
+.submenu li:last-child a {
+  border-bottom: none; /* Убирает нижнюю границу у последнего элемента */
+}
+
+nav li:hover > .submenu {
+  visibility: visible;
+  opacity: 1;
+}

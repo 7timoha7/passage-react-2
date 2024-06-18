@@ -12,6 +12,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { LoadingButton } from '@mui/lab';
 import { changeRole, getByRole } from '../usersThunks';
+import { btnUserItemColor, btnUserItemColorCancel, btnUserItemColorYes } from '../../../styles';
 
 interface Props {
   prop: User;
@@ -103,19 +104,7 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
           {'Роль' + ': '} {prop.role}
         </Typography>
         {user?.role === 'director' && (
-          <LoadingButton
-            sx={{
-              mt: 2,
-              color: '#e39912', // Цвет контура кнопки
-              borderColor: '#e39912', // Цвет контура кнопки
-
-              '&:hover': {
-                borderColor: '#756433', // Цвет контура кнопки при наведении
-                color: '#756433', // Цвет контура кнопки
-              },
-            }}
-            onClick={handleClick}
-          >
+          <LoadingButton sx={btnUserItemColor} onClick={handleClick}>
             {'Изменить роль'}
           </LoadingButton>
         )}
@@ -133,34 +122,10 @@ const UserItem: React.FC<Props> = ({ prop, role }) => {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button
-              sx={{
-                mt: 2,
-                color: '#e39912', // Цвет контура кнопки
-                borderColor: '#e39912', // Цвет контура кнопки
-
-                '&:hover': {
-                  borderColor: '#756433', // Цвет контура кнопки при наведении
-                  color: '#756433', // Цвет контура кнопки
-                },
-              }}
-              onClick={() => setOpen(false)}
-            >
+            <Button sx={btnUserItemColorCancel} onClick={() => setOpen(false)}>
               отмена
             </Button>
-            <Button
-              sx={{
-                mt: 2,
-                color: '#e39912', // Цвет контура кнопки
-                borderColor: '#e39912', // Цвет контура кнопки
-
-                '&:hover': {
-                  borderColor: '#756433', // Цвет контура кнопки при наведении
-                  color: '#756433', // Цвет контура кнопки
-                },
-              }}
-              onClick={handleYes}
-            >
+            <Button sx={btnUserItemColorYes} onClick={handleYes}>
               да
             </Button>
           </DialogActions>

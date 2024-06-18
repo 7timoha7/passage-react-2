@@ -1,4 +1,4 @@
-import { AppBar, Box, Container, Grid, styled, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Container, Grid, styled, Toolbar, useMediaQuery } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { ToolBarMobileStyles, ToolBarStyles } from '../../../styles';
 import NavigateTop from './NavigateTop/NavigateTop';
@@ -30,36 +30,13 @@ const AppToolbar = () => {
               spacing={2}
               sx={{ '@media (max-width: 550px)': { justifyContent: 'center' } }}
             >
-              <Grid
-                item
-                textAlign={'center'}
-                sx={{
-                  background: '#404040',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  p: 3,
-                  borderRadius: '50%',
-                  mt: 2,
-                  mb: 2,
-                }}
-              >
+              <Grid item>
                 <Link to="/" style={{ margin: 'auto' }}>
-                  <img style={{ maxWidth: '200px' }} src="/logo2.svg" alt="passage" />
+                  <img style={{ maxWidth: '300px' }} src="/logo_brown.png" alt="passage" />
                 </Link>
-                <Typography variant={'inherit'} sx={{ color: '#ffffff', fontWeight: 'bold', fontSize: '12px' }}>
-                  дизайнерские решения
-                </Typography>
-                <Typography
-                  variant={'inherit'}
-                  sx={{ color: '#ffffff', fontWeight: 'bold', fontSize: '12px', marginTop: '-5px' }}
-                >
-                  отделочные материалы
-                </Typography>
               </Grid>
 
-              <Grid item sx={{ flexGrow: 1, minWidth: 0 }}>
+              <Grid item sx={{ flexGrow: 2, minWidth: 0, ml: 2, mr: 2 }}>
                 <Search />
               </Grid>
 

@@ -6,7 +6,8 @@ import { User } from '../../../types';
 import { createChatIdAdmin, deleteChatIdAdmin, fetchOneChatIdAdmin } from '../../users/usersThunks';
 import CurveText from '../../../components/UI/CurveText/CurveText';
 import { LoadingButton } from '@mui/lab';
-import customTheme from './themeId'; // Импорт пользовательской темы
+import customTheme from './themeId';
+import { btnColorChatIDInstructions, btnColorChatIDSend } from '../../../styles'; // Импорт пользовательской темы
 
 interface Props {
   user: User;
@@ -79,29 +80,13 @@ const ChatIdAdminForm: React.FC<Props> = ({ user }) => {
                 variant="contained"
                 type="submit"
                 style={{ marginTop: 16 }}
-                sx={{
-                  color: '#ffffff', // Цвет контура кнопки
-                  background: '#e39912', // Цвет контура кнопки
-
-                  '&:hover': {
-                    background: '#756433', // Цвет контура кнопки при наведении
-                    color: '#ffffff', // Цвет контура кнопки
-                  },
-                }}
+                sx={btnColorChatIDSend}
               >
                 Отправить
               </LoadingButton>
 
               <Button
-                sx={{
-                  color: '#e39912', // Цвет контура кнопки
-                  borderColor: '#e39912', // Цвет контура кнопки
-
-                  '&:hover': {
-                    borderColor: '#756433', // Цвет контура кнопки при наведении
-                    color: '#756433', // Цвет контура кнопки
-                  },
-                }}
+                sx={btnColorChatIDInstructions}
                 variant="text"
                 color="primary"
                 onClick={toggleInstructions}

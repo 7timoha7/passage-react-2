@@ -34,6 +34,7 @@ import ProductGallery from './ProductGallery';
 import * as isoCountries from 'i18n-iso-countries';
 import CountryFlag from 'react-country-flag';
 import { setProductsForID } from '../../ProductsFor/productsForSlice';
+import { btnFullCardColor, priceColorFullCard, priceNameColorFullCard } from '../../../styles';
 
 interface Props {
   product: ProductType;
@@ -169,31 +170,39 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                   {product.name}
                 </Typography>
                 <Box>
-                  <Typography sx={{ color: '#e79d15', mt: 1 }}>
+                  <Typography sx={{ color: priceColorFullCard, mt: 1 }}>
                     {product.price + ' сом'}
                     {product.type === 'Керамогранит' ? (
-                      <span style={{ color: '#75684f', fontSize: '15px' }}> - за плитку</span>
+                      <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за плитку</span>
                     ) : (
                       ''
                     )}
                     {product.type === 'Ковролин' ? (
-                      <span style={{ color: '#75684f', fontSize: '15px' }}> - минимально за {product.size} м²</span>
+                      <span
+                        style={{
+                          color: priceNameColorFullCard,
+                          fontSize: '15px',
+                        }}
+                      >
+                        {' '}
+                        - минимально за {product.size} м²
+                      </span>
                     ) : (
                       ''
                     )}
                   </Typography>
 
                   {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
-                    <Typography sx={{ color: '#e79d15' }}>
+                    <Typography sx={{ color: priceColorFullCard }}>
                       {product.priceOriginal + ' сом'}
-                      <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
+                      <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
                     </Typography>
                   ) : null}
 
                   {product.type === 'Ковролин' ? (
-                    <Typography sx={{ color: '#e79d15' }}>
+                    <Typography sx={{ color: priceColorFullCard }}>
                       {product.priceOriginal + ' сом'}
-                      <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
+                      <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
                     </Typography>
                   ) : null}
                 </Box>
@@ -207,14 +216,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                         disabled={indicator(product)}
                         variant="outlined"
                         endIcon={<AddShoppingCartIcon />}
-                        sx={{
-                          color: '#e39912', // Цвет контура кнопки
-                          borderColor: '#e39912', // Цвет контура кнопки
-                          '&:hover': {
-                            color: '#756433', // Цвет контура кнопки при наведении
-                            borderColor: '#756433', // Цвет контура кнопки при наведении
-                          },
-                        }}
+                        sx={btnFullCardColor}
                         loading={addBasketLoading === product.goodID}
                       >
                         {indicator(product) ? 'В корзине' : 'Добавить в корзину'}
@@ -223,18 +225,7 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                   </Tooltip>
                 </Grid>
                 <Grid item>
-                  <Button
-                    sx={{
-                      color: '#e39912', // Цвет контура кнопки
-                      borderColor: '#e39912', // Цвет контура кнопки
-                      '&:hover': {
-                        color: '#756433', // Цвет контура кнопки при наведении
-                        borderColor: '#756433', // Цвет контура кнопки при наведении
-                      },
-                    }}
-                    onClick={() => navigate('/basket')}
-                    variant="outlined"
-                  >
+                  <Button sx={btnFullCardColor} onClick={() => navigate('/basket')} variant="outlined">
                     Перейти в корзину
                   </Button>
                 </Grid>

@@ -8,6 +8,12 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import type { RegisterMutation } from '../../types';
 import { MuiTelInput } from 'mui-tel-input';
+import {
+  avatarColor,
+  backgroundColorLoginRegister,
+  btnColorLigInRegister,
+  btnColorLigInRegisterBottom,
+} from '../../styles';
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -59,12 +65,12 @@ const Register = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          background: 'rgba(0,0,0,0.57)',
+          background: backgroundColorLoginRegister,
           borderRadius: '10px',
           padding: '20px',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: '#ddbe86' }}>
+        <Avatar sx={{ m: 1, backgroundColor: avatarColor }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography color={'white'} component="h1" variant="h5">
@@ -130,35 +136,12 @@ const Register = () => {
               />
             </Grid>
           </Grid>
-          <LoadingButton
-            type="submit"
-            loading={loading}
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 2,
-              backgroundColor: '#ddbe86', // Цвет кнопки
-              '&:hover': {
-                backgroundColor: '#ab944d', // Цвет кнопки при наведении
-              },
-            }}
-          >
+          <LoadingButton type="submit" loading={loading} fullWidth variant="contained" sx={btnColorLigInRegister}>
             {'Регистрация'}
           </LoadingButton>
-          <Grid container justifyContent="flex-end" mt={2}>
+          <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link
-                sx={{
-                  textDecoration: 'none',
-                  color: '#ddbe86',
-                  '&:hover': {
-                    color: '#ab944d', // Цвет кнопки при наведении
-                  },
-                }}
-                component={RouterLink}
-                to="/login"
-                variant="body2"
-              >
+              <Link sx={btnColorLigInRegisterBottom} component={RouterLink} to="/login" variant="body2">
                 {'Войти'}
               </Link>
             </Grid>

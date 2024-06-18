@@ -139,12 +139,31 @@ export interface IBestseller {
 }
 
 export interface IBanner {
+  typeBanner: string;
   title: string;
   desk: string;
+  link: string;
   image: string;
 }
 
 export interface IProductFor {
   categoryID: string;
   categoryForID: string[];
+}
+
+export interface IDesignerDesc {
+  title: string;
+  desc: string;
+}
+
+export interface IDesignerGallery {
+  alt: string;
+  caption: string;
+  image: string;
+}
+
+export interface IDesignerPdf {
+  title: string;
+  img: string;
+  pdf: string;
 }

@@ -11,6 +11,7 @@ import ProductsForItem from './ProductsForItem';
 import ModalCoverNew from '../../../components/UI/ModalCover/ModalCoverNew';
 import { LoadingButton } from '@mui/lab';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import { btnColorProductsForChange, productsForBgPage, productsForBgPageCheckBoxInf } from '../../../styles';
 
 const ProductsForPage = () => {
   const [state, setState] = useState<CategoriesType[]>([]);
@@ -72,7 +73,7 @@ const ProductsForPage = () => {
           <>
             {state.map((item) => {
               return (
-                <Box key={item.ID} sx={{ background: 'rgba(253,229,171,0.55)', mb: 1, borderRadius: '10px', p: 2 }}>
+                <Box key={item.ID} sx={{ background: productsForBgPage, mb: 1, borderRadius: '10px', p: 2 }}>
                   <Grid
                     justifyContent={'space-between'}
                     alignItems={'center'}
@@ -88,12 +89,7 @@ const ProductsForPage = () => {
                         size={'small'}
                         onClick={() => onClickButton(item.ID)}
                         variant={'contained'}
-                        sx={{
-                          backgroundColor: '#fac058', // Цвет кнопки
-                          '&:hover': {
-                            backgroundColor: '#ab944d', // Цвет кнопки при наведении
-                          },
-                        }}
+                        sx={btnColorProductsForChange}
                       >
                         Изменить
                       </LoadingButton>
@@ -111,7 +107,7 @@ const ProductsForPage = () => {
                                     <span
                                       style={{
                                         fontSize: '12px',
-                                        background: 'rgba(255,128,0,0.84)',
+                                        background: productsForBgPageCheckBoxInf,
                                         margin: '3px',
                                         borderRadius: '5px',
                                         padding: '3px',

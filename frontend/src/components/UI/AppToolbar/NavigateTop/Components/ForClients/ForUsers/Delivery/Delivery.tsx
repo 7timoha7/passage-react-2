@@ -6,6 +6,9 @@ import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 const Delivery = () => {
   return (
     <>
+      <Typography sx={{ mt: '30px' }} variant="h4">
+        ДОСТАВКА
+      </Typography>
       <Paper
         sx={{
           p: 3,
@@ -14,49 +17,49 @@ const Delivery = () => {
         }}
       >
         <Typography variant="h5" fontWeight="bold" mb={2}>
-          Правила доставки
+          Правила доставки:
         </Typography>
         <Divider />
 
         <List>
-          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
+          <ListItem>
             <ListItemIcon>
-              <CheckCircleOutline sx={{ '&:hover': { color: '#ddbe86' } }} />
+              <CheckCircleOutline />
             </ListItemIcon>
             <ListItemText primary="Бесплатная доставка в пределах города" />
           </ListItem>
 
-          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
+          <ListItem>
             <ListItemIcon>
-              <MonetizationOn sx={{ '&:hover': { color: '#ddbe86' } }} />
+              <MonetizationOn />
             </ListItemIcon>
             <ListItemText primary="Доставка за городской чертой - 40 сом за километр" />
           </ListItem>
 
-          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
+          <ListItem>
             <ListItemIcon>
-              <DirectionsCar sx={{ '&:hover': { color: '#ddbe86' } }} />
+              <DirectionsCar />
             </ListItemIcon>
             <ListItemText primary="Доставка с понедельника по субботу" />
           </ListItem>
 
-          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
+          <ListItem>
             <ListItemIcon>
-              <DoorFront sx={{ '&:hover': { color: '#ddbe86' } }} />
+              <DoorFront />
             </ListItemIcon>
             <ListItemText primary="Доставка осуществляется только до подезда или до ворот" />
           </ListItem>
 
-          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
+          <ListItem>
             <ListItemIcon>
-              <AccessTime sx={{ '&:hover': { color: '#ddbe86' } }} />
+              <AccessTime />
             </ListItemIcon>
             <ListItemText primary="Прием заказов на доставку до 15:00, если позже то переносится на следующий рабочий день" />
           </ListItem>
 
-          <ListItem sx={{ '&:hover': { color: '#ddbe86' } }}>
+          <ListItem>
             <ListItemIcon>
-              <AccessibilityNewIcon sx={{ '&:hover': { color: '#ddbe86' } }} />{' '}
+              <AccessibilityNewIcon />{' '}
             </ListItemIcon>
             <ListItemText primary="Клиенту нужно заранее позаботится о грузчиках. Водитель не занимается выгрузкой" />
           </ListItem>

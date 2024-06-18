@@ -10,15 +10,24 @@ import ProductsNews from '../../../features/Products/components/ProductsNews';
 import ProductsFor from '../../../features/ProductsFor/components/ProductsFor';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectProductsForID, setProductsForID } from '../../../features/ProductsFor/productsForSlice';
-import PorcelainStoneware from '../Banners/PorcelainStoneware';
-import PorcelainStoneware2 from '../Banners/PorcelainStoneware2';
-import PorcelainStoneware3 from '../Banners/PorcelainStoneware3';
+import { toolbarTobAndBottomColor } from '../../../styles';
+import BannerTop from '../../../features/Banners/BannerTop';
+import BannersMiddle from '../../../features/Banners/BannersMiddle';
+import BannersBottom from '../../../features/Banners/BannersBottom';
+import { selectBanners, selectFetchBannersLoading } from '../../../features/Banners/bannersSlice';
+import { fetchBanners } from '../../../features/Banners/bannersThunks';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isMobile = useMediaQuery('(max-width:1200px)');
   const location = useLocation();
   const productsForID = useAppSelector(selectProductsForID);
   const dispatch = useAppDispatch();
+  const banners = useAppSelector(selectBanners);
+  const fetchBannersLoading = useAppSelector(selectFetchBannersLoading);
+
+  useEffect(() => {
+    dispatch(fetchBanners());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!location.pathname.includes('/product/')) {
@@ -31,8 +40,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
       <header>
         <AppToolbar />
       </header>
-
-      <Box sx={{ background: '#404040' }}>
+      <Box sx={{ background: toolbarTobAndBottomColor }}>
         <Container maxWidth={'xl'} sx={{ color: '#ffffff' }}>
           <BreadcrumbsPage />
         </Container>
@@ -41,7 +49,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       {location.pathname === '/' && (
         <Box>
-          <PorcelainStoneware />
+          <BannerTop loadingFetch={fetchBannersLoading} banners={banners} />
         </Box>
       )}
 
@@ -58,7 +66,6 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Box>
         </Box>
       </Container>
-
       <Container maxWidth={'xl'} sx={{ mb: 2 }}>
         {location.pathname === '/' && (
           <>
@@ -69,7 +76,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       {location.pathname === '/' && (
         <Box>
-          <PorcelainStoneware2 />
+          <BannersMiddle banners={banners} loadingFetch={fetchBannersLoading} />
         </Box>
       )}
 
@@ -82,7 +89,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       {location.pathname === '/' && (
         <Box>
-          <PorcelainStoneware3 />
+          <BannersBottom banners={banners} loadingFetch={fetchBannersLoading} />
         </Box>
       )}
 

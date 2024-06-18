@@ -104,8 +104,8 @@ const MenuCategoriesTop: React.FC = () => {
             <li>
               <a href="#">
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <MenuIcon fontSize={'large'} sx={{ mr: 1 }} />
-                  <span>{category.name}</span>
+                  <MenuIcon fontSize={'medium'} sx={{ mr: 1 }} />
+                  <span>{'Продукция'}</span>
                 </div>
               </a>
               {category.subcategories && category.subcategories.length > 0 && (

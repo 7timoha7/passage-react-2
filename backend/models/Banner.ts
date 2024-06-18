@@ -4,13 +4,19 @@ import { IBanner } from '../types';
 const Schema = mongoose.Schema;
 
 const BannerSchema = new Schema<IBanner>({
-  title: {
+  typeBanner: {
     type: String,
     required: true,
+    enum: ['top', 'middle', 'bottom'],
+  },
+  title: {
+    type: String,
   },
   desk: {
     type: String,
-    required: true,
+  },
+  link: {
+    type: String,
   },
   image: {
     type: String,

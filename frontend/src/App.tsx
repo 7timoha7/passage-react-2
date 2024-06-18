@@ -38,9 +38,17 @@ import SearchPage from './components/UI/AppToolbar/NavigateTop/Components/Search
 import { selectOrderSuccess, setOrderSuccessNull } from './features/Order/orderSlice';
 import { selectBestsellerSuccess } from './features/Bestsellers/bestsellersSlice';
 import ProductsNews from './features/Products/components/ProductsNews';
-import Delivery from './components/UI/Delivery/Delivery';
-import BannersForm from './features/Banners/BannersForm';
+import Delivery from './components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Delivery/Delivery';
 import BasketPage from './features/Basket/BasketPage';
+import Installment from './components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Installment/Installment';
+import Warranty from './components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Warranty/Warranty';
+import { selectBannersSuccess } from './features/Banners/bannersSlice';
+import Designers from './components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Designers/Designers';
+import DesignersFormPage from './components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Designers/Forms/DesignersFormPage';
+import Rakceramics from './components/UI/AboutPage/Rakceramics';
+import Kludirak from './components/UI/AboutPage/Kludirak';
+import Rakporcelain from './components/UI/AboutPage/Rakporcelain';
+import { selectDesignerSuccess } from './components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Designers/designersSlice';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -54,6 +62,60 @@ function App() {
   const { enqueueSnackbar } = useSnackbar();
   const { i18n } = useTranslation();
   const basketBestsellerSuccess = useAppSelector(selectBestsellerSuccess);
+  const bannersSuccess = useAppSelector(selectBannersSuccess);
+  const designerSuccess = useAppSelector(selectDesignerSuccess);
+
+  useEffect(() => {
+    if (bannersSuccess) {
+      if (i18n.language === 'en') {
+        enqueueSnackbar(bannersSuccess.message.en, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      } else {
+        if (bannersSuccess.message.ru === 'Баннер успешно удален!') {
+          enqueueSnackbar(bannersSuccess.message.ru, {
+            variant: 'error',
+            preventDuplicate: true,
+          });
+        } else {
+          enqueueSnackbar(bannersSuccess.message.ru, {
+            variant: 'success',
+            preventDuplicate: true,
+          });
+        }
+      }
+    }
+    dispatch(setProductSuccessNull());
+  }, [bannersSuccess, dispatch, enqueueSnackbar, i18n.language]);
+
+  useEffect(() => {
+    if (designerSuccess) {
+      if (i18n.language === 'en') {
+        enqueueSnackbar(designerSuccess.message.en, {
+          variant: 'success',
+          preventDuplicate: true,
+        });
+      } else {
+        if (
+          designerSuccess.message.ru === 'Раздел для дизайнеров успешно удален!' ||
+          designerSuccess.message.ru === 'Картинка успешно удалена!' ||
+          designerSuccess.message.ru === 'Каталог удален!'
+        ) {
+          enqueueSnackbar(designerSuccess.message.ru, {
+            variant: 'error',
+            preventDuplicate: true,
+          });
+        } else {
+          enqueueSnackbar(designerSuccess.message.ru, {
+            variant: 'success',
+            preventDuplicate: true,
+          });
+        }
+      }
+    }
+    dispatch(setProductSuccessNull());
+  }, [designerSuccess, dispatch, enqueueSnackbar, i18n.language]);
 
   useEffect(() => {
     if (basketBestsellerSuccess) {
@@ -199,6 +261,12 @@ function App() {
         <Route path="/search-results/:text" element={<SearchPage />} />
         <Route path="/productsNews/" element={<ProductsNews />} />
         <Route path="/delivery/" element={<Delivery />} />
+        <Route path="/installment/" element={<Installment />} />
+        <Route path="/warranty/" element={<Warranty />} />
+        <Route path="/designers/" element={<Designers />} />
+        <Route path="about/rakceramics/" element={<Rakceramics />} />
+        <Route path="about/kludirak/" element={<Kludirak />} />
+        <Route path="about/rakporcelain/" element={<Rakporcelain />} />
         <Route
           path="/my-cabinet"
           element={
@@ -238,13 +306,14 @@ function App() {
           }
         />
         <Route
-          path="/edit-banners/"
+          path="/designersForm/"
           element={
-            <ProtectedRoute isAllowed={user && Boolean(user.role === 'admin')}>
-              <BannersForm />
+            <ProtectedRoute isAllowed={user && Boolean(user)}>
+              <DesignersFormPage />
             </ProtectedRoute>
           }
         />
+
         <Route path="*" element={<NoFoundPage />} />
       </Route>
     </Routes>

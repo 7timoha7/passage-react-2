@@ -25,6 +25,7 @@ import { selectUser } from '../users/usersSlice';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { apiURL, placeHolderImg } from '../../constants';
 import noImg from '../../assets/images/no_image.jpg';
+import { btnBasketColorAdd, btnColorClearBasket, btnPlusBasket, btnPlusBasketHover } from '../../styles';
 
 const BasketPage = () => {
   const basket = useAppSelector(selectBasket);
@@ -160,10 +161,10 @@ const BasketPage = () => {
                                     <IconButton
                                       sx={{
                                         p: 0.5,
-                                        color: '#e39912', // Цвет контура кнопки
+                                        color: btnPlusBasket, // Цвет контура кнопки
 
                                         '&:hover': {
-                                          color: '#756433', // Цвет контура кнопки при наведении
+                                          color: btnPlusBasketHover, // Цвет контура кнопки при наведении
                                         },
                                       }}
                                       disabled={
@@ -239,10 +240,9 @@ const BasketPage = () => {
                                         <IconButton
                                           sx={{
                                             p: 0.5,
-                                            color: '#e39912', // Цвет контура кнопки
-
+                                            color: btnPlusBasket, // Цвет контура кнопки
                                             '&:hover': {
-                                              color: '#756433', // Цвет контура кнопки при наведении
+                                              color: btnPlusBasketHover, // Цвет контура кнопки при наведении
                                             },
                                           }}
                                           disabled={addBasketLoading === item.product.goodID}
@@ -321,13 +321,7 @@ const BasketPage = () => {
                     disabled={basket?.items?.length === 0}
                     onClick={() => navigate('/order')}
                     variant="contained"
-                    sx={{
-                      marginLeft: 2,
-                      backgroundColor: '#e39912',
-                      '&:hover': {
-                        backgroundColor: '#756433', // Цвет контура кнопки при наведении
-                      },
-                    }}
+                    sx={btnBasketColorAdd}
                   >
                     Оформить заказ
                   </LoadingButton>
@@ -338,16 +332,7 @@ const BasketPage = () => {
                     disabled={basket?.items?.length === 0}
                     variant="outlined"
                     onClick={() => clearBasket('clear')}
-                    sx={{
-                      marginLeft: 2,
-                      color: '#e39912', // Цвет контура кнопки
-                      borderColor: '#e39912', // Цвет контура кнопки
-
-                      '&:hover': {
-                        borderColor: '#756433', // Цвет контура кнопки при наведении
-                        color: '#756433', // Цвет контура кнопки
-                      },
-                    }}
+                    sx={btnColorClearBasket}
                   >
                     Очистить корзину
                   </LoadingButton>

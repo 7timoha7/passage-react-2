@@ -28,14 +28,14 @@ import {
   selectCreateBestsellersLoading,
   selectDeleteBestsellersLoading,
 } from '../../Bestsellers/bestsellersSlice';
+import { priceColorFullCard, priceNameColorFullCard } from '../../../styles';
 
 interface Props {
   product: ProductType;
   indicator?: boolean;
-  newsSize?: boolean;
 }
 
-const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
+const ProductCard: React.FC<Props> = ({ product, indicator }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
@@ -128,177 +128,171 @@ const ProductCard: React.FC<Props> = ({ product, indicator, newsSize }) => {
   };
 
   return (
-    <Box
+    <Card
+      onClick={() => onClickCard()}
       sx={{
-        height: newsSize ? '405px' : '100%',
+        height: '100%',
+        width: 300,
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        transition: 'box-shadow 0.3s',
+        '&:hover': {
+          boxShadow: indicator ? 'none' : '0px 0px 3px 3px rgb(64,64,64)',
+        },
+        '@media (max-width:600px)': {
+          width: '200px',
+        },
+        '@media (max-width:480px)': {
+          width: '180px',
+        },
+        '@media (max-width:420px)': {
+          width: '165px',
+        },
+        '@media (max-width:388px)': {
+          width: '290px',
+        },
       }}
     >
-      <Card
-        onClick={() => onClickCard()}
+      <LazyLoadImage
+        effect="blur" // можно изменить на 'opacity' или другой
+        src={imgProduct}
+        alt="Product"
+        height={200}
+        width="100%"
+        placeholderSrc={placeHolderImg}
+        style={{ objectFit: 'contain' }}
+      />
+      <Box
         sx={{
-          height: '100%',
-          width: 300,
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          transition: 'box-shadow 0.3s',
-          '&:hover': {
-            boxShadow: indicator ? 'none' : '0px 0px 3px 3px rgb(64,64,64)',
-          },
-          '@media (max-width:600px)': {
-            width: '200px',
-          },
-          '@media (max-width:480px)': {
-            width: '180px',
-          },
-          '@media (max-width:420px)': {
-            width: '165px',
-          },
-          '@media (max-width:400px)': {
-            width: '290px',
-          },
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          cursor: 'pointer',
+          padding: '8px',
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClickFavorite(product.goodID).then((r) => r);
         }}
       >
-        <LazyLoadImage
-          effect="blur" // можно изменить на 'opacity' или другой
-          src={imgProduct}
-          alt="Product"
-          height={200}
-          width="100%"
-          placeholderSrc={placeHolderImg}
-          style={{ objectFit: 'contain' }}
-        />
+        {user &&
+          user.isVerified &&
+          (user.role === 'user' || user.role === 'director' || user.role === 'admin') &&
+          (favorite ? (
+            favoriteLoading === product.goodID ? (
+              <CircularProgress size={'20px'} color="error" />
+            ) : (
+              <FavoriteIcon color="error" />
+            )
+          ) : favoriteLoading === product.goodID ? (
+            <CircularProgress size={'20px'} color="error" />
+          ) : (
+            <FavoriteBorderIcon />
+          ))}
+      </Box>
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Box>
+          <Typography variant="body2" color="black">
+            {product.name}
+          </Typography>
+        </Box>
+
+        <Typography sx={{ color: priceColorFullCard, mt: 1 }}>
+          {product.price + ' сом'}
+          {product.type === 'Керамогранит' ? (
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за плитку</span>
+          ) : (
+            ''
+          )}
+          {product.type === 'Ковролин' ? (
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - минимально за {product.size} м²</span>
+          ) : (
+            ''
+          )}
+        </Typography>
+
+        {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
+          <Typography sx={{ color: priceColorFullCard }}>
+            {product.priceOriginal + ' сом'}
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
+          </Typography>
+        ) : null}
+
+        {product.type === 'Ковролин' ? (
+          <Typography sx={{ color: priceColorFullCard }}>
+            {product.priceOriginal + ' сом'}
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
+          </Typography>
+        ) : null}
+
+        <Typography></Typography>
         <Box
           sx={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            cursor: 'pointer',
-            padding: '8px',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClickFavorite(product.goodID).then((r) => r);
+            marginTop: 'auto',
+            alignSelf: 'flex-end',
           }}
         >
-          {user &&
-            user.isVerified &&
-            (user.role === 'user' || user.role === 'director' || user.role === 'admin') &&
-            (favorite ? (
-              favoriteLoading === product.goodID ? (
-                <CircularProgress size={'20px'} color="error" />
-              ) : (
-                <FavoriteIcon color="error" />
-              )
-            ) : favoriteLoading === product.goodID ? (
-              <CircularProgress size={'20px'} color="error" />
-            ) : (
-              <FavoriteBorderIcon />
-            ))}
+          {addBasketLoading !== product.goodID ? (
+            <Tooltip title={indicator ? 'Товар уже в корзине' : 'Добавить в корзину'} arrow placement="top">
+              <Box
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!indicator) {
+                    handleAddToCart(e).then((r) => r);
+                  }
+                }}
+                sx={{
+                  cursor: indicator ? 'not-allowed' : 'pointer',
+                }}
+              >
+                <AddShoppingCartIcon
+                  fontSize="large"
+                  color={indicator ? 'disabled' : indicator ? 'error' : 'inherit'}
+                />
+              </Box>
+            </Tooltip>
+          ) : (
+            <CircularProgress size={'20px'} color="error" />
+          )}
         </Box>
-        <CardContent
-          sx={{
-            flexGrow: 1,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <Box>
-            <Typography variant="body2" color="black">
-              {product.name}
-            </Typography>
-          </Box>
-
-          <Typography sx={{ color: '#e79d15', mt: 1 }}>
-            {product.price + ' сом'}
-            {product.type === 'Керамогранит' ? (
-              <span style={{ color: '#75684f', fontSize: '15px' }}> - за плитку</span>
-            ) : (
-              ''
-            )}
-            {product.type === 'Ковролин' ? (
-              <span style={{ color: '#75684f', fontSize: '15px' }}> - минимально за {product.size} м²</span>
-            ) : (
-              ''
-            )}
-          </Typography>
-
-          {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
-            <Typography sx={{ color: '#e79d15' }}>
-              {product.priceOriginal + ' сом'}
-              <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
-            </Typography>
-          ) : null}
-
-          {product.type === 'Ковролин' ? (
-            <Typography sx={{ color: '#e79d15' }}>
-              {product.priceOriginal + ' сом'}
-              <span style={{ color: '#75684f', fontSize: '15px' }}> - за м²</span>
-            </Typography>
-          ) : null}
-
-          <Typography></Typography>
-          <Box
-            sx={{
-              marginTop: 'auto',
-              alignSelf: 'flex-end',
-            }}
-          >
-            {addBasketLoading !== product.goodID ? (
-              <Tooltip title={indicator ? 'Товар уже в корзине' : 'Добавить в корзину'} arrow placement="top">
-                <Box
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!indicator) {
-                      handleAddToCart(e).then((r) => r);
-                    }
-                  }}
-                  sx={{
-                    cursor: indicator ? 'not-allowed' : 'pointer',
-                  }}
-                >
-                  <AddShoppingCartIcon
-                    fontSize="large"
-                    color={indicator ? 'disabled' : indicator ? 'error' : 'inherit'}
-                  />
-                </Box>
-              </Tooltip>
-            ) : (
-              <CircularProgress size={'20px'} color="error" />
-            )}
-          </Box>
-        </CardContent>
-        {user?.role === 'admin' && (
-          <>
-            {!bestsellerAdded() ? (
-              <LoadingButton
-                loading={bestsellersAddLoading}
-                color={'success'}
-                disabled={bestsellerAdded()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  addBestsellerBtn().then((r) => r);
-                }}
-              >
-                Добавить в хиты продаж
-              </LoadingButton>
-            ) : (
-              <LoadingButton
-                loading={bestsellersDeleteLoading}
-                color={'error'}
-                disabled={!bestsellerAdded()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deleteBestsellerBtn().then((r) => r);
-                }}
-              >
-                Удалить из хиты продаж
-              </LoadingButton>
-            )}
-          </>
-        )}
-      </Card>
-    </Box>
+      </CardContent>
+      {user?.role === 'admin' && (
+        <>
+          {!bestsellerAdded() ? (
+            <LoadingButton
+              loading={bestsellersAddLoading}
+              color={'success'}
+              disabled={bestsellerAdded()}
+              onClick={(e) => {
+                e.stopPropagation();
+                addBestsellerBtn().then((r) => r);
+              }}
+            >
+              Добавить в ПОПУЛЯРНЫЕ
+            </LoadingButton>
+          ) : (
+            <LoadingButton
+              loading={bestsellersDeleteLoading}
+              color={'error'}
+              disabled={!bestsellerAdded()}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteBestsellerBtn().then((r) => r);
+              }}
+            >
+              Удалить из ПОПУЛЯРНЫЕ
+            </LoadingButton>
+          )}
+        </>
+      )}
+    </Card>
   );
 };
 

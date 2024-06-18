@@ -52,7 +52,7 @@ const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
       { breakpoint: 1300, settings: { variableWidth: false, slidesToShow: 3, centerMode: false } },
       { breakpoint: 1080, settings: { variableWidth: false, slidesToShow: 2, centerMode: false } },
       { breakpoint: 800, settings: { variableWidth: false, slidesToShow: 2, centerMode: false } },
-      { breakpoint: 400, settings: { variableWidth: false, slidesToShow: 1, centerMode: false } },
+      { breakpoint: 388, settings: { variableWidth: false, slidesToShow: 1, centerMode: false } },
     ],
   };
 
@@ -109,7 +109,7 @@ const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
           </style>
 
           <Grid container justifyContent={'space-between'} alignItems={'center'} sx={{ mb: 3 }}>
-            <Typography variant="h5" fontWeight={'bold'} style={{ marginLeft: '2%' }}>
+            <Typography variant="h5" fontWeight={'bold'} sx={{ textTransform: 'uppercase' }}>
               Рекомендованные товары
             </Typography>
             <Grid item></Grid>
@@ -153,7 +153,6 @@ const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
               {productsFor && productsFor.categoryForID.length < 2 ? (
                 <Box sx={{ p: 2 }}>
                   <ProductCard
-                    newsSize={true}
                     indicator={indicator(productsFor.categoryForID[0])}
                     product={productsFor.categoryForID[0]}
                   />
@@ -162,9 +161,7 @@ const ProductsFor: React.FC<Props> = ({ categoriesID }) => {
                 <Slider ref={sliderRef} {...sliderSettings}>
                   {productsFor &&
                     productsFor.categoryForID.map((item) => (
-                      <div key={item._id}>
-                        <ProductCard newsSize={true} indicator={indicator(item)} product={item} />
-                      </div>
+                      <ProductCard indicator={indicator(item)} product={item} key={item._id} />
                     ))}
                 </Slider>
               )}

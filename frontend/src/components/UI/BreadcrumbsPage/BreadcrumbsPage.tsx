@@ -24,289 +24,180 @@ const BreadcrumbsPage = () => {
     };
 
     const generateBreadcrumbs = () => {
-      if (pathName === 'products' && categoryId) {
-        const categoryPath = getCategoryPath(categoryId);
-        const state = [
+      const baseBreadcrumbs = [
+        <Link
+          sx={{
+            '&:hover': { color: '#f6c011' },
+            textDecoration: 'none',
+          }}
+          key="1"
+          href="/"
+        >
+          ГЛАВНАЯ
+        </Link>,
+      ];
+
+      const breadcrumbMap: { [key: string]: JSX.Element[] } = {
+        products: categoryId
+          ? [
+              ...baseBreadcrumbs,
+              <Link
+                sx={{
+                  '&:hover': { color: '#f6c011' },
+                  textDecoration: 'none',
+                }}
+                fontWeight={'bold'}
+                key="2"
+                href={`/products/${categoryId}`}
+              >
+                {getCategoryPath(categoryId) || 'Категория'}
+              </Link>,
+            ]
+          : [],
+        product: productOne
+          ? [
+              ...baseBreadcrumbs,
+              <Link
+                sx={{
+                  '&:hover': { color: '#f6c011' },
+                  textDecoration: 'none',
+                }}
+                key="2"
+                href={`/products/${productOne.ownerID}`}
+              >
+                {getCategoryPath(productOne.ownerID) || 'Категория'}
+              </Link>,
+              <span key="3" style={{ fontWeight: 'bold' }}>
+                {productOne.name}
+              </span>,
+            ]
+          : [],
+        productsNews: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            НОВИНКИ
+          </span>,
+        ],
+        delivery: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            ДОСТАВКА
+          </span>,
+        ],
+        installment: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            РАСРОЧКА
+          </span>,
+        ],
+        warranty: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            ГАРАНТИЯ
+          </span>,
+        ],
+        designers: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            ДИЗАЙНЕРАМ
+          </span>,
+        ],
+        designersForm: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            РЕДАКТИРОВАНИЕ РАЗДЕЛА ДЛЯ ДИЗАЙНЕРОВ
+          </span>,
+        ],
+        contacts: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            КОНТАКТЫ
+          </span>,
+        ],
+        about: [
+          ...baseBreadcrumbs,
           <Link
             sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
+              '&:hover': { color: '#f6c011' },
               textDecoration: 'none',
             }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            fontWeight={'bold'}
             key="2"
-            href={`/products/${categoryId}`}
+            href="/about"
           >
-            {categoryPath ? categoryPath : 'Категория'}
+            О НАС
           </Link>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'product' && productOne) {
-        const categoryPath = getCategoryPath(productOne.ownerID);
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="2"
-            href={`/products/${productOne.ownerID}`}
-          >
-            {categoryPath ? categoryPath : 'Категория'}
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            {productOne.name}
+          <span key="3" style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+            {{
+              rakceramics: 'Rak Ceramics',
+              kludirak: 'Kludi Rak',
+              rakporcelain: 'Rak Porcelain',
+            }[categoryId] || ''}
           </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'productsNews') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Новинки
+        ],
+        'my-cabinet': [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            ЛИЧНЫЙ КАБИНЕТ
           </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'delivery') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Доставка
+        ],
+        login: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            ВХОД
           </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (location.pathname === '/') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'contacts') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Контакты
+        ],
+        register: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            РЕГИСТРАЦИЯ
           </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'about') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            О нас
+        ],
+        'search-results': [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            РЕЗУЛЬТАТ ПОИСКА:
           </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'my-cabinet') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Личный кабинет
+        ],
+        basket: [
+          ...baseBreadcrumbs,
+          <span key="2" style={{ fontWeight: 'bold' }}>
+            КОРЗИНА
           </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'login') {
-        const state = [
+        ],
+        order: [
+          ...baseBreadcrumbs,
           <Link
             sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Вход
-          </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'register') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Регистрация
-          </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'search-results') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Результат поиска:
-          </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'basket') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <span key="3" style={{ fontWeight: 'bold' }}>
-            Корзина
-          </span>,
-        ];
-        setBreadcrumbs(state);
-      } else if (pathName === 'order') {
-        const state = [
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
-              textDecoration: 'none',
-            }}
-            key="1"
-            href="/"
-          >
-            Главная
-          </Link>,
-          <Link
-            sx={{
-              '&:hover': {
-                color: '#f6c011', // Цвет кнопки при наведении
-              },
+              '&:hover': { color: '#f6c011' },
               textDecoration: 'none',
             }}
             key="2"
             href="/basket"
           >
-            Корзина
+            КОРЗИНА
           </Link>,
           <span key="3" style={{ fontWeight: 'bold' }}>
-            Оформление заказа
+            ОФОРМЛЕНИЕ ЗАКАЗА
           </span>,
-        ];
-        setBreadcrumbs(state);
+        ],
+      };
+
+      // Special condition for root and admin paths
+      if (location.pathname === '/' || location.pathname === '/admin') {
+        setBreadcrumbs([
+          <Link
+            sx={{
+              '&:hover': { color: '#f6c011' },
+              textDecoration: 'none',
+            }}
+            key="1"
+            href="/"
+          >
+            <span style={{ display: 'block', height: '24px' }}></span>
+          </Link>,
+        ]);
       } else {
-        // Если не находимся в категории или продукте, сбрасываем крошки
-        setBreadcrumbs([]);
+        setBreadcrumbs(breadcrumbMap[pathName] || []);
       }
     };
 
@@ -314,17 +205,11 @@ const BreadcrumbsPage = () => {
   }, [pathName, categoryId, categories, productOne, location.pathname]);
 
   return (
-    <>
-      <Box sx={{ m: 1 }}>
-        <Breadcrumbs sx={{ color: '#9f885f' }} separator="›" aria-label="breadcrumb">
-          {breadcrumbs.map((breadcrumb, index) =>
-            // Добавляем свойство color к компоненту Link
-            React.cloneElement(breadcrumb, { key: index, color: '#ddbe86' }),
-          )}
-          {/*{breadcrumbs}*/}
-        </Breadcrumbs>
-      </Box>
-    </>
+    <Box sx={{ m: 1 }}>
+      <Breadcrumbs sx={{ color: '#b0b0b0', fontSize: '12px' }} separator="›" aria-label="breadcrumb">
+        {breadcrumbs.map((breadcrumb, index) => React.cloneElement(breadcrumb, { key: index, color: '#ffffff' }))}
+      </Breadcrumbs>
+    </Box>
   );
 };
 
