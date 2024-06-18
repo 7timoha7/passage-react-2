@@ -103,7 +103,7 @@ const MenuCategoriesTop: React.FC = () => {
           <React.Fragment key={category._id}>
             <li>
               <a href="#">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginRight: '25px' }}>
                   <MenuIcon fontSize={'medium'} sx={{ mr: 1 }} />
                   <span>{'Продукция'}</span>
                 </div>

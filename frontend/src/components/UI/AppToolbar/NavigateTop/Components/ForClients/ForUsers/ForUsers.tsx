@@ -47,7 +47,9 @@ const ForUsers: React.FC<Props> = ({ close }) => {
         <nav>
           <ul className="topmenu">
             <li>
-              <a href="#">КЛИЕНТАМ</a>
+              <a style={{ paddingLeft: '8px' }} href="#">
+                КЛИЕНТАМ
+              </a>
               <ul style={{ marginTop: '1px' }} className="submenu">
                 <li>
                   <a href="#" onClick={() => navigate('/delivery')} className="submenu-link">

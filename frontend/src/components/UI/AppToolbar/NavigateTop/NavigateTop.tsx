@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import MenuCategoriesTop from '../../../../features/MenuCategories/components/MenuCategoriesTop';
-import { Container, Button, useMediaQuery, Typography } from '@mui/material';
+import { Container, Button, useMediaQuery } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 import UserMenu from '../UserMenu';
@@ -47,8 +47,8 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
   const isMobileMenu = useMediaQuery('@media (min-width: 1200px)');
   const user = useAppSelector(selectUser);
   const component = (
-    <>
-      <Box display="flex" flexWrap={'wrap'} justifyContent={'space-between'} alignItems={'center'}>
+    <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
+      <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
         <Box
           sx={{
             '@media (max-width: 1200px)': {
@@ -68,26 +68,23 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
               },
             }}
           >
-            {' '}
             <MenuCategoriesTop />
           </Box>
 
           {menu.map((item) => (
-            <Button onClick={close} component={Link} to={item.link} key={item.name}>
-              <Typography sx={ToolBarTopText}>{item.name}</Typography>
+            <Button sx={ToolBarTopText} onClick={close} component={Link} to={item.link} key={item.name}>
+              {item.name}
             </Button>
           ))}
           <ForUsers close={close} />
         </Box>
-
-        {/*<Box>{user ? <UserMenu close={close} user={user} /> : <AnonymousMenu close={close} />}</Box>*/}
-
-        {user && <Box>{user && <UserMenu close={close} user={user} />}</Box>}
-        {location.pathname === '/admin' && !user && (
-          <Box>{location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}</Box>
-        )}
       </Box>
-    </>
+
+      <Box display="flex" alignItems="center">
+        {user && <UserMenu close={close} user={user} />}
+        {location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}
+      </Box>
+    </Box>
   );
 
   const children = isMobileMenu ? <Container maxWidth={'xl'}>{component}</Container> : component;
