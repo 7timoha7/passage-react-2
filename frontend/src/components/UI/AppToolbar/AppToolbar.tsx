@@ -8,6 +8,7 @@ import Basket from '../../../features/Basket/Basket';
 
 const AppToolbar = () => {
   const isMobile = useMediaQuery('(max-width:1200px)');
+  const isMobileLogo = useMediaQuery('(max-width:800px)');
 
   const Link = styled(NavLink)({
     color: 'inherit',
@@ -30,11 +31,19 @@ const AppToolbar = () => {
               spacing={2}
               sx={{ '@media (max-width: 550px)': { justifyContent: 'center' } }}
             >
-              <Grid item>
-                <Link to="/" style={{ margin: 'auto' }}>
-                  <img style={{ maxWidth: '300px' }} src="/logo_brown.png" alt="passage" />
-                </Link>
-              </Grid>
+              {!isMobileLogo ? (
+                <Grid item>
+                  <Link to="/" style={{ margin: 'auto' }}>
+                    <img style={{ maxWidth: '300px' }} src="/logo_brown.png" alt="passage" />
+                  </Link>
+                </Grid>
+              ) : (
+                <Grid item>
+                  <Link to="/" style={{ margin: 'auto' }}>
+                    <img style={{ maxWidth: '280px' }} src="/logo_brown_main_mobile.png" alt="passage" />
+                  </Link>
+                </Grid>
+              )}
 
               <Grid item sx={{ flexGrow: 2, minWidth: 0, ml: 2, mr: 2 }}>
                 <Search />

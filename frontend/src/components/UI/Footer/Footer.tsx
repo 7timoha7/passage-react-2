@@ -14,7 +14,7 @@ const Footer = () => {
 
   return (
     <Box sx={{ flexGrow: 1, position: 'relative' }}>
-      <Box height={'40px'} sx={{ background: toolbarTobAndBottomColor }}></Box>
+      <Box height={'34px'} sx={{ background: toolbarTobAndBottomColor }}></Box>
       <AppBar position="static" sx={FooterStyle}>
         <Container maxWidth={'xl'} sx={{ paddingY: 1 }}>
           <Grid pt={4} pb={7} container justifyContent={'space-between'} alignItems="flex-start">
@@ -48,7 +48,7 @@ const Footer = () => {
                     }}
                   >
                     <InstagramIcon sx={{ mr: 0.7 }} />
-                    Passage KG
+                    Passage Матросова
                   </Link>
                 </Grid>
                 <Grid item sx={{ mt: 1.5 }}>

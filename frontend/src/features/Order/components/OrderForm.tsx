@@ -127,7 +127,6 @@ const OrderForm = () => {
   return (
     <Paper
       style={{
-        maxWidth: '600px',
         margin: 'auto',
         marginTop: '10px',
         padding: '20px',

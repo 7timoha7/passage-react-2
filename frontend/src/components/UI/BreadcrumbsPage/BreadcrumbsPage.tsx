@@ -193,7 +193,7 @@ const BreadcrumbsPage = () => {
             key="1"
             href="/"
           >
-            <span style={{ display: 'block', height: '24px' }}></span>
+            <span style={{ display: 'block', height: '18px' }}></span>
           </Link>,
         ]);
       } else {

@@ -68,7 +68,7 @@ const Kludirak = () => {
             />
           </Grid>
           <Grid item xs={12} md={8} order={{ xs: 1, md: 2 }}>
-            <Typography variant="h4" gutterBottom textTransform={'uppercase'}>
+            <Typography variant="body1" fontWeight={'bolder'} gutterBottom textTransform={'uppercase'}>
               Специализированный производитель смесителей с 1926 г.
             </Typography>
             <Typography variant="body1" textTransform={'uppercase'}>
