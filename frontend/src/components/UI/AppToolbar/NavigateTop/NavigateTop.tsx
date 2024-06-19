@@ -78,11 +78,10 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
           ))}
           <ForUsers close={close} />
         </Box>
-      </Box>
-
-      <Box display="flex" alignItems="center">
-        {user && <UserMenu close={close} user={user} />}
-        {location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}
+        <Box display="flex" alignItems="center">
+          {user && <UserMenu close={close} user={user} />}
+          {location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}
+        </Box>
       </Box>
     </Box>
   );
