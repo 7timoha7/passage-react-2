@@ -47,7 +47,19 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
   const isMobileMenu = useMediaQuery('@media (min-width: 1200px)');
   const user = useAppSelector(selectUser);
   const component = (
-    <Box display="flex" justifyContent="space-between" alignItems="center" width="100%">
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      width="100%"
+      sx={{
+        '@media (max-width: 1200px)': {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'start',
+        },
+      }}
+    >
       <Box display="flex" flexWrap={'wrap'} alignItems={'center'}>
         <Box
           sx={{
@@ -78,10 +90,10 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
           ))}
           <ForUsers close={close} />
         </Box>
-        <Box display="flex" alignItems="center">
-          {user && <UserMenu close={close} user={user} />}
-          {location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}
-        </Box>
+      </Box>
+      <Box display="flex" alignItems="center">
+        {user && <UserMenu close={close} user={user} />}
+        {location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}
       </Box>
     </Box>
   );
