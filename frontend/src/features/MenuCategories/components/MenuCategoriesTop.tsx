@@ -82,7 +82,7 @@ const MenuCategoriesTop: React.FC = () => {
             {category.subcategories && category.subcategories.length > 0 && <ArrowRightIcon className="icon" />}
           </a>
         ) : (
-          <a href={'#'} className="submenu-link">
+          <a onClick={() => navigate('products/' + category.ID)} className="submenu-link">
             <span className={'category-name'}>{category.name}</span>
             {/* Добавляем иконку */}
             {category.subcategories && category.subcategories.length > 0 && <ArrowRightIcon className="icon" />}

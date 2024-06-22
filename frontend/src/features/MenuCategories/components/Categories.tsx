@@ -161,15 +161,25 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
             {categories.map((category) => (
               <div key={category.ID}>
                 {category.subCategories && category.subCategories.length > 0 ? (
-                  <CategoryItem
-                    $level={$level}
-                    $isActive={activeState[category.ID]}
-                    onClick={() => handleCategoryClick(category.ID, category.ownerID)}
-                  >
-                    <IconWrapper>
-                      {openState[category.ID] ? <ExpandMore sx={{ color: '#af761a' }} /> : <ChevronRight />}
-                    </IconWrapper>
+                  <CategoryItem $level={$level} $isActive={activeState[category.ID]}>
                     <span
+                      onClick={() => handleCategoryClick(category.ID, category.ownerID)}
+                      style={{
+                        width: '30px',
+                        border: '1px solid black',
+                        borderRadius: '3px',
+                        marginRight: '5px',
+                        marginLeft: '2px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      <IconWrapper>
+                        {openState[category.ID] ? <ExpandMore sx={{ color: '#af761a' }} /> : <ChevronRight />}
+                      </IconWrapper>
+                    </span>
+
+                    <span
+                      onClick={() => navigateAndClose(category.ID)}
                       style={{
                         color: openState[category.ID] ? '#a87016' : '#0c0c0c',
                         fontWeight: openState[category.ID] ? 'bold' : 'normal',

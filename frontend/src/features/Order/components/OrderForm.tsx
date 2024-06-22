@@ -43,6 +43,7 @@ const OrderForm = () => {
     products: [],
   });
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
 
   const [deliveryMethod, setDeliveryMethod] = useState<string>('');
   const basket = useSelector(selectBasket);
@@ -110,6 +111,11 @@ const OrderForm = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!formData.phoneNumber) {
+      setPhoneError(true);
+      return;
+    }
+    setPhoneError(false);
     await dispatch(sendOrder(formData));
     setDialogOpen(true);
   };
@@ -154,7 +160,6 @@ const OrderForm = () => {
           name="lastName"
           value={formData.lastName}
           onChange={handleChange}
-          required
           style={{ marginBottom: '15px' }}
         />
         <MuiTelInput
@@ -164,6 +169,9 @@ const OrderForm = () => {
           name="phoneNumber"
           value={formData.phoneNumber}
           style={{ marginBottom: '15px' }}
+          required
+          error={phoneError}
+          helperText={phoneError ? 'Пожалуйста, введите номер телефона' : ''}
         />
         <TextField
           label="Email"

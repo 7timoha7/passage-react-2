@@ -69,6 +69,7 @@ const run = async () => {
     thickness: string;
     description: string;
     type: string;
+    quantity?: string;
   } => {
     // Разделяем строку по разделителю "\\" и удаляем пробелы
     const parts = description.split('\\\\').map((part) => part.trim());
@@ -89,7 +90,8 @@ const run = async () => {
         return {
           size: parts[1] || '', // size
           thickness: parts[2] || '', // thickness
-          description: parts.slice(3).join('\\\\') || '', // description
+          quantity: parts[3] || '', //количество в шт
+          description: parts.slice(4).join('\\\\') || '', // description
           type: 'Ламинат',
         };
       }
@@ -173,13 +175,24 @@ const run = async () => {
         }
 
         // Проверяем, есть ли остатки только на складе 'Склад материалов (не для продажи)'
-        const hasOnlyExcludedWarehouseStock = quantityDataArray.find((q) => {
-          const stock = quantitiesStocks.find((qs) => qs.stockID === q.stockID && q.quantity > 0);
+        const hasOnlyExcludedWarehouseStock = quantityDataArray.every((q) => {
+          const stock = quantitiesStocks.find((qs) => qs.stockID === q.stockID);
           return stock && stock.name === 'Склад материалов (не для продажи)';
         });
 
         if (hasOnlyExcludedWarehouseStock) {
           // Пропускаем продукт, если он есть только на исключенном складе
+          continue;
+        }
+
+        // Фильтруем остатки, чтобы не учитывать склады с именем 'Склад материалов (не для продажи)'
+        const validQuantityDataArray = quantityDataArray.filter((q) => {
+          const stock = quantitiesStocks.find((qs) => qs.stockID === q.stockID);
+          return stock && stock.name !== 'Склад материалов (не для продажи)' && q.quantity > 0;
+        });
+
+        // Проверяем, есть ли положительные остатки на других складах
+        if (validQuantityDataArray.length === 0) {
           continue;
         }
 
@@ -221,7 +234,6 @@ const run = async () => {
         }
 
         // Обрабатываем размеры и описание товара
-
         const { size, thickness, description, type } = processDescription(productData.description);
 
         // Пересчитываем цену, если это необходимо
@@ -232,7 +244,6 @@ const run = async () => {
           size
         ) {
           const area = calculateArea(size, type);
-          // recalculatedPrice = calculatePricePerSquareMeter(priceData.price, Number(area.toFixed(2)));
           recalculatedPrice = calculatePricePerSquareMeter(priceData.price, area);
         }
 
@@ -249,16 +260,14 @@ const run = async () => {
           measureCode: productData.measureCode,
           measureName: productData.measureName,
           ownerID: productData.ownerID,
-          quantity: quantityDataArray
-            .filter((quantityData) => quantityData.quantity > 0) // Отфильтровать только элементы с положительным количеством
-            .map((quantityData) => {
-              const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
-              return {
-                name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
-                stockID: quantityData.stockID,
-                quantity: quantityData.quantity,
-              };
-            }),
+          quantity: validQuantityDataArray.map((quantityData) => {
+            const stock = quantitiesStocks.find((qs) => qs.stockID === quantityData.stockID);
+            return {
+              name: stock ? stock.name : '', // Записываем название склада, если найдено, иначе пустая строка
+              stockID: quantityData.stockID,
+              quantity: quantityData.quantity,
+            };
+          }),
           price: recalculatedPrice, // Используем пересчитанную цену
           priceOriginal: priceData.price,
           images: productImages,

@@ -106,6 +106,7 @@ nav li:hover > .submenu {
 
 .submenu-link {
   position: relative;
+  cursor: pointer;
 }
 
 .submenu-link2 {

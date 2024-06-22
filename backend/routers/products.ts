@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import permit from '../middleware/permit';
 import { promises as fs } from 'fs';
+import Category from '../models/Category';
 
 const productRouter = express.Router();
 
@@ -33,6 +34,27 @@ productRouter.post('/', async (req, res, next) => {
   }
 });
 
+const getAllFinalCategories = async (categoryId: string): Promise<string[]> => {
+  const finalCategories: string[] = [];
+
+  const traverseCategories = async (id: string) => {
+    const category = await Category.findOne({ ID: id });
+    if (category) {
+      if (category.productsHave) {
+        finalCategories.push(category.ID);
+      } else {
+        const subcategories = await Category.find({ ownerID: category.ID });
+        for (const subcategory of subcategories) {
+          await traverseCategories(subcategory.ID);
+        }
+      }
+    }
+  };
+
+  await traverseCategories(categoryId);
+  return finalCategories;
+};
+
 productRouter.get('/', async (req, res) => {
   try {
     const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
@@ -41,7 +63,10 @@ productRouter.get('/', async (req, res) => {
     let query = {};
 
     if (req.query.category) {
-      query = { ownerID: req.query.category };
+      const categoryId = req.query.category as string;
+      const finalCategories = await getAllFinalCategories(categoryId);
+
+      query = { ownerID: { $in: finalCategories } };
     }
 
     const totalProducts = await Product.countDocuments(query);
@@ -70,14 +95,28 @@ productRouter.get('/news', async (req, res) => {
   try {
     const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
     const pageSize = 20;
-
     const totalProducts = await Product.countDocuments();
     const totalPages = Math.ceil(totalProducts / pageSize);
 
-    const products = await Product.find()
-      .sort({ article: -1 }) // Сортируем по убыванию значения поля article
-      .skip((page - 1) * pageSize)
-      .limit(pageSize);
+    let products;
+
+    if (page <= 2) {
+      // Получаем первые 40 продуктов
+      const first40Products = await Product.find().limit(40);
+      // Определяем диапазон для текущей страницы
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      // Рандомно перемешиваем первые 40 продуктов
+      const shuffledProducts = first40Products.sort(() => Math.random() - 0.5);
+      // Берем нужный диапазон продуктов для текущей страницы
+      products = shuffledProducts.slice(startIndex, endIndex);
+    } else {
+      // Для всех остальных страниц
+      products = await Product.find()
+        .sort({ article: -1 }) // Сортируем по убыванию значения поля article
+        .skip((page - 1) * pageSize)
+        .limit(pageSize);
+    }
 
     return res.send({
       products,

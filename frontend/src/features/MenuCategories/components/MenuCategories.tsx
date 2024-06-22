@@ -14,7 +14,7 @@ import img1 from '../../../assets/images/newFon/17.jpeg';
 import { toolbarTobAndBottomColor } from '../../../styles';
 import { Link } from 'react-router-dom';
 
-const drawerWidth = 250;
+const drawerWidth = 280;
 
 const MenuCategories = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
