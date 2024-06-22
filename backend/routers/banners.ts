@@ -13,7 +13,7 @@ bannersRouter.post('/', auth, permit('admin'), bannersImagesUpload.single('image
   try {
     const { typeBanner, title, desk, link } = req.body;
 
-    const imagePath = req.file ? `public/images/banners/${req.file.filename}` : '';
+    const imagePath = req.file ? `/images/banners/${req.file.filename}` : '';
     const newBanner = new Banner({
       typeBanner,
       title,
