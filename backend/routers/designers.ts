@@ -73,7 +73,7 @@ designersRouter.post('/gallery', auth, permit('admin'), designerImageUpload.sing
   try {
     const { caption } = req.body;
 
-    const imagePath = req.file ? `/images/designers/${req.file.filename}` : '';
+    const imagePath = req.file ? `public/images/designers/${req.file.filename}` : '';
 
     const newGallery = new DesignerGallery({
       alt: caption,
@@ -162,8 +162,8 @@ designersRouter.post(
           ? (req.files as { [fieldname: string]: Express.Multer.File[] })['pdf'][0]
           : null;
 
-      const imgPath = imgFile ? `/images/designers/${imgFile.filename}` : '';
-      const pdfPath = pdfFile ? `/images/designers/${pdfFile.filename}` : '';
+      const imgPath = imgFile ? `public/images/designers/${imgFile.filename}` : '';
+      const pdfPath = pdfFile ? `public/images/designers/${pdfFile.filename}` : '';
 
       const newPdf = new DesignerPdf({
         title,
