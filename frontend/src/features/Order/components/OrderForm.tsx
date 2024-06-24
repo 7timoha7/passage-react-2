@@ -47,7 +47,7 @@ const OrderForm = () => {
 
   const [deliveryMethod, setDeliveryMethod] = useState<string>('');
   const basket = useSelector(selectBasket);
-  const deliveryMethods = ['самовывоз', 'доставка'];
+  const deliveryMethods = ['Самовывоз', 'Доставка'];
   const navigate = useNavigate();
   const user = useAppSelector(selectUser);
   const sendOrderLoading = useAppSelector(selectSendOrderLoading);
@@ -95,7 +95,7 @@ const OrderForm = () => {
     setFormData((prevData) => ({
       ...prevData,
       deliveryMethod: value as string,
-      address: value === 'самовывоз' ? '' : prevData.address,
+      address: value === 'Самовывоз' ? '' : prevData.address,
     }));
   };
 
@@ -217,8 +217,8 @@ const OrderForm = () => {
           name="address"
           value={formData.address}
           onChange={handleChange}
-          required={deliveryMethod === 'доставка'}
-          disabled={deliveryMethod === 'самовывоз' || !deliveryMethod}
+          required={deliveryMethod === 'Доставка'}
+          disabled={deliveryMethod === 'Самовывоз' || !deliveryMethod}
           style={{ marginBottom: '15px' }}
         />
         <TextField

@@ -39,7 +39,7 @@ const Login = () => {
 
       await navigate('/', { replace: true });
 
-      await window.location.reload();
+      // await window.location.reload();
     } catch (error) {
       console.error('Ошибка входа:', error);
     }
