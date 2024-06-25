@@ -322,7 +322,7 @@ usersRouter.post('/getVerify', auth, async (req, res, next) => {
       secure: false,
       auth: {
         user: config.mail,
-        pass: 'afsr xgqv dswb wfjr',
+        pass: 'agoi jojf zfkk hzxu',
       },
       tls: {
         rejectUnauthorized: false,
@@ -425,7 +425,7 @@ usersRouter.post('/restorePassword', async (req, res, next) => {
       secure: false,
       auth: {
         user: config.mail,
-        pass: 'afsr xgqv dswb wfjr',
+        pass: 'agoi jojf zfkk hzxu',
       },
     });
     const mailOptions = {
