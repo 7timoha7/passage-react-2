@@ -169,6 +169,48 @@ const ProductFullCard: React.FC<Props> = ({ product }) => {
                 <Typography variant="h5" gutterBottom>
                   {product.name}
                 </Typography>
+
+                {product.priceSale > 0 && (
+                  <Box>
+                    <Typography sx={{ color: priceColorFullCard, mt: 1, textDecoration: 'line-through' }}>
+                      {product.priceSale + ' сом'}
+                      {product.type === 'Керамогранит' ? (
+                        <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за плитку</span>
+                      ) : (
+                        ''
+                      )}
+                      {product.type === 'Ковролин' ? (
+                        <span
+                          style={{
+                            color: priceNameColorFullCard,
+                            fontSize: '15px',
+                          }}
+                        >
+                          {' '}
+                          - минимально за {product.size} м²
+                        </span>
+                      ) : (
+                        ''
+                      )}
+                    </Typography>
+
+                    {product.type === 'Керамогранит' &&
+                    (product.measureName === 'м2' || product.measureName === 'm2') ? (
+                      <Typography sx={{ color: priceColorFullCard, textDecoration: 'line-through' }}>
+                        {product.priceOriginalSale + ' сом'}
+                        <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
+                      </Typography>
+                    ) : null}
+
+                    {product.type === 'Ковролин' ? (
+                      <Typography sx={{ color: priceColorFullCard, textDecoration: 'line-through' }}>
+                        {product.priceOriginalSale + ' сом'}
+                        <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
+                      </Typography>
+                    ) : null}
+                  </Box>
+                )}
+
                 <Box>
                   <Typography sx={{ color: priceColorFullCard, mt: 1 }}>
                     {product.price + ' сом'}

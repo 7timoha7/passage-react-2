@@ -19,6 +19,14 @@ const ProductSchema = new Schema<IProduct>({
     type: Number,
     required: true,
   },
+  priceSale: {
+    type: Number,
+    default: 0,
+  },
+  priceOriginalSale: {
+    type: Number,
+    default: 0,
+  },
   quantity: {
     type: [
       {

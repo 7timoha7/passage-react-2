@@ -43,6 +43,8 @@ export interface IProduct {
   }[];
   price: number;
   priceOriginal: number;
+  priceSale: number;
+  priceOriginalSale: number;
   description: string;
   size: string;
   thickness: string;

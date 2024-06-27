@@ -157,6 +157,11 @@ const createProducts = async (
       return pricesName.some((pn) => pn.name === 'РРЦ' && pn.typeID === price.typeID);
     });
 
+    const filteredPricesSale: IProductPriceFromApi[] = prices.filter((price) => {
+      // Проверяем, есть ли в массиве pricesName объект с именем 'Оптовая цена' и с тем же typeID
+      return pricesName.some((pn) => pn.name === 'Оптовая цена' && pn.typeID === price.typeID);
+    });
+
     for (const productData of products) {
       // Получаем массив данных о количестве товаров по goodID текущего продукта
       const quantityDataArray = quantities.filter((q) => q.goodID === productData.goodID);
@@ -200,6 +205,9 @@ const createProducts = async (
         // Пропускаем продукты без цены
         continue;
       }
+
+      // ### Добавляем получение данных о распродажной цене
+      const priceSaleData = filteredPricesSale.find((p) => p.goodID === productData.goodID);
 
       // Проверка на то есть ли у товара категория ?
       const productWithCategory = categoriesData.find((p) => p.ID === productData.ownerID);
@@ -250,6 +258,44 @@ const createProducts = async (
         continue; // Пропускаем продукт и переходим к следующему
       }
 
+      // ### Добавляем пересчет распродажной цены, если необходимо
+      let recalculatedSalePrice = priceSaleData ? priceSaleData.price : 0;
+      if (
+        priceSaleData &&
+        productData.measureName &&
+        (productData.measureName.toLowerCase() === 'м2' || productData.measureName.toLowerCase() === 'm2') &&
+        size
+      ) {
+        const area = calculateArea(size, type);
+        recalculatedSalePrice = calculatePricePerSquareMeter(priceSaleData.price, area);
+      }
+
+      // ### Проверяем, является ли распродажная цена числом перед сохранением
+      if (priceSaleData && isNaN(recalculatedSalePrice)) {
+        recalculatedSalePrice = 0; // Если распродажная цена не является числом, сбрасываем ее в 0
+      }
+
+      // ### Добавляем функцию проверки, является ли категория распродажной или подкатегорией распродажи
+      const isSaleCategory = (categoryId: string): boolean => {
+        const category = categoriesData.find((c) => c.ID === categoryId);
+        if (!category) return false;
+        if (category.name === 'РАСПРОДАЖА') return true;
+        return category.ownerID ? isSaleCategory(category.ownerID) : false;
+      };
+
+      // ### Обновляем логику формирования цены
+      let productPrice = recalculatedPrice;
+      let productOriginalPrice = priceData.price;
+      let productSalePrice = 0;
+      let productOriginalSalePrice = 0;
+
+      if (isSaleCategory(productWithCategory.ID) && priceSaleData) {
+        productSalePrice = productOriginalPrice;
+        productOriginalSalePrice = productPrice;
+        productPrice = recalculatedSalePrice;
+        productOriginalPrice = priceSaleData.price;
+      }
+
       // Формируем объект продукта
       const product = new Product({
         name: productData.name,
@@ -266,8 +312,10 @@ const createProducts = async (
             quantity: quantityData.quantity,
           };
         }),
-        price: recalculatedPrice, // Используем пересчитанную цену
-        priceOriginal: priceData.price,
+        price: productPrice, // Используем пересчитанную цену
+        priceOriginal: productOriginalPrice,
+        priceSale: productSalePrice, // ### Добавляем поле распродажной цены
+        priceOriginalSale: productOriginalSalePrice, // ### Добавляем поле оригинальной распродажной цены
         images: productImages,
         size,
         thickness,
@@ -382,25 +430,6 @@ productFromApiRouter.get('/', async (req, res, next) => {
     const responseQuantity = await fetchData('goods-quantity-get');
     const responsePrice = await fetchData('goods-price-get');
 
-    // ////////////////////////////////////////////////////////
-    // // Вместо ожидания результата запроса, сохраняем его в переменную
-    //
-    // // Путь к файлу
-    // const directoryPath = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
-    // const directoryPath2 = path.join(__dirname, 'public'); // Примерный путь к папке, где должен быть сохранен файл
-    // const filePath = path.join(directoryPath, 'goodsData.txt');
-    // const filePath2 = path.join(directoryPath2, 'QuantityData.txt');
-    // const filePath3 = path.join(directoryPath2, 'priceData.txt');
-    //
-    // // Создаем отсутствующие папки, если они не существуют
-    // fs.mkdirSync(directoryPath, { recursive: true });
-    //
-    // // Сохраняем данные в текстовый файл
-    // fs.writeFileSync(filePath, JSON.stringify(responseProducts.result, null, 2), 'utf-8');
-    // fs.writeFileSync(filePath2, JSON.stringify(responseQuantity.result, null, 2), 'utf-8');
-    // fs.writeFileSync(filePath3, JSON.stringify(responsePrice.result, null, 2), 'utf-8');
-    // /////////////////////////////////////////////////////////////////////
-
     const products: IProductFromApi[] = responseProducts.result.goods;
 
     const quantity = responseQuantity.result;
@@ -414,52 +443,6 @@ productFromApiRouter.get('/', async (req, res, next) => {
 
     await createProducts(products, price, priceName, quantityGoods, quantityStocks, categories);
     await createCategories(categories);
-
-    // //////////////////////////
-    // // Функция для поиска товаров, которые не принадлежат ни одной категории
-    // const findProductsNotInCategories = async (products: IProductFromApi[], categories: ICategoryFromApi[]) => {
-    //   const categoryIds = categories.map((category) => category.ID);
-    //   const noProducts = products.filter((product) => !categoryIds.includes(product.ownerID));
-    //   console.log(noProducts.length);
-    //   return products.filter((product) => !categoryIds.includes(product.ownerID));
-    // };
-    //
-    // const saveProductsToFile = (
-    //   products: Array<{
-    //     name: string;
-    //     article: string;
-    //     goodID: string;
-    //     ownerID: string;
-    //   }>,
-    //   filePath: string,
-    // ) => {
-    //   const filteredProducts = products.map((product) => ({
-    //     name: product.name,
-    //     article: product.article,
-    //     goodID: product.goodID,
-    //     ownerID: product.ownerID,
-    //   }));
-    //
-    //   const jsonContent = JSON.stringify(filteredProducts, null, 2);
-    //
-    //   fs.writeFile(filePath, jsonContent, 'utf8', (err) => {
-    //     if (err) {
-    //       console.error('Ошибка при записи в файл:', err);
-    //       return;
-    //     }
-    //     console.log('Товары успешно сохранены в файл:', filePath);
-    //   });
-    // };
-    //
-    // findProductsNotInCategories(products, categories)
-    //   .then((filteredProducts) => {
-    //     const filePath = 'productsNotInCategories.json';
-    //     saveProductsToFile(filteredProducts, filePath);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Ошибка:', error);
-    //   });
-    // //////////////////////////
 
     console.log('loadingTRUE ! ! ! ');
 

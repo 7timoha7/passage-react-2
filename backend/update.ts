@@ -159,6 +159,11 @@ const run = async () => {
         return pricesName.some((pn) => pn.name === 'РРЦ' && pn.typeID === price.typeID);
       });
 
+      const filteredPricesSale: IProductPriceFromApi[] = prices.filter((price) => {
+        // Проверяем, есть ли в массиве pricesName объект с именем 'Оптовая цена' и с тем же typeID
+        return pricesName.some((pn) => pn.name === 'Оптовая цена' && pn.typeID === price.typeID);
+      });
+
       for (const productData of products) {
         // Получаем массив данных о количестве товаров по goodID текущего продукта
         const quantityDataArray = quantities.filter((q) => q.goodID === productData.goodID);
@@ -202,6 +207,9 @@ const run = async () => {
           // Пропускаем продукты без цены
           continue;
         }
+
+        // ### Добавляем получение данных о распродажной цене
+        const priceSaleData = filteredPricesSale.find((p) => p.goodID === productData.goodID);
 
         // Проверка на то есть ли у товара категория ?
         const productWithCategory = categoriesData.find((p) => p.ID === productData.ownerID);
@@ -252,6 +260,44 @@ const run = async () => {
           continue; // Пропускаем продукт и переходим к следующему
         }
 
+        // ### Добавляем пересчет распродажной цены, если необходимо
+        let recalculatedSalePrice = priceSaleData ? priceSaleData.price : 0;
+        if (
+          priceSaleData &&
+          productData.measureName &&
+          (productData.measureName.toLowerCase() === 'м2' || productData.measureName.toLowerCase() === 'm2') &&
+          size
+        ) {
+          const area = calculateArea(size, type);
+          recalculatedSalePrice = calculatePricePerSquareMeter(priceSaleData.price, area);
+        }
+
+        // ### Проверяем, является ли распродажная цена числом перед сохранением
+        if (priceSaleData && isNaN(recalculatedSalePrice)) {
+          recalculatedSalePrice = 0; // Если распродажная цена не является числом, сбрасываем ее в 0
+        }
+
+        // ### Добавляем функцию проверки, является ли категория распродажной или подкатегорией распродажи
+        const isSaleCategory = (categoryId: string): boolean => {
+          const category = categoriesData.find((c) => c.ID === categoryId);
+          if (!category) return false;
+          if (category.name === 'РАСПРОДАЖА') return true;
+          return category.ownerID ? isSaleCategory(category.ownerID) : false;
+        };
+
+        // ### Обновляем логику формирования цены
+        let productPrice = recalculatedPrice;
+        let productOriginalPrice = priceData.price;
+        let productSalePrice = 0;
+        let productOriginalSalePrice = 0;
+
+        if (isSaleCategory(productWithCategory.ID) && priceSaleData) {
+          productSalePrice = productOriginalPrice;
+          productOriginalSalePrice = productPrice;
+          productPrice = recalculatedSalePrice;
+          productOriginalPrice = priceSaleData.price;
+        }
+
         // Формируем объект продукта
         const product = new Product({
           name: productData.name,
@@ -268,8 +314,10 @@ const run = async () => {
               quantity: quantityData.quantity,
             };
           }),
-          price: recalculatedPrice, // Используем пересчитанную цену
-          priceOriginal: priceData.price,
+          price: productPrice, // Используем пересчитанную цену
+          priceOriginal: productOriginalPrice,
+          priceSale: productSalePrice, // ### Добавляем поле распродажной цены
+          priceOriginalSale: productOriginalSalePrice, // ### Добавляем поле оригинальной распродажной цены
           images: productImages,
           size,
           thickness,

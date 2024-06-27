@@ -204,10 +204,45 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           </Typography>
         </Box>
 
+        {product.priceSale > 0 && (
+          <>
+            <Typography sx={{ color: priceColorFullCard, mt: 1, textDecoration: 'line-through' }}>
+              {product.priceSale + ' сом'}
+              {product.type === 'Керамогранит' ? (
+                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - плитка</span>
+              ) : (
+                ''
+              )}
+              {product.type === 'Ковролин' ? (
+                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}>
+                  {' '}
+                  - минимально за {product.size} м²
+                </span>
+              ) : (
+                ''
+              )}
+            </Typography>
+
+            {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
+              <Typography sx={{ color: priceColorFullCard, textDecoration: 'line-through' }}>
+                {product.priceOriginalSale + ' сом'}
+                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
+              </Typography>
+            ) : null}
+
+            {product.type === 'Ковролин' ? (
+              <Typography sx={{ color: priceColorFullCard, textDecoration: 'line-through' }}>
+                {product.priceOriginalSale + ' сом'}
+                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
+              </Typography>
+            ) : null}
+          </>
+        )}
+
         <Typography sx={{ color: priceColorFullCard, mt: 1 }}>
           {product.price + ' сом'}
           {product.type === 'Керамогранит' ? (
-            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за плитку</span>
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - плитка</span>
           ) : (
             ''
           )}
@@ -221,18 +256,17 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
         {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
           <Typography sx={{ color: priceColorFullCard }}>
             {product.priceOriginal + ' сом'}
-            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
           </Typography>
         ) : null}
 
         {product.type === 'Ковролин' ? (
           <Typography sx={{ color: priceColorFullCard }}>
             {product.priceOriginal + ' сом'}
-            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - за м²</span>
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
           </Typography>
         ) : null}
 
-        <Typography></Typography>
         <Box
           sx={{
             marginTop: 'auto',
