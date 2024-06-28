@@ -292,8 +292,8 @@ const run = async () => {
         let productOriginalSalePrice = 0;
 
         if (isSaleCategory(productWithCategory.ID) && priceSaleData) {
-          productSalePrice = productOriginalPrice;
-          productOriginalSalePrice = productPrice;
+          productSalePrice = productPrice;
+          productOriginalSalePrice = productOriginalPrice;
           productPrice = recalculatedSalePrice;
           productOriginalPrice = priceSaleData.price;
         }

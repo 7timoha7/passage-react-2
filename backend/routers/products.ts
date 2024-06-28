@@ -42,12 +42,10 @@ const getAllFinalCategories = async (categoryId: string): Promise<string[]> => {
     if (category) {
       if (category.productsHave) {
         finalCategories.push(category.ID);
-      } else {
-        const subcategories = await Category.find({ ownerID: category.ID });
-        for (const subcategory of subcategories) {
-          await traverseCategories(subcategory.ID);
-        }
       }
+      // Продолжаем обходить подкатегории даже если текущая категория имеет продукты
+      const subcategories = await Category.find({ ownerID: category.ID });
+      await Promise.all(subcategories.map((subcategory) => traverseCategories(subcategory.ID)));
     }
   };
 
