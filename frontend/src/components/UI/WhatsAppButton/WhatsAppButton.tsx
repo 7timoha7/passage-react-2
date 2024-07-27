@@ -1,21 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { styled } from '@mui/material/styles';
-import {
-  createTheme,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  ThemeProvider,
-  Typography,
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const WhatsAppButton = () => {
-  const [open, setOpen] = useState(false);
-
   const MyButton = styled(Button)({
     position: 'fixed',
     bottom: 35,
@@ -39,35 +28,26 @@ const WhatsAppButton = () => {
     },
   });
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleConfirm = () => {
-    setOpen(false);
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    if (typeof window.ym !== 'undefined') {
+      window.ym(
+        95546639,
+        'extLink',
+        'https://wa.me/996553100500?text=Здравствуйте,%20я%20хочу%20связаться%20с%20вами!',
+      );
+    }
     window.open('https://wa.me/996553100500?text=Здравствуйте,%20я%20хочу%20связаться%20с%20вами!', '_blank');
   };
 
-  const { t } = useTranslation();
-
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <MyButton onClick={handleClick}>
+    <ThemeProvider theme={theme}>
+      <a href="https://wa.me/996553100500?text=Здравствуйте,%20я%20хочу%20связаться%20с%20вами!" onClick={handleClick}>
+        <MyButton>
           <WhatsAppIcon fontSize={'large'} sx={{ color: '#ffffff' }} />
         </MyButton>
-      </ThemeProvider>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>{t('transfer_to_WhatsApp')}</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">{t('are_you_sure_WhatsApp')}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>{t('cancel')}</Button>
-          <Button onClick={handleConfirm}>{t('continue')}</Button>
-        </DialogActions>
-      </Dialog>
-    </>
+      </a>
+    </ThemeProvider>
   );
 };
 

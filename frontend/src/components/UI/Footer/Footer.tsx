@@ -7,10 +7,13 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { FooterStyle, toolbarTobAndBottomColor } from '../../../styles';
 
 const Footer = () => {
-  const handlePhoneClick = (phoneNumber: string) => {
-    window.location.href = `tel:${phoneNumber}`;
-  };
   const isMobile = useMediaQuery('(max-width:1200px)');
+
+  const handlePhoneClick = (phoneNumber: string) => {
+    if (typeof window.ym !== 'undefined') {
+      window.ym(95546639, 'extLink', `tel:${phoneNumber}`);
+    }
+  };
 
   return (
     <Box sx={{ flexGrow: 1, position: 'relative' }}>
@@ -152,9 +155,11 @@ const Footer = () => {
               </Typography>
               <Grid container direction="column">
                 <Grid item sx={{ mt: 1.5 }}>
-                  <Typography
-                    variant="body1"
-                    component="div"
+                  <Link
+                    href="tel:+996997100500"
+                    color="inherit"
+                    underline="none"
+                    onClick={() => handlePhoneClick('+996997100500')}
                     sx={{
                       color: '#000000',
                       display: 'flex',
@@ -162,16 +167,17 @@ const Footer = () => {
                       cursor: 'pointer',
                       '&:hover': { color: '#ad882c' },
                     }}
-                    onClick={() => handlePhoneClick('+996997100500')}
                   >
                     <CallIcon sx={{ mr: 0.7 }} />
                     +996 997 100500
-                  </Typography>
+                  </Link>
                 </Grid>
                 <Grid item sx={{ mt: 1.5 }}>
-                  <Typography
-                    variant="body1"
-                    component="div"
+                  <Link
+                    href="tel:+996553100500"
+                    color="inherit"
+                    underline="none"
+                    onClick={() => handlePhoneClick('+996553100500')}
                     sx={{
                       color: '#000000',
                       display: 'flex',
@@ -179,11 +185,10 @@ const Footer = () => {
                       cursor: 'pointer',
                       '&:hover': { color: '#ad882c' },
                     }}
-                    onClick={() => handlePhoneClick('+996553100500')}
                   >
                     <CallIcon sx={{ mr: 0.7 }} />
                     +996 553 100500
-                  </Typography>
+                  </Link>
                 </Grid>
               </Grid>
             </Grid>

@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Paper, Typography, useTheme, Link } from '@mui/material';
 import React, { useEffect } from 'react';
 import CallIcon from '@mui/icons-material/Call';
 
@@ -6,6 +6,9 @@ const ContactsPage = () => {
   const theme = useTheme();
 
   const handlePhoneClick = (phoneNumber: string) => {
+    if (typeof window.ym !== 'undefined') {
+      window.ym(95546639, 'reachGoal', 'phone_click');
+    }
     window.location.href = `tel:${phoneNumber}`;
   };
 
@@ -97,41 +100,40 @@ const ContactsPage = () => {
               </Grid>
               <Grid item sx={{ mt: 1.5 }}>
                 <Typography variant={'h6'}>Телефоны:</Typography>
-                <Typography
-                  variant="body1"
-                  component="div"
+                <Link
+                  href="tel:+996997100500"
+                  color="inherit"
+                  onClick={() => handlePhoneClick('+996997100500')}
                   sx={{
-                    mt: 1,
-                    color: '#000000',
-                    fontSize: '15px',
                     display: 'flex',
                     alignItems: 'center',
                     cursor: 'pointer',
+                    color: '#000000',
+                    fontSize: '15px',
                     '&:hover': { color: '#ad882c' },
                   }}
-                  onClick={() => handlePhoneClick('+996997100500')}
                 >
                   <CallIcon sx={{ mr: 0.7 }} />
                   +996 997 100500
-                </Typography>
+                </Link>
               </Grid>
               <Grid item sx={{ mt: 1.5 }}>
-                <Typography
-                  variant="body1"
-                  component="div"
+                <Link
+                  href="tel:+996553100500"
+                  color="inherit"
+                  onClick={() => handlePhoneClick('+996553100500')}
                   sx={{
-                    color: '#000000',
-                    fontSize: '15px',
                     display: 'flex',
                     alignItems: 'center',
                     cursor: 'pointer',
+                    color: '#000000',
+                    fontSize: '15px',
                     '&:hover': { color: '#ad882c' },
                   }}
-                  onClick={() => handlePhoneClick('+996553100500')}
                 >
                   <CallIcon sx={{ mr: 0.7 }} />
                   +996 553 100500
-                </Typography>
+                </Link>
               </Grid>
             </Grid>
           </Box>
@@ -166,41 +168,40 @@ const ContactsPage = () => {
               </Grid>
               <Grid item sx={{ mt: 1.5 }}>
                 <Typography variant={'h6'}>Телефоны:</Typography>
-                <Typography
-                  variant="body1"
-                  component="div"
+                <Link
+                  href="tel:+996997100500"
+                  color="inherit"
+                  onClick={() => handlePhoneClick('+996997100500')}
                   sx={{
-                    mt: 1,
-                    color: '#000000',
-                    fontSize: '15px',
                     display: 'flex',
                     alignItems: 'center',
                     cursor: 'pointer',
+                    color: '#000000',
+                    fontSize: '15px',
                     '&:hover': { color: '#ad882c' },
                   }}
-                  onClick={() => handlePhoneClick('+996997100500')}
                 >
                   <CallIcon sx={{ mr: 0.7 }} />
                   +996 997 100500
-                </Typography>
+                </Link>
               </Grid>
               <Grid item sx={{ mt: 1.5 }}>
-                <Typography
-                  variant="body1"
-                  component="div"
+                <Link
+                  href="tel:+996553100500"
+                  color="inherit"
+                  onClick={() => handlePhoneClick('+996553100500')}
                   sx={{
-                    color: '#000000',
-                    fontSize: '15px',
                     display: 'flex',
                     alignItems: 'center',
                     cursor: 'pointer',
+                    color: '#000000',
+                    fontSize: '15px',
                     '&:hover': { color: '#ad882c' },
                   }}
-                  onClick={() => handlePhoneClick('+996553100500')}
                 >
                   <CallIcon sx={{ mr: 0.7 }} />
                   +996 553 100500
-                </Typography>
+                </Link>
               </Grid>
             </Grid>
           </Box>
