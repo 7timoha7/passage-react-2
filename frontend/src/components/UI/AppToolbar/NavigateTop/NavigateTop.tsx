@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import MenuCategoriesTop from '../../../../features/MenuCategories/components/MenuCategoriesTop';
-import { Container, Button, useMediaQuery } from '@mui/material';
+import { Button, Container, useMediaQuery } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 import UserMenu from '../UserMenu';
@@ -95,6 +95,9 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
         {user && <UserMenu close={close} user={user} />}
         {location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}
       </Box>
+      <a style={{ display: 'none' }} href="tel:+996553100500">
+        996553100500
+      </a>
     </Box>
   );
 

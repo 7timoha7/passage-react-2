@@ -9,19 +9,21 @@ import { IOrder } from '../types';
 import User from '../models/User';
 import Product from '../models/Product';
 import ChatIdAdmin from '../models/ChatIdAdmin';
+import config from '../config';
+import nodemailer from 'nodemailer';
 
 const ordersRouter = express.Router();
 
-// const calculateSquareAreaInSquareMeters = (sizeString: string): number => {
-//   const [lengthStr, widthStr] = sizeString.split('*');
-//   const lengthInMillimeters: number = parseInt(lengthStr);
-//   const widthInMillimeters: number = parseInt(widthStr);
-//   return (lengthInMillimeters * widthInMillimeters) / (100 * 100);
-// };
-//
-// const textMeters = (quantity: number, metersOne: number) => {
-//   return (quantity * metersOne).toFixed(2);
-// };
+const calculateSquareAreaInSquareMeters = (sizeString: string): number => {
+  const [lengthStr, widthStr] = sizeString.split('*');
+  const lengthInMillimeters: number = parseInt(lengthStr);
+  const widthInMillimeters: number = parseInt(widthStr);
+  return (lengthInMillimeters * widthInMillimeters) / (100 * 100);
+};
+
+const textMeters = (quantity: number, metersOne: number) => {
+  return (quantity * metersOne).toFixed(2);
+};
 
 ordersRouter.post('/', async (req, res, next) => {
   try {
@@ -56,99 +58,99 @@ ordersRouter.post('/', async (req, res, next) => {
       await sendMessageToTelegram(message, chatIdNumbers);
     }
 
-    //   ////////////////////
-    //   const generateProductListHtml = async (
-    //     products: {
-    //       product: string;
-    //       quantity: number;
-    //       quantityToOrder: number;
-    //     }[],
-    //   ) => {
-    //     // Получение полной информации о продуктах из базы данных
-    //     const productDetails = await Product.find({ goodID: { $in: products.map((item) => item.product) } });
-    //
-    //     const productList = products
-    //       .map((item) => {
-    //         const product = productDetails.find((p) => p.goodID === item.product);
-    //         if (!product) return '';
-    //
-    //         // Получение площади в квадратных метрах
-    //         const sizeInMeters = product.size ? calculateSquareAreaInSquareMeters(product.size) : null;
-    //
-    //         return `
-    //     <div style="margin-bottom: 10px; border: 1px solid black; padding: 10px;">
-    //       <strong>Артикул:</strong> ${product.article}<br>
-    //       <strong>Название:</strong> ${product.name}<br>
-    //       <strong>Количество:</strong> ${item.quantity}<br>
-    //       ${sizeInMeters ? `<strong>М²:</strong> ${textMeters(item.quantity, sizeInMeters)}<br>` : ''}
-    //       ${
-    //         item.quantityToOrder > 0
-    //           ? `
-    //         <strong style="color: red">Количество под заказ:</strong> ${item.quantityToOrder}<br>
-    //         ${
-    //           sizeInMeters
-    //             ? `<strong style="color: red">М² под заказ:</strong> ${textMeters(
-    //                 item.quantityToOrder,
-    //                 sizeInMeters,
-    //               )}<br>`
-    //             : ''
-    //         }
-    //       `
-    //           : ''
-    //       }
-    //       <strong>Цена:</strong> ${product.price}<br>
-    //       ${
-    //         product.priceOriginal && product.measureName !== 'шт'
-    //           ? `<strong>Цена за М²:</strong> ${product.priceOriginal}<br>`
-    //           : ''
-    //       }
-    //     </div>
-    //   `;
-    //       })
-    //       .join('');
-    //
-    //     return `
-    //   <p><strong>Имя заказчика:</strong> ${order.firstName} ${order.lastName}</p>
-    //   <p><strong>Телефон:</strong> ${order.phoneNumber}</p>
-    //   <p><strong>Комментарий:</strong> ${order.orderComment}</p>
-    //   <p><strong>Способ оплаты:</strong> ${order.paymentMethod}</p>
-    //   <p><strong>Способ доставки:</strong> ${order.deliveryMethod}</p>
-    //   <p><strong>Адрес:</strong> ${order.address}</p>
-    //   <p><strong>Email:</strong> ${order.email}</p>
-    //   <p><strong>Товары:</strong></p>
-    //   ${productList}
-    //   <p><strong>Общая сумма:</strong> ${order.totalPrice} сом</p>
-    // `;
-    //   };
-    //
-    //   const transporter = nodemailer.createTransport({
-    //     host: 'smtp.gmail.com',
-    //     port: 587,
-    //     secure: false,
-    //     auth: {
-    //       user: config.mail,
-    //       pass: 'agoi jojf zfkk hzxu',
-    //     },
-    //     tls: {
-    //       rejectUnauthorized: false,
-    //     },
-    //   });
-    //
-    //   const htmlContent = await generateProductListHtml(order.products);
-    //
-    //   const mailOptions = {
-    //     from: config.mail,
-    //     to: 'artem77timoha77@gmail.com',
-    //     subject: 'Passage - Новый заказ',
-    //     html: htmlContent,
-    //   };
-    //
-    //   transporter.sendMail(mailOptions, (error) => {
-    //     if (error) {
-    //       console.error('Error sending email:', error);
-    //     }
-    //   });
-    //   ////////////////////
+    //////////////////// - отправка письма для битрекс
+    const generateProductListHtml = async (
+      products: {
+        product: string;
+        quantity: number;
+        quantityToOrder: number;
+      }[],
+    ) => {
+      // Получение полной информации о продуктах из базы данных
+      const productDetails = await Product.find({ goodID: { $in: products.map((item) => item.product) } });
+
+      const productList = products
+        .map((item) => {
+          const product = productDetails.find((p) => p.goodID === item.product);
+          if (!product) return '';
+
+          // Получение площади в квадратных метрах
+          const sizeInMeters = product.size ? calculateSquareAreaInSquareMeters(product.size) : null;
+
+          return `
+        <div style="margin-bottom: 10px; border: 1px solid black; padding: 10px;">
+          <strong>Артикул:</strong> ${product.article}<br>
+          <strong>Название:</strong> ${product.name}<br>
+          <strong>Количество:</strong> ${item.quantity}<br>
+          ${sizeInMeters ? `<strong>М²:</strong> ${textMeters(item.quantity, sizeInMeters)}<br>` : ''}
+          ${
+            item.quantityToOrder > 0
+              ? `
+            <strong style="color: red">Количество под заказ:</strong> ${item.quantityToOrder}<br>
+            ${
+              sizeInMeters
+                ? `<strong style="color: red">М² под заказ:</strong> ${textMeters(
+                    item.quantityToOrder,
+                    sizeInMeters,
+                  )}<br>`
+                : ''
+            }
+          `
+              : ''
+          }
+          <strong>Цена:</strong> ${product.price}<br>
+          ${
+            product.priceOriginal && product.measureName !== 'шт'
+              ? `<strong>Цена за М²:</strong> ${product.priceOriginal}<br>`
+              : ''
+          }
+        </div>
+      `;
+        })
+        .join('');
+
+      return `
+      <p><strong>Имя заказчика:</strong> ${order.firstName} ${order.lastName}</p>
+      <p><strong>Телефон:</strong> ${order.phoneNumber}</p>
+      <p><strong>Комментарий:</strong> ${order.orderComment}</p>
+      <p><strong>Способ оплаты:</strong> ${order.paymentMethod}</p>
+      <p><strong>Способ доставки:</strong> ${order.deliveryMethod}</p>
+      <p><strong>Адрес:</strong> ${order.address}</p>
+      <p><strong>Email:</strong> ${order.email}</p>
+      <p><strong>Товары:</strong></p>
+      ${productList}
+      <p><strong>Общая сумма:</strong> ${order.totalPrice} сом</p>
+    `;
+    };
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: config.mail,
+        pass: 'agoi jojf zfkk hzxu',
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    const htmlContent = await generateProductListHtml(order.products);
+
+    const mailOptions = {
+      from: config.mail,
+      to: 'p3537074@gmail.com',
+      subject: 'Passage - Новый заказ',
+      html: htmlContent,
+    };
+
+    transporter.sendMail(mailOptions, (error) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      }
+    });
+    ////////////////////
 
     return res.send({
       message: {
@@ -196,99 +198,99 @@ ordersRouter.post('/user', auth, async (req, res, next) => {
         await sendMessageToTelegram(message, chatIdNumbers);
       }
 
-      //     ////////////////////
-      //     const generateProductListHtml = async (
-      //       products: {
-      //         product: string;
-      //         quantity: number;
-      //         quantityToOrder: number;
-      //       }[],
-      //     ) => {
-      //       // Получение полной информации о продуктах из базы данных
-      //       const productDetails = await Product.find({ goodID: { $in: products.map((item) => item.product) } });
-      //
-      //       const productList = products
-      //         .map((item) => {
-      //           const product = productDetails.find((p) => p.goodID === item.product);
-      //           if (!product) return '';
-      //
-      //           // Получение площади в квадратных метрах
-      //           const sizeInMeters = product.size ? calculateSquareAreaInSquareMeters(product.size) : null;
-      //
-      //           return `
-      //     <div style="margin-bottom: 10px; border: 1px solid black; padding: 10px;">
-      //       <strong>Артикул:</strong> ${product.article}<br>
-      //       <strong>Название:</strong> ${product.name}<br>
-      //       <strong>Количество:</strong> ${item.quantity}<br>
-      //       ${sizeInMeters ? `<strong>М²:</strong> ${textMeters(item.quantity, sizeInMeters)}<br>` : ''}
-      //       ${
-      //         item.quantityToOrder > 0
-      //           ? `
-      //         <strong style="color: red">Количество под заказ:</strong> ${item.quantityToOrder}<br>
-      //         ${
-      //           sizeInMeters
-      //             ? `<strong style="color: red">М² под заказ:</strong> ${textMeters(
-      //                 item.quantityToOrder,
-      //                 sizeInMeters,
-      //               )}<br>`
-      //             : ''
-      //         }
-      //       `
-      //           : ''
-      //       }
-      //       <strong>Цена:</strong> ${product.price}<br>
-      //       ${
-      //         product.priceOriginal && product.measureName !== 'шт'
-      //           ? `<strong>Цена за М²:</strong> ${product.priceOriginal}<br>`
-      //           : ''
-      //       }
-      //     </div>
-      //   `;
-      //         })
-      //         .join('');
-      //
-      //       return `
-      //   <p><strong>Имя заказчика:</strong> ${order.firstName} ${order.lastName}</p>
-      //   <p><strong>Телефон:</strong> ${order.phoneNumber}</p>
-      //   <p><strong>Комментарий:</strong> ${order.orderComment}</p>
-      //   <p><strong>Способ оплаты:</strong> ${order.paymentMethod}</p>
-      //   <p><strong>Способ доставки:</strong> ${order.deliveryMethod}</p>
-      //   <p><strong>Адрес:</strong> ${order.address}</p>
-      //   <p><strong>Email:</strong> ${order.email}</p>
-      //   <p><strong>Товары:</strong></p>
-      //   ${productList}
-      //   <p><strong>Общая сумма:</strong> ${order.totalPrice} сом</p>
-      // `;
-      //     };
-      //
-      //     const transporter = nodemailer.createTransport({
-      //       host: 'smtp.gmail.com',
-      //       port: 587,
-      //       secure: false,
-      //       auth: {
-      //         user: config.mail,
-      //         pass: 'agoi jojf zfkk hzxu',
-      //       },
-      //       tls: {
-      //         rejectUnauthorized: false,
-      //       },
-      //     });
-      //
-      //     const htmlContent = await generateProductListHtml(order.products);
-      //
-      //     const mailOptions = {
-      //       from: config.mail,
-      //       to: 'artem77timoha77@gmail.com',
-      //       subject: 'Passage - Новый заказ',
-      //       html: htmlContent,
-      //     };
-      //
-      //     transporter.sendMail(mailOptions, (error) => {
-      //       if (error) {
-      //         console.error('Error sending email:', error);
-      //       }
-      //     });
-      //     ////////////////////
+      //////////////////// - отправка для юитрекс письмо
+      const generateProductListHtml = async (
+        products: {
+          product: string;
+          quantity: number;
+          quantityToOrder: number;
+        }[],
+      ) => {
+        // Получение полной информации о продуктах из базы данных
+        const productDetails = await Product.find({ goodID: { $in: products.map((item) => item.product) } });
+
+        const productList = products
+          .map((item) => {
+            const product = productDetails.find((p) => p.goodID === item.product);
+            if (!product) return '';
+
+            // Получение площади в квадратных метрах
+            const sizeInMeters = product.size ? calculateSquareAreaInSquareMeters(product.size) : null;
+
+            return `
+          <div style="margin-bottom: 10px; border: 1px solid black; padding: 10px;">
+            <strong>Артикул:</strong> ${product.article}<br>
+            <strong>Название:</strong> ${product.name}<br>
+            <strong>Количество:</strong> ${item.quantity}<br>
+            ${sizeInMeters ? `<strong>М²:</strong> ${textMeters(item.quantity, sizeInMeters)}<br>` : ''}
+            ${
+              item.quantityToOrder > 0
+                ? `
+              <strong style="color: red">Количество под заказ:</strong> ${item.quantityToOrder}<br>
+              ${
+                sizeInMeters
+                  ? `<strong style="color: red">М² под заказ:</strong> ${textMeters(
+                      item.quantityToOrder,
+                      sizeInMeters,
+                    )}<br>`
+                  : ''
+              }
+            `
+                : ''
+            }
+            <strong>Цена:</strong> ${product.price}<br>
+            ${
+              product.priceOriginal && product.measureName !== 'шт'
+                ? `<strong>Цена за М²:</strong> ${product.priceOriginal}<br>`
+                : ''
+            }
+          </div>
+        `;
+          })
+          .join('');
+
+        return `
+        <p><strong>Имя заказчика:</strong> ${order.firstName} ${order.lastName}</p>
+        <p><strong>Телефон:</strong> ${order.phoneNumber}</p>
+        <p><strong>Комментарий:</strong> ${order.orderComment}</p>
+        <p><strong>Способ оплаты:</strong> ${order.paymentMethod}</p>
+        <p><strong>Способ доставки:</strong> ${order.deliveryMethod}</p>
+        <p><strong>Адрес:</strong> ${order.address}</p>
+        <p><strong>Email:</strong> ${order.email}</p>
+        <p><strong>Товары:</strong></p>
+        ${productList}
+        <p><strong>Общая сумма:</strong> ${order.totalPrice} сом</p>
+      `;
+      };
+
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: config.mail,
+          pass: 'agoi jojf zfkk hzxu',
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+      });
+
+      const htmlContent = await generateProductListHtml(order.products);
+
+      const mailOptions = {
+        from: config.mail,
+        to: 'p3537074@gmail.com',
+        subject: 'Passage - Новый заказ',
+        html: htmlContent,
+      };
+
+      transporter.sendMail(mailOptions, (error) => {
+        if (error) {
+          console.error('Error sending email:', error);
+        }
+      });
+      ////////////////////
 
       return res.send({
         message: {
