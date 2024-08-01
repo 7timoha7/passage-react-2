@@ -13,6 +13,7 @@ import NavigateTop from '../../../components/UI/AppToolbar/NavigateTop/NavigateT
 import img1 from '../../../assets/images/newFon/17.jpeg';
 import { toolbarTobAndBottomColor } from '../../../styles';
 import { Link } from 'react-router-dom';
+import LinkTel from '../../../components/UI/AppToolbar/NavigateTop/Components/LinkTel';
 
 const drawerWidth = 280;
 
@@ -108,30 +109,52 @@ const MenuCategories = () => {
           borderTop: '1.5px solid black',
         }}
       >
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={handleDrawerToggle}
+        <Box
           sx={{
-            borderRadius: 0,
-            color: 'white',
-            '&:hover': {
-              color: '#e8b86d',
-            },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingRight: '20px',
+            flexWrap: 'wrap',
           }}
         >
-          <MenuIcon fontSize={'large'} />
-          <Typography
-            variant={'h6'}
-            textAlign={'center'}
+          <Box>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{
+                borderRadius: 0,
+                color: 'white',
+                '&:hover': {
+                  color: '#e8b86d',
+                },
+              }}
+            >
+              <MenuIcon fontSize={'large'} />
+              <Typography
+                variant={'h6'}
+                textAlign={'center'}
+                sx={{
+                  ml: 1,
+                }}
+              >
+                МЕНЮ
+              </Typography>
+            </IconButton>
+          </Box>
+
+          <Box
             sx={{
-              ml: 1,
+              '@media (max-width: 318px)': {
+                mb: '7px',
+              },
             }}
           >
-            МЕНЮ
-          </Typography>
-        </IconButton>
+            <LinkTel />
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

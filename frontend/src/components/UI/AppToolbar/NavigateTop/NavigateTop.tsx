@@ -10,6 +10,7 @@ import { useAppSelector } from '../../../../app/hooks';
 import { selectUser } from '../../../../features/users/usersSlice';
 import { toolbarTobAndBottomColor, ToolBarTopText } from '../../../../styles';
 import ForUsers from './Components/ForClients/ForUsers/ForUsers';
+import LinkTel from './Components/LinkTel';
 
 interface Props {
   close?: () => void;
@@ -91,13 +92,16 @@ const NavigateTop: React.FC<Props> = ({ close }) => {
           <ForUsers close={close} />
         </Box>
       </Box>
-      <Box display="flex" alignItems="center">
+      {isMobileMenu && (
+        <Box>
+          <LinkTel />
+        </Box>
+      )}
+
+      <Box display={location.pathname !== '/admin' ? 'none' : 'flex'} alignItems="center">
         {user && <UserMenu close={close} user={user} />}
         {location.pathname === '/admin' && !user && <AnonymousMenu close={close} />}
       </Box>
-      <a style={{ display: 'none' }} href="tel:+996553100500">
-        996553100500
-      </a>
     </Box>
   );
 
