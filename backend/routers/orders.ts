@@ -128,8 +128,8 @@ ordersRouter.post('/', async (req, res, next) => {
       port: 587,
       secure: false,
       auth: {
-        user: config.mail,
-        pass: 'agoi jojf zfkk hzxu',
+        user: 'passageinfo1@gmail.com',
+        pass: 'ytez emca drbb qywm',
       },
       tls: {
         rejectUnauthorized: false,
@@ -268,8 +268,8 @@ ordersRouter.post('/user', auth, async (req, res, next) => {
         port: 587,
         secure: false,
         auth: {
-          user: config.mail,
-          pass: 'agoi jojf zfkk hzxu',
+          user: 'passageinfo1@gmail.com',
+          pass: 'ytez emca drbb qywm',
         },
         tls: {
           rejectUnauthorized: false,
