@@ -97,7 +97,7 @@ const MenuCategoriesTop: React.FC = () => {
   };
 
   return (
-    <nav>
+    <nav style={{ textTransform: 'uppercase' }}>
       <ul className="topmenu">
         {categoriesTree.map((category) => (
           <React.Fragment key={category._id}>

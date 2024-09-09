@@ -157,7 +157,7 @@ const Categories: React.FC<Props> = ({ categories, close }) => {
         {loading ? (
           <Spinner />
         ) : (
-          <Box sx={{ background: 'rgba(183,183,183,0.34)' }}>
+          <Box sx={{ background: 'rgba(183,183,183,0.34)', textTransform: 'uppercase' }}>
             {categories.map((category) => (
               <div key={category.ID}>
                 {category.subCategories && category.subCategories.length > 0 ? (
