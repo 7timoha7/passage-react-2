@@ -29,6 +29,7 @@ const DrPluggin = () => {
       'noopener,noreferrer',
     );
     setOpen(false);
+    setShowBanner(true);
   };
 
   return (
