@@ -9,3 +9,27 @@ body {
   background-image: url('../src/assets/images/newFon/17.jpeg'); /* Путь к вашему изображению */
   background-repeat: repeat;
 }
+
+/* App.css */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fons/Montserrat/static/Montserrat-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MontserratBold';
+  src: url('./assets/fons/Montserrat/static/Montserrat-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Определяем классы для текста с этим шрифтом */
+.montserrat-regular {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.montserrat-bold {
+  font-family: 'MontserratBold', sans-serif;
+}
