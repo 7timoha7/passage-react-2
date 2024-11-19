@@ -107,17 +107,28 @@ const DrPluggin = () => {
             </Typography>
             <Typography
               sx={{
-                fontSize: isMobile ? '40px' : '100px',
+                fontSize: isMobile ? '35px' : '85px',
                 textTransform: 'uppercase',
                 marginTop: isMobile ? 0 : 2,
               }}
               className="montserrat-bold"
               component="div"
             >
-              Скидка 20%
+              Скидки <br />
+              <span
+                style={{
+                  fontSize: isMobile ? '20px' : '60px',
+                  textTransform: 'uppercase',
+                  marginTop: isMobile ? 0 : 2,
+                }}
+                className="montserrat-bold"
+              >
+                до
+              </span>{' '}
+              20%
             </Typography>
           </CardContent>
-          <CardActions sx={{ justifyContent: 'center', marginTop: isMobile ? -2 : 2 }}>
+          <CardActions sx={{ justifyContent: 'center', marginTop: isMobile ? -2 : -1 }}>
             <Button
               onClick={handleDetailsClick}
               variant="outlined"
@@ -157,7 +168,7 @@ const DrPluggin = () => {
           }}
         >
           <Typography className="montserrat-bold" sx={{ fontSize: isMobile ? '11px' : '12px', m: 0, p: 0 }}>
-            В честь дня рождения ПАССАЖ! Скидка 20% !!!
+            В честь дня рождения ПАССАЖ! Скидки до 20%
           </Typography>
           <Typography className="montserrat-bold" sx={{ fontSize: isMobile ? '9px' : '10px', m: 0, p: 0 }}>
             только 24 и 25 ноября

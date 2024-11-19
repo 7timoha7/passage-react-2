@@ -18,7 +18,8 @@ const DrIconCard = () => {
         p: '3px',
       }}
     >
-      <Typography className="montserrat-bold" sx={{ fontSize: '13px' }}>
+      <Typography className="montserrat-bold" sx={{ fontSize: '13px', textAlign: 'center' }}>
+        до <br />
         -20%
       </Typography>
       <Typography className="montserrat-bold" sx={{ fontSize: '9px' }}>
