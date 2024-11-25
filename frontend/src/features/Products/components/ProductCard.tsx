@@ -29,7 +29,6 @@ import {
   selectDeleteBestsellersLoading,
 } from '../../Bestsellers/bestsellersSlice';
 import { priceColorFullCard, priceNameColorFullCard } from '../../../styles';
-import DrIconCard from '../../../components/UI/Dr/DrIconCard';
 
 interface Props {
   product: ProductType;
@@ -240,86 +239,33 @@ const ProductCard: React.FC<Props> = ({ product, indicator }) => {
           </>
         )}
 
-        {product.priceSale !== 0 ? (
-          <>
-            <Typography sx={{ color: priceColorFullCard, mt: 1 }}>
-              {product.price + ' сом'}
-              {product.type === 'Керамогранит' ? (
-                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - плитка</span>
-              ) : (
-                ''
-              )}
-              {product.type === 'Ковролин' ? (
-                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}>
-                  {' '}
-                  - минимально за {product.size} м²
-                </span>
-              ) : (
-                ''
-              )}
-            </Typography>
+        <Typography sx={{ color: priceColorFullCard, mt: 1 }}>
+          {product.price + ' сом'}
+          {product.type === 'Керамогранит' ? (
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - плитка</span>
+          ) : (
+            ''
+          )}
+          {product.type === 'Ковролин' ? (
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - минимально за {product.size} м²</span>
+          ) : (
+            ''
+          )}
+        </Typography>
 
-            {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
-              <Typography sx={{ color: priceColorFullCard }}>
-                {product.priceOriginal + ' сом'}
-                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
-              </Typography>
-            ) : null}
+        {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
+          <Typography sx={{ color: priceColorFullCard }}>
+            {product.priceOriginal + ' сом'}
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
+          </Typography>
+        ) : null}
 
-            {product.type === 'Ковролин' ? (
-              <Typography sx={{ color: priceColorFullCard }}>
-                {product.priceOriginal + ' сом'}
-                <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
-              </Typography>
-            ) : null}
-          </>
-        ) : (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '15px',
-              marginTop: '10px',
-            }}
-          >
-            <div>
-              <Typography sx={{ color: priceColorFullCard, mt: 1 }}>
-                {product.price + ' сом'}
-                {product.type === 'Керамогранит' ? (
-                  <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - плитка</span>
-                ) : (
-                  ''
-                )}
-                {product.type === 'Ковролин' ? (
-                  <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}>
-                    {' '}
-                    - минимально за {product.size} м²
-                  </span>
-                ) : (
-                  ''
-                )}
-              </Typography>
-
-              {product.type === 'Керамогранит' && (product.measureName === 'м2' || product.measureName === 'm2') ? (
-                <Typography sx={{ color: priceColorFullCard }}>
-                  {product.priceOriginal + ' сом'}
-                  <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
-                </Typography>
-              ) : null}
-
-              {product.type === 'Ковролин' ? (
-                <Typography sx={{ color: priceColorFullCard }}>
-                  {product.priceOriginal + ' сом'}
-                  <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
-                </Typography>
-              ) : null}
-            </div>
-            <div>
-              <DrIconCard />
-            </div>
-          </div>
-        )}
+        {product.type === 'Ковролин' ? (
+          <Typography sx={{ color: priceColorFullCard }}>
+            {product.priceOriginal + ' сом'}
+            <span style={{ color: priceNameColorFullCard, fontSize: '15px' }}> - м²</span>
+          </Typography>
+        ) : null}
 
         <Box
           sx={{
