@@ -13,6 +13,11 @@ import path from 'path';
 import fs from 'fs';
 import Product from './models/Product';
 import Category from './models/Category';
+import User from './models/User';
+import Order from './models/Order';
+import Basket from './models/Basket';
+import Bestseller from './models/Bestseller';
+import ProductFor from './models/ProductFor';
 
 const run = async () => {
   mongoose.set('strictQuery', false);
@@ -416,6 +421,65 @@ const run = async () => {
     }
   };
 
+  ////////////////////////
+  const cleanUpDatabase = async () => {
+    // Получаем список всех существующих товаров
+    const existingProducts = new Set((await Product.find({}, { goodID: 1 })).map((product) => product.goodID));
+
+    // Обработка пользователей
+    const users = await User.find({});
+    await Promise.all(
+      users.map(async (user) => {
+        user.favorites = user.favorites.filter((productId) => existingProducts.has(productId));
+        await user.save();
+      }),
+    );
+
+    // Обработка заказов
+    const orders = await Order.find({});
+    await Promise.all(
+      orders.map(async (order) => {
+        order.products = order.products.filter((item) => existingProducts.has(item.product));
+        if (order.products.length === 0) {
+          await Order.deleteOne({ _id: order._id });
+        } else {
+          await order.save();
+        }
+      }),
+    );
+
+    // Обработка корзин
+    const baskets = await Basket.find({});
+    await Promise.all(
+      baskets.map(async (basket) => {
+        basket.items = basket.items.filter((item) => existingProducts.has(item.product));
+        await basket.save();
+      }),
+    );
+
+    // Обработка бестселлеров
+    await Bestseller.deleteMany({ bestseller_id: { $nin: Array.from(existingProducts) } });
+
+    // Получаем список всех существующих категорий
+    const existingCategories = new Set((await Category.find({}, { ID: 1 })).map((category) => category.ID));
+
+    // Обработка записей ProductFor
+    const productFors = await ProductFor.find({});
+    await Promise.all(
+      productFors.map(async (productFor) => {
+        if (!existingCategories.has(productFor.categoryID)) {
+          await ProductFor.deleteOne({ _id: productFor._id });
+          return;
+        }
+
+        productFor.categoryForID = productFor.categoryForID.filter((categoryID) => existingCategories.has(categoryID));
+
+        await productFor.save();
+      }),
+    );
+  };
+  ////////////////////////
+
   mongoose.set('strictQuery', false);
   await mongoose.connect(config.db);
 
@@ -445,6 +509,7 @@ const run = async () => {
 
   await createProducts(products, price, priceName, quantityGoods, quantityStocks, categories);
   await createCategories(categories);
+  await cleanUpDatabase();
 
   console.log('loading --- TRUE ! ! ! ');
 
