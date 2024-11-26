@@ -198,7 +198,12 @@ const run = async () => {
         // Фильтруем остатки, чтобы не учитывать склады с именем 'Склад материалов (не для продажи)'
         const validQuantityDataArray = quantityDataArray.filter((q) => {
           const stock = quantitiesStocks.find((qs) => qs.stockID === q.stockID);
-          return stock && stock.name !== 'Склад материалов (не для продажи)' && q.quantity > 0;
+          return (
+            stock &&
+            stock.name !== 'Склад материалов (не для продажи)' &&
+            stock.name !== 'Склад БРАКА' &&
+            q.quantity > 0
+          );
         });
 
         // Проверяем, есть ли положительные остатки на других складах
