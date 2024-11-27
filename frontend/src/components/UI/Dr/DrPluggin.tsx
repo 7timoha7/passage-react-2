@@ -100,7 +100,7 @@ const DrPluggin = () => {
               component="div"
               gutterBottom
             >
-              черная пятница
+              керамическая пятница
             </Typography>
             <Typography
               sx={{
