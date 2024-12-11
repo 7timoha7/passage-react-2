@@ -28,6 +28,8 @@ import {
 import CategoryIcon from '@mui/icons-material/Category';
 import ProductsForPage from '../ProductsFor/components/ProductsForPage';
 import BannersPageForm from '../Banners/BannersPageForm';
+import SellIcon from '@mui/icons-material/Sell';
+import Discounts from '../GetADiscount/components/Discounts';
 
 const initialState: CabinetState = {
   myInfo: true,
@@ -79,6 +81,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
     { option: 'users', icon: <GroupIcon />, text: 'Пользователи' },
     { option: 'productsFor', icon: <CategoryIcon />, text: 'Сопутствующие товары' },
     { option: 'banners', icon: <ViewCarouselIcon />, text: 'Баннеры' },
+    { option: 'discounts', icon: <SellIcon />, text: 'Скидки клиентов' },
     { option: 'favorites', icon: <FavoriteIcon />, text: 'Избранное' },
     { option: 'myOrders', icon: <WorkIcon />, text: 'Мои заказы' },
     { option: 'unacceptedOrders', icon: <WorkspacesIcon />, text: 'Непринятые заказы' },
@@ -123,6 +126,7 @@ const AdminCabinet: React.FC<Props> = ({ exist = initialState }) => {
               )}
               {state.favorites && <Favorites />}
               {state.banners && <BannersPageForm />}
+              {state.discounts && <Discounts />}
               {state.myOrders && adminPageInfo && user?._id && (
                 <OrderItems ordersItems={orders} adminPageInfo={adminPageInfo} id={user._id} />
               )}

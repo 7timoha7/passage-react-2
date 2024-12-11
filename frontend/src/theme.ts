@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import { toolbarTobAndBottomColor } from './styles';
 
 const theme = createTheme({
   components: {
@@ -124,6 +125,57 @@ const theme = createTheme({
           },
           '& .MuiSelect-icon': {
             color: '#ffffff', // цвет иконки селекта
+          },
+        },
+      },
+    },
+  },
+});
+
+export const themeDiscount = createTheme({
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+        fullWidth: true,
+      },
+      styleOverrides: {
+        root: {
+          '& .MuiInputLabel-root': {
+            color: toolbarTobAndBottomColor, // цвет текста лейбла
+          },
+          '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
+            color: toolbarTobAndBottomColor, // цвет текста лейбла при сжатии
+          },
+          '& .MuiOutlinedInput-root': {
+            borderRadius: '10px',
+            '& fieldset': {
+              borderColor: toolbarTobAndBottomColor, // цвет рамки текстового поля
+            },
+            '&:hover fieldset': {
+              borderColor: toolbarTobAndBottomColor, // цвет рамки текстового поля при наведении
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: toolbarTobAndBottomColor, // цвет рамки текстового поля при фокусировке
+            },
+            '& .MuiInputLabel-root': {
+              color: toolbarTobAndBottomColor, // цвет текста лейбла при фокусировке
+            },
+            '& .MuiOutlinedInput-input': {
+              color: '#000000', // цвет текста внутри текстового поля
+            },
+          },
+        },
+      },
+    },
+    MuiRadio: {
+      defaultProps: {
+        color: 'default', // Цвет по умолчанию
+      },
+      styleOverrides: {
+        root: {
+          '&.Mui-checked': {
+            color: toolbarTobAndBottomColor, // Цвет радиокнопки при выборе
           },
         },
       },

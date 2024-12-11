@@ -49,6 +49,7 @@ import Rakceramics from './components/UI/AboutPage/Rakceramics';
 import Kludirak from './components/UI/AboutPage/Kludirak';
 import Rakporcelain from './components/UI/AboutPage/Rakporcelain';
 import { selectDesignerSuccess } from './components/UI/AppToolbar/NavigateTop/Components/ForClients/ForUsers/Designers/designersSlice';
+import GetADiscount from './features/GetADiscount/components/GetADiscount';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -267,6 +268,7 @@ function App() {
         <Route path="about/rakceramics/" element={<Rakceramics />} />
         <Route path="about/kludirak/" element={<Kludirak />} />
         <Route path="about/rakporcelain/" element={<Rakporcelain />} />
+        <Route path="get-a-discount" element={<GetADiscount />} />
         <Route
           path="/my-cabinet"
           element={

@@ -14,6 +14,7 @@ import bestsellerRouter from './routers/bestsellers';
 import bannersRouter from './routers/banners';
 import productsForRouter from './routers/productsFor';
 import designersRouter from './routers/designers';
+import discountsRouter from './routers/discounts';
 
 const app = express();
 const port = 8000;
@@ -41,6 +42,7 @@ app.use('/bestsellers', bestsellerRouter);
 app.use('/banners', bannersRouter);
 app.use('/productsFor', productsForRouter);
 app.use('/designers', designersRouter);
+app.use('/get-a-discount', discountsRouter);
 
 const run = async () => {
   mongoose.set('strictQuery', false);

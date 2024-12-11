@@ -280,3 +280,17 @@ export interface DesignerPdfTypeToServer {
 }
 
 ////////////////////////////////////////////////////////////////////////
+
+export interface DiscountTypeToServer {
+  name: string;
+  phone: string;
+  source: string;
+}
+
+export interface DiscountType {
+  _id: string;
+  created_date: string;
+  name: string;
+  phone: string;
+  source: string;
+}

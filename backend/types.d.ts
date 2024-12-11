@@ -169,3 +169,10 @@ export interface IDesignerPdf {
   img: string;
   pdf: string;
 }
+
+export interface IDiscount {
+  created_date: string;
+  name: string;
+  phone: string;
+  source: string;
+}
