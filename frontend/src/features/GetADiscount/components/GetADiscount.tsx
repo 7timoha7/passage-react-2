@@ -63,6 +63,7 @@ const GetADiscount: React.FC = () => {
     'Instagram',
     'Facebook',
     'Я у вас уже давно покупаю',
+    'Уличный трафик',
     'Другое',
   ];
 
