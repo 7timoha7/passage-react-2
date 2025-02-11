@@ -30,6 +30,8 @@ import { debounce } from 'lodash';
 import { themeDiscount } from '../../../theme';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { LoadingButton } from '@mui/lab';
+import DownloadDiscounts from './DownloadDiscounts ';
+import { selectUser } from '../../users/usersSlice';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   fontWeight: 'bold',
@@ -44,6 +46,7 @@ const Discounts = () => {
   const pageInfo = useAppSelector(selectPageInfo);
   const loading = useAppSelector(selectFetchDiscountsLoading);
   const deleteLoading = useAppSelector(selectDeleteDiscountLoading);
+  const user = useAppSelector(selectUser);
 
   const [search, setSearch] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -138,7 +141,7 @@ const Discounts = () => {
             <StyledTableCell>Номер телефона</StyledTableCell>
             <StyledTableCell>Источник</StyledTableCell>
             <StyledTableCell>Дата создания</StyledTableCell>
-            <StyledTableCell>Удалить</StyledTableCell>
+            {user?.role === 'admin' ? <StyledTableCell>Удалить</StyledTableCell> : null}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -148,16 +151,18 @@ const Discounts = () => {
               <TableCell>{discount.phone}</TableCell>
               <TableCell>{discount.source}</TableCell>
               <TableCell>{formatDate(discount.created_date)}</TableCell>
-              <TableCell>
-                <LoadingButton
-                  loading={deleteLoading === discount._id}
-                  color="error"
-                  onClick={() => handleDelete(discount._id)}
-                  aria-label="удалить"
-                >
-                  <DeleteIcon />
-                </LoadingButton>
-              </TableCell>
+              {user?.role === 'admin' ? (
+                <TableCell>
+                  <LoadingButton
+                    loading={deleteLoading === discount._id}
+                    color="error"
+                    onClick={() => handleDelete(discount._id)}
+                    aria-label="удалить"
+                  >
+                    <DeleteIcon />
+                  </LoadingButton>
+                </TableCell>
+              ) : null}
             </TableRow>
           ))}
         </TableBody>
@@ -170,6 +175,9 @@ const Discounts = () => {
       <Typography variant="h4" align="center" gutterBottom>
         Список Скидок
       </Typography>
+      <Box m={5}>
+        <DownloadDiscounts />
+      </Box>
       <ThemeProvider theme={themeDiscount}>
         <Box display="flex" justifyContent="center" mb={3}>
           <TextField

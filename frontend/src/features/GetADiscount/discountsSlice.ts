@@ -1,10 +1,11 @@
 import { DiscountType, GlobalSuccess, PageInfo } from '../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { createDiscount, deleteDiscount, fetchDiscounts } from './disccountsThunks';
+import { createDiscount, deleteDiscount, fetchAllDiscounts, fetchDiscounts } from './disccountsThunks';
 import { RootState } from '../../app/store';
 
 interface DiscountsState {
   discounts: DiscountType[];
+  discountsAll: DiscountType[];
   pageInfo: PageInfo | null;
   discountsSuccess: GlobalSuccess | null;
   fetchDiscountsLoading: boolean;
@@ -14,6 +15,7 @@ interface DiscountsState {
 
 const initialState: DiscountsState = {
   discounts: [],
+  discountsAll: [],
   pageInfo: null,
   discountsSuccess: null,
   fetchDiscountsLoading: false,
@@ -59,12 +61,24 @@ export const discountsSLice = createSlice({
     builder.addCase(deleteDiscount.rejected, (state) => {
       state.deleteDiscountLoading = false;
     });
+    /////////////////////////
+    builder.addCase(fetchAllDiscounts.pending, (state) => {
+      state.fetchDiscountsLoading = true;
+    });
+    builder.addCase(fetchAllDiscounts.fulfilled, (state, action) => {
+      state.discountsAll = action.payload;
+      state.fetchDiscountsLoading = false;
+    });
+    builder.addCase(fetchAllDiscounts.rejected, (state) => {
+      state.fetchDiscountsLoading = false;
+    });
   },
 });
 
 export const discountsReducer = discountsSLice.reducer;
 
 export const selectDiscounts = (state: RootState) => state.discounts.discounts;
+export const selectAllDiscounts = (state: RootState) => state.discounts.discountsAll;
 export const selectPageInfo = (state: RootState) => state.discounts.pageInfo;
 export const selectBDiscountsSuccess = (state: RootState) => state.discounts.discountsSuccess;
 export const selectFetchDiscountsLoading = (state: RootState) => state.discounts.fetchDiscountsLoading;

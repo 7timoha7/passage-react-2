@@ -31,6 +31,12 @@ export const fetchDiscounts = createAsyncThunk<
   return response.data;
 });
 
+export const fetchAllDiscounts = createAsyncThunk<DiscountType[]>('discounts/fetchAllDiscounts', async () => {
+  const response = await axiosApi.get<DiscountType[]>(`/get-a-discount/all`);
+
+  return response.data;
+});
+
 export const deleteDiscount = createAsyncThunk<GlobalSuccess, string>('discounts/deleteDiscount', async (id) => {
   try {
     const response = await axiosApi.delete('/get-a-discount/' + id);

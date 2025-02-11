@@ -27,7 +27,7 @@ discountsRouter.post('/', async (req, res, next) => {
   }
 });
 
-discountsRouter.get('/', auth, permit('director', 'admin'), async (req, res, next) => {
+discountsRouter.get('/', async (req, res, next) => {
   try {
     const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
     const pageSize = 20;
@@ -63,6 +63,16 @@ discountsRouter.get('/', auth, permit('director', 'admin'), async (req, res, nex
         totalItems: totalDiscounts,
       },
     });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+discountsRouter.get('/all', async (req, res, next) => {
+  try {
+    const discounts = await Discount.find();
+
+    return res.send(discounts);
   } catch (error) {
     return next(error);
   }
