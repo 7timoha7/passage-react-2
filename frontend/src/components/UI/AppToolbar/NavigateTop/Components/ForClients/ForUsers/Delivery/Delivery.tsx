@@ -47,7 +47,7 @@ const Delivery = () => {
             <ListItemIcon>
               <DoorFront />
             </ListItemIcon>
-            <ListItemText primary="Доставка осуществляется только до подезда или до ворот" />
+            <ListItemText primary="Доставка осуществляется только до подъезда или до ворот" />
           </ListItem>
 
           <ListItem>
