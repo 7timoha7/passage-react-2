@@ -61,7 +61,7 @@ const Delivery = () => {
             <ListItemIcon>
               <AccessibilityNewIcon />{' '}
             </ListItemIcon>
-            <ListItemText primary="Клиенту нужно заранее позаботится о грузчиках. Водитель не занимается выгрузкой" />
+            <ListItemText primary="Клиенту нужно заранее позаботиться о грузчиках. Водитель не занимается выгрузкой" />
           </ListItem>
         </List>
       </Paper>
