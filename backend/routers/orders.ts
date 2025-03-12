@@ -140,7 +140,7 @@ ordersRouter.post('/', async (req, res, next) => {
 
     const mailOptions = {
       from: config.mail,
-      to: 'p3537074@gmail.com',
+      to: 'passagelead@gmail.com',
       subject: 'Passage - Новый заказ',
       html: htmlContent,
     };
@@ -280,7 +280,7 @@ ordersRouter.post('/user', auth, async (req, res, next) => {
 
       const mailOptions = {
         from: config.mail,
-        to: 'p3537074@gmail.com',
+        to: 'mailto:passagelead@gmail.com',
         subject: 'Passage - Новый заказ',
         html: htmlContent,
       };
